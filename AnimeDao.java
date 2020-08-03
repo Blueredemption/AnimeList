@@ -28,10 +28,16 @@ public class AnimeDao {
         File f = new File(prePath);
         list = new ArrayList<AnimeObject>();
         pathnames = f.list();
-        for (String pathname : pathnames) {
-            JSONObject temp = getJSON(prePath +"/" +pathname);
-            AnimeObject anime = new AnimeObject(temp);
-            list.add(anime);
+        if (pathnames == null){ // if pathnames is null then there are no anime objects to iterate through, thus create one and try again.
+            create();
+            refresh();
+        }
+        else{
+            for (String pathname : pathnames) {
+                JSONObject temp = getJSON(prePath +"/" +pathname);
+                AnimeObject anime = new AnimeObject(temp);
+                list.add(anime);
+            }
         }
     }
 
