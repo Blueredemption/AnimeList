@@ -1,2 +1,0 @@
-# AnimeList
-To be written.
