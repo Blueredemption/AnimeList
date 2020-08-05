@@ -1,6 +1,7 @@
 //*****************************************//
 // Created by Cooper Eisnor                //
 //*****************************************//
+
 import java.util.*;
 import java.io.*;
 import org.json.simple.*;
@@ -128,12 +129,12 @@ public class FieldStorageDao {
     public void setDefaults(){ // sets the default values for default options (hard coded, though these should be stored in a file somewhere. Unlike everything else these files wouldn't be editable by the program, thus harder to manage. I'll "fix" this if the time comes.)
         defaultButtons = new Color(60, 60, 60);
         defaultBackground1 = new Color(50, 50, 50);
-        defaultBackground2 = new Color(75, 75, 75);
-        defaultBackground3 = new Color(100, 100, 100);
-        defaultList = new Color(65, 65 ,65);
-        defaultNavigation = new Color(40, 40, 40, 180);
+        defaultBackground2 = new Color(65, 65, 65);
+        defaultBackground3 = new Color(60, 60, 60);
+        defaultList = new Color(60, 60 ,60);
+        defaultNavigation = new Color(40, 40, 40, 145);
         defaultText = new Color(255, 255, 255, 255);
-        defaultButtonBorder = new Color(27, 79, 247);
+        defaultButtonBorder = new Color(0, 0, 255);
 
         defaultMainScreenImage = "Images/UI/Background.png";
         defaultFavorite1 = "Images/UI/Background.png";
@@ -144,25 +145,25 @@ public class FieldStorageDao {
     }
 
     public void loadPreset1(){ 
-        setButtons(new Color(9, 93, 235, 127));
-        setBackground1(new Color(9, 93, 235, 127));
-        setBackground2(new Color(9, 93, 235, 127));
-        setBackground3(new Color(9, 93, 235, 127));
-        setList(new Color(9, 93, 235, 127));
-        setNavigation(new Color(9, 93, 235, 127));
-        setText(new Color(9, 93, 235, 127));
-        setButtonBorder(new Color(27, 79, 247));
+        setButtons(new Color(60, 60, 60));
+        setBackground1(new Color(50, 50, 50));
+        setBackground2(new Color(65, 65, 65));
+        setBackground3(new Color(60, 60, 60));
+        setList(new Color(60, 60 ,60));
+        setNavigation(new Color(40, 40, 40, 145));
+        setText(new Color(255, 255, 255, 255));
+        setButtonBorder(new Color(0, 0, 255));
     }
 
     public void loadPreset2(){
-        setButtons(new Color(9, 93, 235, 127));
-        setBackground1(new Color(9, 93, 235, 127));
-        setBackground2(new Color(9, 93, 235, 127));
-        setBackground3(new Color(9, 93, 235, 127));
-        setList(new Color(9, 93, 235, 127));
-        setNavigation(new Color(9, 93, 235, 127));
-        setText(new Color(9, 93, 235, 127));
-        setButtonBorder(new Color(27, 79, 247));
+        setButtons(new Color(255, 255, 255, 255));
+        setBackground1(new Color(255, 255, 255, 255));
+        setBackground2(new Color(213, 255, 255, 255));
+        setBackground3(new Color(255, 255, 255, 255));
+        setList(new Color(233, 255, 255, 255));
+        setNavigation(new Color(213, 255, 255, 145));
+        setText(new Color(0,0,0,255));
+        setButtonBorder(new Color(27, 228, 247, 255));
     }
     
     public void pull(){ // checks to see if the json for each member exists, if it does load it in, otherwise load in and write to drive the default (could make faster, but less dynamic)
@@ -200,7 +201,7 @@ public class FieldStorageDao {
             navigation = colorJSONtoColor(json);
         }
         else setNavigation(defaultNavigation);
-        if (isIn(pathnames,"test.json")){
+        if (isIn(pathnames,"text.json")){
             JSONObject json = getJSON(prePath +"/" +"text.json");
             text = colorJSONtoColor(json);
         }

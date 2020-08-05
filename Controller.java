@@ -50,7 +50,7 @@ public class Controller {
             case "background1": return fieldStorageDao.getBackground1();
             case "background2": return fieldStorageDao.getBackground2();
             case "background3": return fieldStorageDao.getBackground3();
-            case "list": fieldStorageDao.getList();
+            case "list": return fieldStorageDao.getList();
             case "navigation": return fieldStorageDao.getNavigation();
             case "text": return fieldStorageDao.getText();
             case "buttonBorder": return fieldStorageDao.getButtonBorder();
@@ -94,5 +94,13 @@ public class Controller {
             default: return "No field was set";
          }
          return "A field was set";
+    }
+
+    public void loadLightPreset(){
+        fieldStorageDao.loadPreset2();
+    }
+
+    public void loadDarkPreset(){
+        fieldStorageDao.loadPreset1();
     }
 }
