@@ -26,6 +26,7 @@ public class ColorPickerPanel extends JPanel {
     JTextField showTextField;
     JLabel showLabel;
 
+    // I could just pass the controller into this, and will next time. It would have saved me a lot of time.
     public ColorPickerPanel(String field, Color navigation, Color buttons, Color buttonBorders, Color background,
             Color inputFields, Color dropdowns, Color defaultList, Color text) { // constructor
         this.field = field;
@@ -110,7 +111,7 @@ public class ColorPickerPanel extends JPanel {
         sliderB = generateSlider(0, 255, getPickedColor().getBlue(), 50, 5);
         sliderO = generateSlider(0, 255, getPickedColor().getAlpha(), 50, 5);
     }
-
+    // UI methods
     public void placeSlidersAndUI() {
         title = new JLabel();
         title.setPreferredSize(new Dimension(620, 60));
@@ -134,9 +135,10 @@ public class ColorPickerPanel extends JPanel {
         tFieldR.setPreferredSize(new Dimension(30, 20));
         tFieldR.setBackground(copyOf(inputFields));
         tFieldR.setForeground(copyOf(text));
-        tFieldR.setBorder(BorderFactory.createLineBorder(background));
+        tFieldR.setCaretColor(copyOf(text));
+        tFieldR.setBorder(BorderFactory.createLineBorder(inputFields));
         tFieldR.setFont(new Font("Dialog", Font.BOLD, 12));
-        tFieldR.addActionListener(new InputActionListener());
+        tFieldR.addActionListener(new inputActionListener());
         add(tFieldR);
 
         add(sliderR);
@@ -155,9 +157,10 @@ public class ColorPickerPanel extends JPanel {
         tFieldG.setPreferredSize(new Dimension(30, 20));
         tFieldG.setBackground(copyOf(inputFields));
         tFieldG.setForeground(copyOf(text));
-        tFieldG.setBorder(BorderFactory.createLineBorder(background));
+        tFieldG.setCaretColor(copyOf(text));
+        tFieldG.setBorder(BorderFactory.createLineBorder(inputFields));
         tFieldG.setFont(new Font("Dialog", Font.BOLD, 12));
-        tFieldG.addActionListener(new InputActionListener());
+        tFieldG.addActionListener(new inputActionListener());
         add(tFieldG);
 
         add(sliderG);
@@ -176,9 +179,10 @@ public class ColorPickerPanel extends JPanel {
         tFieldB.setPreferredSize(new Dimension(30, 20));
         tFieldB.setBackground(copyOf(inputFields));
         tFieldB.setForeground(copyOf(text));
-        tFieldB.setBorder(BorderFactory.createLineBorder(background));
+        tFieldB.setCaretColor(copyOf(text));
+        tFieldB.setBorder(BorderFactory.createLineBorder(inputFields));
         tFieldB.setFont(new Font("Dialog", Font.BOLD, 12));
-        tFieldB.addActionListener(new InputActionListener());
+        tFieldB.addActionListener(new inputActionListener());
         add(tFieldB);
 
         add(sliderB);
@@ -197,9 +201,10 @@ public class ColorPickerPanel extends JPanel {
         tFieldO.setPreferredSize(new Dimension(30, 20));
         tFieldO.setBackground(copyOf(inputFields));
         tFieldO.setForeground(copyOf(text));
-        tFieldO.setBorder(BorderFactory.createLineBorder(background));
+        tFieldO.setCaretColor(copyOf(text));
+        tFieldO.setBorder(BorderFactory.createLineBorder(inputFields));
         tFieldO.setFont(new Font("Dialog", Font.BOLD, 12));
-        tFieldO.addActionListener(new InputActionListener());
+        tFieldO.addActionListener(new inputActionListener());
         add(tFieldO);
 
         add(sliderO);
@@ -228,7 +233,7 @@ public class ColorPickerPanel extends JPanel {
         slider.setMajorTickSpacing(tickSpacing);
         slider.setMinorTickSpacing(tockSpacing);
         slider.setPaintLabels(true);
-        slider.addChangeListener(new SliderListener());
+        slider.addChangeListener(new sliderListener());
         slider.setPreferredSize(new Dimension(560, 60));
         slider.setBackground(copyOf(background));
         slider.setForeground(copyOf(text));
@@ -308,7 +313,7 @@ public class ColorPickerPanel extends JPanel {
         showBox = new JComboBox<String>(exampleList);
         showBox.setRenderer(new CustomComboBoxRender(dropdowns, text));
         showBox.setEditor(new CustomComboBoxEditor(dropdowns, buttonBorders, text));
-        showBox.setUI(new CustomComboBoxUI(dropdowns, buttons));
+        showBox.setUI(new CustomComboBoxUI(dropdowns, buttons,text));
         showBox.setPreferredSize(new Dimension(200,30));
         showBox.setFont(new Font("Dialog", Font.BOLD, 12));
         showBox.setForeground(text);
@@ -329,8 +334,9 @@ public class ColorPickerPanel extends JPanel {
         showTextField.setPreferredSize(new Dimension(135, 25));
         showTextField.setBackground(inputFields);
         showTextField.setForeground(text);
+        showTextField.setCaretColor(text);
         showTextField.setFont(new Font("Dialog", Font.BOLD, 12));
-        showTextField.setBorder(BorderFactory.createLineBorder(background));
+        showTextField.setBorder(BorderFactory.createLineBorder(inputFields));
         showRegularPanel.add(showTextField);
 
         showNavPanel = new JPanel();
@@ -366,8 +372,8 @@ public class ColorPickerPanel extends JPanel {
         showPanel.moveToFront(showNavPanel);
     }
 
-    // action listeners
-    class SliderListener implements ChangeListener {
+    // listeners
+    class sliderListener implements ChangeListener {
         public void stateChanged(ChangeEvent e) {
             JSlider slider = (JSlider) e.getSource();
             int value = slider.getValue();
@@ -386,7 +392,7 @@ public class ColorPickerPanel extends JPanel {
         }
     }
 
-    private class InputActionListener implements ActionListener {
+    private class inputActionListener implements ActionListener {
         @Override
         public void actionPerformed(ActionEvent e) {
             JTextField area = (JTextField) e.getSource();

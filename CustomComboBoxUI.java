@@ -4,7 +4,6 @@
 // this class handles the design (and functionality) of the scroll pane inside of the dropdown dropdown
 
 import javax.swing.JScrollPane;
-import javax.swing.plaf.basic.BasicArrowButton;
 import javax.swing.plaf.basic.BasicComboBoxUI;
 import javax.swing.plaf.basic.BasicComboPopup;
 import javax.swing.plaf.basic.BasicScrollBarUI;
@@ -14,20 +13,23 @@ import java.awt.*;
 public class CustomComboBoxUI extends BasicComboBoxUI{
     private Color background;
     private Color buttonColor;
+    private Color textColor;
 
-    public CustomComboBoxUI(Color background, Color buttonColor) {
+    public CustomComboBoxUI(Color background, Color buttonColor, Color textColor) {
         super();
         this.background = background;
         this.buttonColor = buttonColor;
+        this.textColor = textColor;
     }
     @Override // custom dropdown button
     protected JButton createArrowButton() {
-        BasicArrowButton button = new BasicArrowButton(BasicArrowButton.SOUTH,
-                                    buttonColor,
-                                    buttonColor.darker(),
-                                    buttonColor.darker(),
-                                    buttonColor.brighter());
-        button.setName("ComboBox.arrowButton");
+        JButton button = new JButton();
+        button.setText(String.valueOf("\u2B9F"));
+        button.setBackground(buttonColor);
+        button.setForeground(textColor);
+        button.setFont(new Font("Dialog", Font.BOLD, 10));
+        button.setBorder(BorderFactory.createLineBorder(buttonColor));
+        button.setFocusPainted(false);
         return button;
     }
 

@@ -25,6 +25,8 @@ public class MainGUI extends JFrame {
     JButton nav1, nav2, home, list, stats, notes, newAnime, settings, ok;
     JTextField pathNameField;
 
+    ListPanel listPanel; // only reason this is global is to prevent scrolling while navigation is open. It is set to null when not in use.
+
 
     Dimension standardDim = new Dimension(1024, 768);
     Dimension leftDim = new Dimension(978, 768);
@@ -197,7 +199,7 @@ public class MainGUI extends JFrame {
         panelBA = new JPanel();
         panelBA.setLayout(new FlowLayout());
         panelBA.setPreferredSize(rightDimLargeTop);
-        panelBA.setBackground(new Color(0, 0, 0, 0)); // panelBA/BB are to be clear, hence hard code.
+        panelBA.setBackground(new Color(0, 0, 0, 0));
         panelB.add(panelBA);
 
         home = new JButton();
@@ -258,6 +260,7 @@ public class MainGUI extends JFrame {
 
     public void generateHomePage() {
         controller.setState(0);
+        listPanel = null; // these are here to make sure this object doesn't hog memory
         generateNavigationPageSmall();
         panelA.removeAll();
         panelA.repaint();
@@ -282,6 +285,7 @@ public class MainGUI extends JFrame {
 
     public void generateListPage() {
         controller.setState(1);
+        // listPanel = null; not needed it can't be there for this method to run.
         generateNavigationPageSmall();
         panelA.removeAll();
         panelA.repaint();
@@ -291,10 +295,14 @@ public class MainGUI extends JFrame {
         panelA.setBackground(controller.getFieldColor("background1"));
 
         generateNavPanel("Viewing: Anime List");
+
+        listPanel = new ListPanel(this, controller);
+        panelA.add(listPanel,BorderLayout.WEST);
     }
 
     public void generateStatisticsPage() {
         controller.setState(2);
+        listPanel = null;
         generateNavigationPageSmall();
         panelA.removeAll();
         panelA.repaint();
@@ -308,6 +316,7 @@ public class MainGUI extends JFrame {
 
     public void generateNotesPage() {
         controller.setState(3);
+        listPanel = null;
         generateNavigationPageSmall();
         panelA.removeAll();
         panelA.repaint();
@@ -319,8 +328,9 @@ public class MainGUI extends JFrame {
         generateNavPanel("Viewing: Notes");
     }
 
-    public void generateAnimePage() {
+    public void generateAnimePage(String reference) {
         controller.setState(4);
+        listPanel = null;
         generateNavigationPageSmall();
         panelA.removeAll();
         panelA.repaint();
@@ -328,12 +338,19 @@ public class MainGUI extends JFrame {
         panelA.setLayout(new BorderLayout());
         panelA.setPreferredSize(leftDim);
         panelA.setBackground(controller.getFieldColor("background1"));
-        
-        generateNavPanel("Viewing: Anime"); // change this later to specific anime
+
+        if (reference.equals("New Anime")){
+            reference = controller.createAnime();
+            generateNavPanel("Viewing: " +controller.get(reference, "animeName"));
+            // generate new anime and enter it
+        }  
+        generateNavPanel("Viewing: " +controller.get(reference, "animeName"));
+        // enter anime with given reference
     }
 
     public void generateSettingsPage() {
         controller.setState(5);
+        listPanel = null;
         generateNavigationPageSmall();
         panelA.removeAll();
         panelA.repaint();
@@ -365,7 +382,7 @@ public class MainGUI extends JFrame {
         int bound = 8;
         JLabel[] descriptions = new JLabel[bound];
         JButton[] editButtons = new JButton[bound];
-        String[] labelText = { "Navigation Tab", "Buttons", "Button Borders", "Background", "Input Fields", "Dropdowns",
+        String[] labelText = { "Navigation Tab", "Buttons", "Borders", "Background", "Fields", "Dropdowns",
                 "Default List", "Text"};
 
         for (int i = 0; i < bound; i++) {
@@ -465,7 +482,7 @@ public class MainGUI extends JFrame {
         panelA2.setBackground(new Color(0, 0, 0, 0));
         panelA.add(panelA2, BorderLayout.EAST);
 
-        panelA3 = new JPanel(); // this will be the color picker
+        panelA3 = new JPanel();
         panelA3.setLayout(new BorderLayout());
         panelA3.setPreferredSize(new Dimension(630, 486));
         panelA3.setBackground(controller.getFieldColor("background1"));
@@ -545,9 +562,7 @@ public class MainGUI extends JFrame {
             Image thisImage = null;
             return thisImage;
         }
-    }   
-
-
+    }  
 
     // ACTION LISTENERS
 
@@ -555,10 +570,18 @@ public class MainGUI extends JFrame {
         @Override
         public void actionPerformed(ActionEvent V){   
             if (panelB.getPreferredSize().equals(rightDimSmall)){
+                if (listPanel != null){
+                    listPanel.disableScrollBar();
+                    listPanel.disableButtons();
+                } 
                 swapNavPanelFocus(false);
                 generateNavigationPageLarge();
             }
             else{
+                if (listPanel != null){
+                    listPanel.enableScrollBar();
+                    listPanel.enableButtons();
+                } 
                 swapNavPanelFocus(true);
                 generateNavigationPageSmall();
             } 
@@ -597,7 +620,7 @@ public class MainGUI extends JFrame {
         @Override
         public void actionPerformed(ActionEvent V){
             // if(controller.getState() != 4) Unessesary because every time this is clicked the code is meant to generate a new anime
-            generateAnimePage();
+            generateAnimePage("New Anime");
         }
     }
 
@@ -640,9 +663,9 @@ public class MainGUI extends JFrame {
             switch (text){
                 case "Navigation Tab": colorPicker = setColorPicker("navigation"); break;
                 case "Buttons": colorPicker = setColorPicker("buttons"); break;
-                case "Button Borders": colorPicker = setColorPicker("buttonBorder"); break;
+                case "Borders": colorPicker = setColorPicker("buttonBorder"); break;
                 case "Background": colorPicker = setColorPicker("background1"); break;
-                case "Input Fields": colorPicker = setColorPicker("background2"); break;
+                case "Fields": colorPicker = setColorPicker("background2"); break;
                 case "Dropdowns": colorPicker = setColorPicker("background3"); break;
                 case "Default List": colorPicker = setColorPicker("list"); break;
                 case "Text": colorPicker = setColorPicker("text"); break; 

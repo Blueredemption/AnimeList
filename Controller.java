@@ -10,11 +10,16 @@ public class Controller {
     FieldStorageDao fieldStorageDao;
 
     int state;
+    int order; // can be 0 (up) or 1 (down)
+    int sort; // can be 0 through 6
 
     public Controller(){ // default constructor
         animeDao = new AnimeDao();
         fieldStorageDao = new FieldStorageDao();
         state = 0;
+        order = 0;
+        sort = 0;
+        
     }
 
     public int getState(){
@@ -25,11 +30,20 @@ public class Controller {
     }
 
     // AnimeDao related
+    public String createAnime(){
+        return animeDao.create();
+    }
+
+    public String deleteAnime(String reference){
+        return animeDao.delete(reference);
+    }
+
     public String get(String reference, String key){
         return animeDao.getValue(reference, key);
     }
     public Color getAnimeColor(String reference){
-        return animeDao.getColor(reference);
+        if (get(reference, "customColor").equals("false")) return animeDao.getColor(reference);
+        return fieldStorageDao.getList();
     }
 
     public String set(String reference, String key, String value){
@@ -42,6 +56,11 @@ public class Controller {
     public ArrayList<String> getReferenceList(){
         return animeDao.returnListOfReferences();
     }
+
+    public ArrayList<String> getSearchedReferenceList(String inquiry){
+        return animeDao.returnListOfSearchedReferences(inquiry);
+    }
+
 
     // FieldStorageDao related
     public Color getFieldColor(String reference){
@@ -99,8 +118,25 @@ public class Controller {
     public void loadLightPreset(){
         fieldStorageDao.loadPreset2();
     }
-
     public void loadDarkPreset(){
         fieldStorageDao.loadPreset1();
     }
+
+    // Window abstraction related
+    public int getOrder(){
+        return order;
+    }
+    public int getSort(){
+        return sort;
+    }
+
+    public void setOrder(int order){
+        this.order = order;
+        animeDao.setOrder(order);
+    }
+    public void setSort(int sort){
+        this.sort = sort;
+        animeDao.setSort(sort);
+    }
+
 }

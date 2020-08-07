@@ -17,6 +17,7 @@ public class AnimeObject implements Comparable<Object>{
     String languageWatchedIn;
     String ageRating;
     String yearReleased;
+    String seasonReleased;
     String watchingStartDate;
     String watchingEndDate;
     String averageEpisodeLength; // in minutes
@@ -26,7 +27,9 @@ public class AnimeObject implements Comparable<Object>{
     Color color;
     String customColor; // "boolean" that tells the controller color is selected as active
     String mainGenre;
-    String animationStudio; 
+    String animationStudio;
+
+    int sort;
 
     public AnimeObject(){ // default constructor
         animeName = "New Anime";
@@ -34,7 +37,8 @@ public class AnimeObject implements Comparable<Object>{
         numberOfEpisodesTotal = "0";
         languageWatchedIn = "Unknown";
         ageRating = "Unknown";
-        yearReleased = "Unknown";
+        yearReleased = "1900";
+        seasonReleased = "Unknown";
         watchingStartDate = "Unknown";
         watchingEndDate = "Unknown";
         averageEpisodeLength = "20";
@@ -46,15 +50,18 @@ public class AnimeObject implements Comparable<Object>{
         mainGenre = "Unknown";
         animationStudio = "Unknown";
         refreshJSON(); // creates the json for this object
+
+        sort = 0;
     }
 
-    public AnimeObject(JSONObject animeObject){ // full constructor
+    public AnimeObject(JSONObject animeObject, int sort){ // full constructor
         animeName = (String)animeObject.get("animeName");
         numberOfEpisodesWatched = (String)animeObject.get("numberOfEpisodesWatched");
         numberOfEpisodesTotal = (String)animeObject.get("numberOfEpisodesTotal");
         languageWatchedIn = (String)animeObject.get("languageWatchedIn");
         ageRating = (String)animeObject.get("ageRating");
         yearReleased = (String)animeObject.get("yearReleased");
+        seasonReleased = (String)animeObject.get("seasonReleased");
         watchingStartDate = (String)animeObject.get("watchingStartDate");
         watchingEndDate = (String)animeObject.get("watchingEndDate");
         averageEpisodeLength = (String)animeObject.get("averageEpisodeLength");
@@ -65,6 +72,8 @@ public class AnimeObject implements Comparable<Object>{
         customColor = (String)animeObject.get("customColor");
         mainGenre = (String)animeObject.get("mainGenre");
         animationStudio = (String)animeObject.get("animationStudio");
+
+        this.sort = sort;
     }
     // Getters
 
@@ -85,6 +94,9 @@ public class AnimeObject implements Comparable<Object>{
     }
     public String getYearReleased(){
         return yearReleased;
+    }
+    public String getSeasonReleased(){
+        return seasonReleased;
     }
     public String getWatchingStartDate(){
         return watchingStartDate;
@@ -116,6 +128,10 @@ public class AnimeObject implements Comparable<Object>{
     public String getAnimationStudio(){
         return animationStudio;
     }
+    public Double getProgress(){
+        if (Integer.parseInt(numberOfEpisodesTotal)== 0) return 0.0;
+        return Double.parseDouble(numberOfEpisodesWatched)/Double.parseDouble(numberOfEpisodesTotal)*100;
+    }
 
 
     // Setters
@@ -142,6 +158,10 @@ public class AnimeObject implements Comparable<Object>{
     }
     public void setYearReleased(String yearReleased){
         this.yearReleased = yearReleased;
+        refreshJSON();
+    }
+    public void setSeasonReleased(String seasonReleased){
+        this.seasonReleased = seasonReleased;
         refreshJSON();
     }
     public void setWatchingStartDate(String watchingStartDate){
@@ -184,6 +204,9 @@ public class AnimeObject implements Comparable<Object>{
         this.animationStudio = animationStudio;
         refreshJSON();
     }
+    public void setSort(int sort){
+        this.sort = sort;
+    }
 
 
     public boolean refreshJSON(){// method for rewriting the json files after a change is made in the live object or to create it outright.
@@ -194,6 +217,7 @@ public class AnimeObject implements Comparable<Object>{
         animeJSON.put("languageWatchedIn",languageWatchedIn);
         animeJSON.put("ageRating",ageRating);
         animeJSON.put("yearReleased",yearReleased);
+        animeJSON.put("seasonReleased",seasonReleased);
         animeJSON.put("watchingStartDate",watchingStartDate);
         animeJSON.put("watchingEndDate",watchingEndDate);
         animeJSON.put("averageEpisodeLength",averageEpisodeLength);
@@ -251,7 +275,27 @@ public class AnimeObject implements Comparable<Object>{
                          ((Long)json.get("a")).intValue());
     }
 
-    public int compareTo(final Object o) { 
-        return (animeName.toUpperCase().compareTo(((AnimeObject)o).getAnimeName().toUpperCase()));
+    public Integer getSeasonNumber(){
+        switch(seasonReleased){
+            case "Spring": return 1;
+            case "Summer": return 2;
+            case "Fall": return 3;
+            case "Winter": return 4;
+            default: return 5;
+        }
+    }
+
+    public int compareTo(final Object o) {
+        switch(sort){
+            case 0: return -((Integer)Integer.parseInt(referenceNumber)).compareTo((Integer)Integer.parseInt(((AnimeObject)o).getReferenceNumber()));
+            case 1: return animeName.toUpperCase().compareTo(((AnimeObject)o).getAnimeName().toUpperCase());
+            case 2: return ((Integer)Integer.parseInt(numberOfEpisodesTotal)).compareTo((Integer)Integer.parseInt(((AnimeObject)o).getNumberOfEpisodesTotal()));
+            case 3: return getSeasonNumber().compareTo(((AnimeObject)o).getSeasonNumber());
+            case 4: return ((Integer)(Integer.parseInt(yearReleased)*100+getSeasonNumber())).compareTo((Integer)(Integer.parseInt(((AnimeObject)o).getYearReleased())*100+((AnimeObject)o).getSeasonNumber())); // maybe expand
+            case 5: return getProgress().compareTo(((AnimeObject)o).getProgress());
+            case 6: return ((Integer)color.getRGB()).compareTo((Integer)((AnimeObject)o).getColor().getRGB());
+            default: return 0;
+        }
+
     }
 }

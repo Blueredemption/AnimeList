@@ -10,12 +10,15 @@ import java.awt.Color;
 
 public class AnimeDao {
     ArrayList<AnimeObject> list;
+    int sort;
+    int order;
 
     public AnimeDao(){ // constructor
         refresh();
+        sort = 0;
+        order = 0;
     }
 
-    
     public String create(){
         AnimeObject anime = new AnimeObject();
         refresh();
@@ -35,7 +38,7 @@ public class AnimeDao {
         else{
             for (String pathname : pathnames) {
                 JSONObject temp = getJSON(prePath +"/" +pathname);
-                AnimeObject anime = new AnimeObject(temp);
+                AnimeObject anime = new AnimeObject(temp, sort);
                 list.add(anime);
             }
         }
@@ -61,6 +64,7 @@ public class AnimeDao {
                     case "languageWatchedIn": anime.setLanguageWatchedIn(value); break;
                     case "ageRating": anime.setAgeRating(value); break;
                     case "yearReleased": anime.setYearReleased(value); break;
+                    case "seasonReleased": anime.setSeasonReleased(value); break;
                     case "watchingStartDate": anime.setWatchingStartDate(value); break;
                     case "watchingEndDate": anime.setWatchingEndDate(value); break;
                     case "averageEpisodeLength": anime.setAverageEpisodeLength(value); break;
@@ -99,6 +103,7 @@ public class AnimeDao {
                     case "languageWatchedIn": return anime.getLanguageWatchedIn();
                     case "ageRating": return anime.getAgeRating();
                     case "yearReleased": return anime.getYearReleased();
+                    case "seasonReleased": return anime.getSeasonReleased();
                     case "watchingStartDate": return anime.getWatchingStartDate();
                     case "watchingEndDate": return anime.getWatchingEndDate();
                     case "averageEpisodeLength": return anime.getAverageEpisodeLength();
@@ -107,6 +112,8 @@ public class AnimeDao {
                     case "customColor": return anime.getCustomColor();
                     case "mainGenre": return anime.getMainGenre();
                     case "animationStudio": return anime.getAnimationStudio();
+                    case "referenceNumber": return anime.getReferenceNumber();
+                    case "progress": return anime.getProgress() + "";
                     default: return "retrieval unsuccessful: unknown key"; 
                  } 
             }
@@ -122,13 +129,37 @@ public class AnimeDao {
         }
         return Color.BLACK;
     }
-    
+    public void setSort(int sort){
+        this.sort = sort;
+        for (AnimeObject animeObject : list) {
+            animeObject.setSort(sort);
+        }
+    }
+    public void setOrder(int order){
+        this.order = order;
+    }
+
     public ArrayList<String> returnListOfReferences(){ 
+        Collections.sort(list);
         ArrayList<String> references = new ArrayList<String>();
         for (AnimeObject anime : list) {
             references.add(anime.getReferenceNumber());
         }
-        return references;
+        if (order == 0) return references;
+        Collections.reverse(references);
+        return references; 
+    }
+
+    public ArrayList<String> returnListOfSearchedReferences(String inquiry){
+        return narrowedList(returnListOfReferences(), inquiry);
+    }
+
+    private ArrayList<String> narrowedList(ArrayList<String> references, String inqiry){ 
+        ArrayList<String> returnable = new ArrayList<String>();
+        for (int i = 0; i < references.size(); i++) {
+            if (references.get(i).toUpperCase().startsWith(inqiry.toUpperCase())) returnable.add(references.get(i));
+        }
+        return returnable;
     }
 
     public JSONObject getJSON(String pathname){ // utility method to take a pathname and return its json
