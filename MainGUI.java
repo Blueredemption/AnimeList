@@ -17,12 +17,10 @@ public class MainGUI extends JFrame {
                                                      // for, reseach later.
 
     Controller controller;
-    ColorPickerPanel colorPicker;
     JLayeredPane pane;
-    JPanel panelA, panelB, panelBA, panelBB, navPanel, subNavPanel1, subNavPanel2, panelA1, panelA2, panelA3, panelA4,
-            panelA5;
-    JLabel fillLabel, navLabel, miniMainImage, warningLabel;
-    JButton nav1, nav2, home, list, stats, notes, newAnime, settings, ok;
+    JPanel panelA, panelB, panelBA, panelBB, navPanel, subNavPanel1, subNavPanel2;
+    JLabel fillLabel, navLabel;
+    JButton nav1, nav2, home, list, stats, notes, newAnime, settings;
     JTextField pathNameField;
 
     ListPanel listPanel; // only reason this is global is to prevent scrolling while navigation is open. It is set to null when not in use.
@@ -77,13 +75,27 @@ public class MainGUI extends JFrame {
         navPanel.setOpaque(false);
         panelA.add(navPanel, BorderLayout.NORTH);
 
-        subNavPanel1 = new JPanel();
+        subNavPanel1 = new JPanel() {
+            private static final long serialVersionUID = 1L;
+            protected void paintComponent(Graphics g) {
+                super.paintComponent(g);
+                g.setColor(controller.getFieldColor("buttonBorder"));
+                g.drawLine(3,12, 808, 12);
+            }
+        };
         subNavPanel1.setPreferredSize(new Dimension(808, 25));
         subNavPanel1.setLayout(new FlowLayout(FlowLayout.CENTER, 5, 0));
         subNavPanel1.setBackground(controller.getFieldColor("navigation"));
         navPanel.add(subNavPanel1, BorderLayout.WEST);
 
-        subNavPanel2 = new JPanel();
+        subNavPanel2 = new JPanel() {
+            private static final long serialVersionUID = 1L;
+            protected void paintComponent(Graphics g) {
+                super.paintComponent(g);
+                g.setColor(controller.getFieldColor("buttonBorder"));
+                g.drawLine(0,12, 167, 12);
+            }
+        };
         subNavPanel2.setPreferredSize(new Dimension(170, 25));
         subNavPanel2.setBackground(controller.getFieldColor("navigation"));
         navPanel.add(subNavPanel2, BorderLayout.EAST);
@@ -93,10 +105,12 @@ public class MainGUI extends JFrame {
         fillLabel.setPreferredSize(new Dimension(180, 25));
         subNavPanel1.add(fillLabel);
 
-        navLabel = new JLabel(label);
+        navLabel = new JLabel(" " +label +" ");
         navLabel.setForeground(controller.getFieldColor("text"));
         navLabel.setFont(new Font("Dialog", Font.BOLD, 14));
         navLabel.setVerticalAlignment(JLabel.TOP);
+        navLabel.setBackground(getCombinedColor(controller.getFieldColor("navigation"),controller.getFieldColor("background1")));
+        navLabel.setOpaque(true);
         subNavPanel1.add(navLabel);
     }
 
@@ -130,42 +144,45 @@ public class MainGUI extends JFrame {
         home = new JButton();
         home.setPreferredSize(new Dimension(20, 35));
         home.addActionListener(new homeButtonListener());
-        home.setText("H");
+        home.setText(String.valueOf("\u2302"));
         setButtonDefaults(home);
         panelB.add(home);
 
         list = new JButton();
         list.setPreferredSize(new Dimension(20, 35));
         list.addActionListener(new listButtonListener());
-        list.setText("L");
+        list.setText(String.valueOf("\u2261"));
+        list.setFont(new Font("Dialog", Font.BOLD, 18));
         setButtonDefaults(list);
         panelB.add(list);
 
         stats = new JButton();
         stats.setPreferredSize(new Dimension(20, 35));
         stats.addActionListener(new statisticsButtonListener());
-        stats.setText("S");
+        stats.setText(String.valueOf("\u03C3"));
+        stats.setFont(new Font("Dialog", Font.PLAIN, 17));
         setButtonDefaults(stats);
         panelB.add(stats);
 
         notes = new JButton();
         notes.setPreferredSize(new Dimension(20, 35));
         notes.addActionListener(new notesButtonListener());
-        notes.setText("N");
+        notes.setText(String.valueOf("\u270E"));
+        notes.setFont(new Font("Dialog", Font.PLAIN, 15));
         setButtonDefaults(notes);
         panelB.add(notes);
 
         newAnime = new JButton();
         newAnime.setPreferredSize(new Dimension(20, 35));
         newAnime.addActionListener(new animeButtonListener());
-        newAnime.setText("A");
+        newAnime.setText(String.valueOf("\uFF0B"));
         setButtonDefaults(newAnime);
         panelB.add(newAnime);
 
         settings = new JButton();
         settings.setPreferredSize(new Dimension(20, 35));
         settings.addActionListener(new settingsButtonListener());
-        settings.setText("S");
+        settings.setText(String.valueOf("\u26ED"));
         setButtonDefaults(settings);
         panelB.add(settings);
 
@@ -359,181 +376,20 @@ public class MainGUI extends JFrame {
         panelA.setPreferredSize(leftDim);
         panelA.setBackground(controller.getFieldColor("background1"));
 
+        pane.setBackground(controller.getFieldColor("background1"));
+
         generateNavPanel("Viewing: Settings");
 
-        // ************************************** //
-        // ************** Left Side ************* //
-        // ************************************** //
-        panelA1 = new JPanel();
-        panelA1.setLayout(new FlowLayout(FlowLayout.CENTER, 5, 10));
-        panelA1.setPreferredSize(new Dimension(348, 700));
-        panelA1.setBackground(controller.getFieldColor("background1"));
-        panelA.add(panelA1, BorderLayout.WEST);
-
-        JLabel choosePaletteLabel = new JLabel();
-        choosePaletteLabel.setPreferredSize(new Dimension(340, 50));
-        choosePaletteLabel.setForeground(controller.getFieldColor("text"));
-        choosePaletteLabel.setFont(new Font("Dialog", Font.BOLD, 25));
-        choosePaletteLabel.setVerticalAlignment(JLabel.CENTER);
-        choosePaletteLabel.setHorizontalAlignment(JLabel.CENTER);
-        choosePaletteLabel.setText("Choose Palette to Edit:");
-        panelA1.add(choosePaletteLabel);
-
-        int bound = 8;
-        JLabel[] descriptions = new JLabel[bound];
-        JButton[] editButtons = new JButton[bound];
-        String[] labelText = { "Navigation Tab", "Buttons", "Borders", "Background", "Fields", "Dropdowns",
-                "Default List", "Text"};
-
-        for (int i = 0; i < bound; i++) {
-            descriptions[i] = new JLabel();
-            descriptions[i].setPreferredSize(new Dimension(220, 30));
-            descriptions[i].setForeground(controller.getFieldColor("text"));
-            descriptions[i].setFont(new Font("Dialog", Font.BOLD, 15));
-            descriptions[i].setVerticalAlignment(JLabel.CENTER);
-            descriptions[i].setHorizontalAlignment(JLabel.LEFT);
-            descriptions[i].setText(labelText[i]);
-            panelA1.add(descriptions[i]);
-
-            editButtons[i] = new JButton();
-            editButtons[i].setPreferredSize(new Dimension(80, 25));
-            editButtons[i].addActionListener(new changeColorActionListener());
-            editButtons[i].setText("Edit");
-            editButtons[i].setName(labelText[i]);
-            setButtonDefaults(editButtons[i]);
-            panelA1.add(editButtons[i]);
-        }
-
-        JLabel chooseDefaultLabel = new JLabel();
-        chooseDefaultLabel.setPreferredSize(new Dimension(340, 50));
-        chooseDefaultLabel.setForeground(controller.getFieldColor("text"));
-        chooseDefaultLabel.setFont(new Font("Dialog", Font.BOLD, 25));
-        chooseDefaultLabel.setVerticalAlignment(JLabel.CENTER);
-        chooseDefaultLabel.setHorizontalAlignment(JLabel.CENTER);
-        chooseDefaultLabel.setText("Presets:");
-        panelA1.add(chooseDefaultLabel);
-
-        JButton lightPreset = new JButton();
-        lightPreset.setPreferredSize(new Dimension(130, 30));
-        // lightPreset.addActionListener(new );
-        lightPreset.setText("Default Light");
-        setButtonDefaults(lightPreset);
-        lightPreset.addActionListener(new defaultLightActionListener());
-        panelA1.add(lightPreset);
-
-        fillLabel = new JLabel(); // spacer
-        fillLabel.setPreferredSize(new Dimension(20, 10));
-        panelA1.add(fillLabel);
-
-        JButton darkPreset = new JButton();
-        darkPreset.setPreferredSize(new Dimension(130, 30));
-        // darkPreset.addActionListener(new );
-        darkPreset.setText("Default Dark");
-        setButtonDefaults(darkPreset);
-        darkPreset.addActionListener(new defaultDarkActionListener());
-        panelA1.add(darkPreset);
-
-        fillLabel = new JLabel(); // spacer
-        fillLabel.setPreferredSize(new Dimension(300, 40));
-        panelA1.add(fillLabel);
-
-        JLabel chooseMainImageLabel = new JLabel();
-        chooseMainImageLabel.setPreferredSize(new Dimension(340, 60));
-        chooseMainImageLabel.setForeground(controller.getFieldColor("text"));
-        chooseMainImageLabel.setFont(new Font("Dialog", Font.BOLD, 25));
-        chooseMainImageLabel.setVerticalAlignment(JLabel.CENTER);
-        chooseMainImageLabel.setHorizontalAlignment(JLabel.CENTER);
-        chooseMainImageLabel.setText("Choose Homescreen Image:");
-        panelA1.add(chooseMainImageLabel);
-
-        JButton chooseMainImage = new JButton();
-        chooseMainImage.setPreferredSize(new Dimension(80, 25));
-        chooseMainImage.addActionListener(new mainImageListener());
-        chooseMainImage.setText("Choose File");
-        setButtonDefaults(chooseMainImage);
-        panelA1.add(chooseMainImage);
-
-        pathNameField = new JTextField();
-        pathNameField.setPreferredSize(new Dimension(240, 25));
-        pathNameField.setBackground(controller.getFieldColor("background2")); // background2 is for fields etc
-        pathNameField.setBorder(BorderFactory.createLineBorder(controller.getFieldColor("background2")));
-        pathNameField.setForeground(controller.getFieldColor("text"));
-        pathNameField.setEnabled(false);
-        pathNameField.setText(" " + controller.getFieldText("mainScreenImage"));
-        panelA1.add(pathNameField);
-
-        warningLabel = new JLabel();
-        warningLabel.setPreferredSize(new Dimension(340, 60));
-        warningLabel.setForeground(controller.getFieldColor("text"));
-        warningLabel.setFont(new Font("Dialog", Font.BOLD, 15));
-        warningLabel.setVerticalAlignment(JLabel.TOP);
-        warningLabel.setHorizontalAlignment(JLabel.CENTER);
-        warningLabel.setText("Invalid File Type");
-        warningLabel.setVisible(false);
-        panelA1.add(warningLabel);
-
-        // ************************************** //
-        // ************** Right Side ************ //
-        // ************************************** //
-
-        panelA2 = new JPanel();
-        panelA2.setLayout(new BorderLayout());
-        panelA2.setPreferredSize(new Dimension(630, 700));
-        panelA2.setBackground(new Color(0, 0, 0, 0));
-        panelA.add(panelA2, BorderLayout.EAST);
-
-        panelA3 = new JPanel();
-        panelA3.setLayout(new BorderLayout());
-        panelA3.setPreferredSize(new Dimension(630, 486));
-        panelA3.setBackground(controller.getFieldColor("background1"));
-        panelA2.add(panelA3, BorderLayout.NORTH);
-
-        colorPicker = setColorPicker("default");
-        
-        panelA3.add(colorPicker, BorderLayout.CENTER);
-
-        JPanel fillerPanel = new JPanel();
-        fillerPanel.setPreferredSize(new Dimension(620,40));
-        fillerPanel.setBackground(new Color(0,0,0,0));
-        panelA3.add(fillerPanel, BorderLayout.SOUTH);
-
-        JButton cancel = new JButton("Cancel");
-        cancel.setPreferredSize(new Dimension(120,25));
-        cancel.addActionListener(new cancelButtonActionListener());
-        setButtonDefaults(cancel);
-        fillerPanel.add(cancel);
-
-        ok = new JButton("Apply Changes");
-        ok.setPreferredSize(new Dimension(120, 25));
-        ok.addActionListener(new applyColorActionListener());
-        setButtonDefaults(ok);
-        fillerPanel.add(ok);
-
-        panelA4 = new JPanel();
-        panelA4.setLayout(new FlowLayout());
-        panelA4.setPreferredSize(new Dimension(630, 204));
-        panelA4.setBackground(controller.getFieldColor("background1"));
-        panelA2.add(panelA4, BorderLayout.SOUTH);
-
-        Image image = getImage(controller.getFieldText("mainScreenImage"), new Dimension(274,195));
-        miniMainImage = new JLabel();
-        if (image != null) miniMainImage.setIcon(new ImageIcon(image));
-        miniMainImage.setPreferredSize(new Dimension(274, 195));
-        miniMainImage.setBorder(BorderFactory.createLineBorder(Color.BLACK, 1));
-        panelA4.add(miniMainImage);
+        SettingsPanel settingsPanel = new SettingsPanel(this, controller);
+        panelA.add(settingsPanel,BorderLayout.WEST);
     }
 
     // length cutting methods
-    public ColorPickerPanel setColorPicker(String identifierString){ // clears the previous colorPicker off the panel
-        if (colorPicker != null) {
-            panelA3.remove(colorPicker);
-            panelA3.repaint();
-            panelA3.revalidate();
-        }
-
-        return new ColorPickerPanel(identifierString, controller.getFieldColor("navigation"),controller.getFieldColor("buttons"),controller.getFieldColor("buttonBorder"),
-                    controller.getFieldColor("background1"), controller.getFieldColor("background2"),controller.getFieldColor("background3"),controller.getFieldColor("list"),
-                    controller.getFieldColor("text"));
+    public Color getCombinedColor(Color front, Color back){ // adds two colors together component wise
+        float r = ((float)front.getRed()/255)*((float)front.getAlpha()/255) + ((float)back.getRed()/255)*((float)back.getAlpha()/255)*(1-((float)front.getAlpha()/255));
+        float g = ((float)front.getGreen()/255)*((float)front.getAlpha()/255) + ((float)back.getGreen()/255)*((float)back.getAlpha()/255)*(1-((float)front.getAlpha()/255));
+        float b = ((float)front.getBlue()/255)*((float)front.getAlpha()/255) + ((float)back.getBlue()/255)*((float)back.getAlpha()/255)*(1-((float)front.getAlpha()/255));
+        return new Color(r,g,b);
     }
 
     public void setButtonDefaults(JButton button) {
@@ -562,10 +418,14 @@ public class MainGUI extends JFrame {
             Image thisImage = null;
             return thisImage;
         }
-    }  
+    } 
+    
+    public void setNavsDisabled(){
+        nav1.setEnabled(false); // to prevent overlay issues with color editor in SettingsPanel
+        nav2.setEnabled(false);
+    }
 
     // ACTION LISTENERS
-
     private class flipNavigation implements ActionListener {
         @Override
         public void actionPerformed(ActionEvent V){   
@@ -628,100 +488,6 @@ public class MainGUI extends JFrame {
         @Override
         public void actionPerformed(ActionEvent V){
             if(controller.getState() != 5) generateSettingsPage();
-        }
-    }
-
-    private class mainImageListener implements ActionListener {
-        @Override
-        public void actionPerformed(ActionEvent V){
-            JFileChooser fc = new JFileChooser();
-            fc.setCurrentDirectory(new File ("Images/Anime"));
-            fc.showOpenDialog(null);
-            File file = fc.getSelectedFile();
-            try{
-                Image image = ImageIO.read(new File(file.getAbsolutePath()));
-                image = image.getScaledInstance(274,195,Image.SCALE_DEFAULT);
-                ImageIcon icon = new ImageIcon(image);
-                controller.setFieldText("mainScreenImage", file.getAbsolutePath());
-                pathNameField.setText(file.getAbsolutePath());
-                miniMainImage.setIcon(icon);
-                warningLabel.setVisible(false);
-            }
-            catch(Exception e){ // if an exception occurs it will happen at the first line of the statement, thus:
-                warningLabel.setVisible(true);
-            }
-            
-        }
-    }
-
-    private class changeColorActionListener implements ActionListener { // activates the color picker to change the right field
-        @Override
-        public void actionPerformed(ActionEvent V){
-            JButton button = (JButton) V.getSource();
-            String text = button.getName();
-
-            switch (text){
-                case "Navigation Tab": colorPicker = setColorPicker("navigation"); break;
-                case "Buttons": colorPicker = setColorPicker("buttons"); break;
-                case "Borders": colorPicker = setColorPicker("buttonBorder"); break;
-                case "Background": colorPicker = setColorPicker("background1"); break;
-                case "Fields": colorPicker = setColorPicker("background2"); break;
-                case "Dropdowns": colorPicker = setColorPicker("background3"); break;
-                case "Default List": colorPicker = setColorPicker("list"); break;
-                case "Text": colorPicker = setColorPicker("text"); break; 
-                default: System.out.println("changeColorActionListener text is invalid");
-            }
-            panelA3.add(colorPicker,BorderLayout.CENTER);
-            generateNavigationPageSmall(); 
-            nav1.setEnabled(false); // to prevent overlay issues with color editor
-            nav2.setEnabled(false);
-        }
-    }
-
-    private class applyColorActionListener implements ActionListener { // activates the color picker to change the right field
-        @Override
-        public void actionPerformed(ActionEvent V){
-            Color newColor = colorPicker.getPickedColor();
-            String changed = colorPicker.getField();
-
-            switch (changed) {
-                case "buttons": controller.setFieldColor("buttons",newColor); break;
-                case "background1": controller.setFieldColor("background1",newColor); break;
-                case "background2": controller.setFieldColor("background2",newColor); break;
-                case "background3": controller.setFieldColor("background3",newColor); break;
-                case "list": controller.setFieldColor("list",newColor); break;
-                case "navigation": controller.setFieldColor("navigation",newColor); break;
-                case "text": controller.setFieldColor("text",newColor); break;
-                case "buttonBorder": controller.setFieldColor("buttonBorder",newColor); break;
-                default: System.out.println("applyColorActionListener field is invalid");
-            }
-            pane.setBackground(controller.getFieldColor("background1"));
-            generateSettingsPage();
-        }
-    }
-
-    private class defaultLightActionListener implements ActionListener { 
-        @Override
-        public void actionPerformed(ActionEvent V){
-            controller.loadLightPreset();
-            pane.setBackground(controller.getFieldColor("background1"));
-            generateSettingsPage();
-        }
-    }
-
-    private class defaultDarkActionListener implements ActionListener { 
-        @Override
-        public void actionPerformed(ActionEvent V){
-            controller.loadDarkPreset();
-            pane.setBackground(controller.getFieldColor("background1"));
-            generateSettingsPage();
-        }
-    }
-
-    private class cancelButtonActionListener implements ActionListener { // refreshes the page, thus making the colorpicker default
-        @Override
-        public void actionPerformed(ActionEvent V){
-            generateSettingsPage();
         }
     }
 }

@@ -1,6 +1,7 @@
 //*****************************************//
 // Created by Cooper Eisnor                //
 //*****************************************//
+// outlet that the GUI uses to retrieve stored fields. The barrier between graphics and logic.
 
 import java.util.*;
 import java.awt.Color;

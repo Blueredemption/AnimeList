@@ -12,16 +12,15 @@ import javax.swing.JList;
 import javax.swing.ListCellRenderer;
 
  
-public class CustomComboBoxRender extends JLabel implements ListCellRenderer<Object> {
+public class CustomComboBoxRenderer extends JLabel implements ListCellRenderer<Object> {
     private static final long serialVersionUID = 1L;
     private Color background;
     private Color text;
 
-    public CustomComboBoxRender(Color background, Color text) {
+    public CustomComboBoxRenderer(Controller controller) { // constructor
         super();
-        this.background = background;
-        this.text = text;
-
+        background = controller.getFieldColor("background3");
+        text = controller.getFieldColor("text");
         changeFields();
     }
 
@@ -32,11 +31,9 @@ public class CustomComboBoxRender extends JLabel implements ListCellRenderer<Obj
         setForeground(text);
     }
 
-
     @Override
     public Component getListCellRendererComponent(JList list, Object value, int index, boolean isSelected, boolean cellHasFocus) {
-        setText(value.toString());
+        setText(" " +value.toString());
         return this;
     }
- 
 }

@@ -1,7 +1,7 @@
 //*****************************************//
 // Created by Cooper Eisnor                //
 //*****************************************//
-// generates and handles the colorpicker in the settings window
+// generates and handles the colorpicker in the SettingsPanel
 
 import javax.swing.*; // make these imports more specific later
 import javax.swing.event.ChangeEvent;
@@ -24,23 +24,26 @@ public class ColorPickerPanel extends JPanel {
     JButton showButton;
     JComboBox showBox;
     JTextField showTextField;
-    JLabel showLabel;
+    JLabel showLabel, showLabel2;
+
+    Controller controller;
 
     // I could just pass the controller into this, and will next time. It would have saved me a lot of time.
-    public ColorPickerPanel(String field, Color navigation, Color buttons, Color buttonBorders, Color background,
-            Color inputFields, Color dropdowns, Color defaultList, Color text) { // constructor
+    public ColorPickerPanel(String field, Controller controller) { // constructor
+        this.controller = controller;
         this.field = field;
-        this.navigation = navigation;
-        this.buttons = buttons;
-        this.buttonBorders = buttonBorders;
-        this.background = background;
-        this.inputFields = inputFields;
-        this.dropdowns = dropdowns;
-        this.defaultList = defaultList;
-        this.text = text;
+
+        navigation = controller.getFieldColor("navigation");
+        buttons = controller.getFieldColor("buttons");
+        buttonBorders = controller.getFieldColor("buttonBorder");
+        background = controller.getFieldColor("background1");
+        inputFields = controller.getFieldColor("background2");
+        dropdowns = controller.getFieldColor("background3");
+        defaultList = controller.getFieldColor("list");
+        text = controller.getFieldColor("text");
 
         setBackground(copyOf(background));
-        setLayout(new FlowLayout());
+        setLayout(new FlowLayout(FlowLayout.CENTER,5,5));
         loadSliders();
         placeSlidersAndUI();
         generateAndAddShowPanel();
@@ -116,7 +119,7 @@ public class ColorPickerPanel extends JPanel {
         title = new JLabel();
         title.setPreferredSize(new Dimension(620, 60));
         title.setForeground(copyOf(text));
-        title.setFont(new Font("Dialog", Font.BOLD, 25));
+        title.setFont(new Font("Dialog", Font.BOLD, 20));
         title.setVerticalAlignment(JLabel.CENTER);
         title.setHorizontalAlignment(JLabel.CENTER);
         title.setText(getFieldName());
@@ -213,6 +216,11 @@ public class ColorPickerPanel extends JPanel {
 
         if (field.equals("default"))
             disableSliders();
+
+        if (!field.equals("navigation")){
+            sliderO.setEnabled(false);
+            tFieldO.setEnabled(false);
+        }
     }
 
     public void disableSliders() {
@@ -290,7 +298,7 @@ public class ColorPickerPanel extends JPanel {
             case "buttonBorder":
                 return start +"Button Borders";
             default:
-                return "Color Picker";
+                return "Color Picker:";
         }
     }
 
@@ -311,9 +319,9 @@ public class ColorPickerPanel extends JPanel {
 
         String[] exampleList = {"Example Entry 1","Example Entry 2","Example Entry 3","Example Entry 4","Example Entry 5","Example Entry 6","Example Entry 7","Example Entry 8","Example Entry 9"};
         showBox = new JComboBox<String>(exampleList);
-        showBox.setRenderer(new CustomComboBoxRender(dropdowns, text));
-        showBox.setEditor(new CustomComboBoxEditor(dropdowns, buttonBorders, text));
-        showBox.setUI(new CustomComboBoxUI(dropdowns, buttons,text));
+        showBox.setRenderer(new CustomComboBoxRenderer(controller));
+        showBox.setEditor(new CustomComboBoxEditor(controller));
+        showBox.setUI(new CustomComboBoxUI(controller));
         showBox.setPreferredSize(new Dimension(200,30));
         showBox.setFont(new Font("Dialog", Font.BOLD, 12));
         showBox.setForeground(text);
@@ -361,6 +369,7 @@ public class ColorPickerPanel extends JPanel {
         showBox.setForeground(text);
         showBox.setBackground(dropdowns);
         showBox.setBorder(BorderFactory.createLineBorder(buttonBorders));
+        showBox.setUI(new CustomComboBoxUI(controller, buttons, dropdowns, text));
         showButton.setBackground(buttons);
         showButton.setForeground(text);
         showButton.setBorder(BorderFactory.createLineBorder(buttonBorders));

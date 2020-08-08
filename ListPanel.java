@@ -108,7 +108,7 @@ public class ListPanel extends JPanel {
         JButton upButton = new JButton();
         upButton.setPreferredSize(new Dimension(37, 25));
         upButton.addActionListener(new orderListener());
-        upButton.setText(String.valueOf("\u2B9D"));
+        upButton.setText(String.valueOf("\u25B2"));
         upButton.setName("Up");
         upButton.setFont(new Font("Dialog", Font.BOLD, 10));
         setButtonDefaults(upButton);
@@ -121,7 +121,7 @@ public class ListPanel extends JPanel {
         JButton downButton = new JButton();
         downButton.setPreferredSize(new Dimension(37, 25));
         downButton.addActionListener(new orderListener());
-        downButton.setText(String.valueOf("\u2B9F"));
+        downButton.setText(String.valueOf("\u25BC"));
         downButton.setName("Down");
         downButton.setFont(new Font("Dialog", Font.BOLD, 10));
         setButtonDefaults(downButton);

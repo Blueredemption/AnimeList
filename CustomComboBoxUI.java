@@ -6,21 +6,33 @@
 import javax.swing.JScrollPane;
 import javax.swing.plaf.basic.BasicComboBoxUI;
 import javax.swing.plaf.basic.BasicComboPopup;
-import javax.swing.plaf.basic.BasicScrollBarUI;
 import javax.swing.*; // replace these
 import java.awt.*;
 
 public class CustomComboBoxUI extends BasicComboBoxUI{
-    private Color background;
+    private Controller controller;
     private Color buttonColor;
     private Color textColor;
+    private Color dropdowns;
 
-    public CustomComboBoxUI(Color background, Color buttonColor, Color textColor) {
+    public CustomComboBoxUI(Controller controller) { // constructor
         super();
-        this.background = background;
-        this.buttonColor = buttonColor;
-        this.textColor = textColor;
+        this.controller = controller;
+
+        buttonColor = controller.getFieldColor("buttons");
+        textColor = controller.getFieldColor("text");
+        dropdowns = controller.getFieldColor("background3");
     }
+
+    public CustomComboBoxUI(Controller controller, Color buttons, Color dropdowns, Color text) { // constructor for colorpicker
+        super();
+        this.controller = controller;
+
+        buttonColor = buttons;
+        this.dropdowns = dropdowns;
+        textColor = text;
+    }
+
     @Override // custom dropdown button
     protected JButton createArrowButton() {
         JButton button = new JButton();
@@ -41,27 +53,8 @@ public class CustomComboBoxUI extends BasicComboBoxUI{
             @Override
             protected JScrollPane createScroller() {
                 JScrollPane scroller = new JScrollPane(list, 20, 31); // 20 > scrollbar as needed, // 31 no horizontal bar ever
-                scroller.getVerticalScrollBar().setUI(new BasicScrollBarUI() {    
-                    @Override protected JButton createDecreaseButton(int orientation) {return createNullButton();} // remove the arrow up 
-                    @Override protected JButton createIncreaseButton(int orientation) {return createNullButton();} // remove the arrow down 
-                    @Override public Dimension getPreferredSize(JComponent c) {return new Dimension(10, super.getPreferredSize(c).height);}
-                    
-                    @Override protected void configureScrollBarColors() {
-                        thumbColor = buttonColor;
-                        thumbHighlightColor = buttonColor.brighter();
-                        thumbLightShadowColor = buttonColor.darker();
-                        thumbDarkShadowColor = buttonColor.darker().darker();
-                        trackColor = background;
-                        trackHighlightColor = background.brighter();
-                    }
-
-                    private JButton createNullButton() { // creates a 0,0 button
-                        JButton button = new JButton();
-                        button.setPreferredSize(new Dimension(0,0));
-                        return button;
-                    }
-                });
-                
+                scroller.getVerticalScrollBar().setUI(new CustomScrollBarUI(controller, buttonColor, dropdowns));
+                scroller.getVerticalScrollBar().setPreferredSize(new Dimension(5,50));
                 return scroller;
             }
         };

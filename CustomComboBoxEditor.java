@@ -21,13 +21,13 @@ public class CustomComboBoxEditor extends BasicComboBoxEditor {
     private Color border;
     private Color text;
      
-    public CustomComboBoxEditor(Color background, Color border, Color text) {
+    public CustomComboBoxEditor(Controller controller) { // constructor
         super();
         label = new JLabel();
         panel = new JPanel();
-        this.background = background;
-        this.border = border;
-        this.text = text;
+        background = controller.getFieldColor("background3");
+        border = controller.getFieldColor("background2");
+        text = controller.getFieldColor("text");
          
         changeFields();
     }

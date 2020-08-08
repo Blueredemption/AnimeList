@@ -1,3 +1,8 @@
+//*****************************************//
+// Created by Cooper Eisnor                //
+//*****************************************//
+// custom look for JSliders
+
 import javax.swing.JSlider;
 import javax.swing.plaf.basic.BasicSliderUI;
 import java.awt.Color;
@@ -11,15 +16,17 @@ public class CustomSliderUI extends BasicSliderUI {
         this.trackColor = trackColor;
     }
 
-
+    @Override
     protected Color getShadowColor() {
        return trackColor;
     }
 
+    @Override
     protected Color getHighlightColor() {
         return trackColor.brighter();
     }
 
+    @Override
     protected Color getFocusColor() {
         return trackColor.darker();
     }

@@ -157,7 +157,14 @@ public class AnimeDao {
     private ArrayList<String> narrowedList(ArrayList<String> references, String inqiry){ 
         ArrayList<String> returnable = new ArrayList<String>();
         for (int i = 0; i < references.size(); i++) {
-            if (references.get(i).toUpperCase().startsWith(inqiry.toUpperCase())) returnable.add(references.get(i));
+            String[] split = (getValue(references.get(i),"animeName")).toUpperCase().split(" ");
+            for (String string : split) {
+                if (string.toUpperCase().startsWith(inqiry.toUpperCase())) {
+                    System.out.println("uwu");
+                    returnable.add(references.get(i));
+                    break;
+                }
+            }
         }
         return returnable;
     }
