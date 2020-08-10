@@ -13,6 +13,8 @@ public class Controller {
     int state;
     int order; // can be 0 (up) or 1 (down)
     int sort; // can be 0 through 6
+    boolean[] filter;
+    String[] filterField;
 
     public Controller(){ // default constructor
         animeDao = new AnimeDao();
@@ -20,6 +22,8 @@ public class Controller {
         state = 0;
         order = 0;
         sort = 0;
+        filter = new boolean[5]; // or however many filters there are, defaults are false.
+        filterField = new String[5];
         
     }
 
@@ -37,6 +41,10 @@ public class Controller {
 
     public String deleteAnime(String reference){
         return animeDao.delete(reference);
+    }
+
+    public ArrayList<String> getListOfDescriptors(String inqiry){
+        return animeDao.getListOfDescriptors(inqiry);
     }
 
     public String get(String reference, String key){

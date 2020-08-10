@@ -27,6 +27,8 @@ public class AnimeObject implements Comparable<Object>{
     Color color;
     String customColor; // "boolean" that tells the controller color is selected as active
     String mainGenre;
+    String subGenre;
+    String hidden;
     String animationStudio;
 
     int sort;
@@ -35,20 +37,22 @@ public class AnimeObject implements Comparable<Object>{
         animeName = "New Anime";
         numberOfEpisodesWatched = "0";
         numberOfEpisodesTotal = "0";
-        languageWatchedIn = "Null";
-        ageRating = "Null";
-        yearReleased = "Null";
-        seasonReleased = "Null";
-        watchingStartDate = "Null";
-        watchingEndDate = "Null";
+        languageWatchedIn = "?";
+        ageRating = "?";
+        yearReleased = "?";
+        seasonReleased = "?";
+        watchingStartDate = "?";
+        watchingEndDate = "?";
         averageEpisodeLength = "20";
         referenceNumber = determineNRN();
         notepadText = "";
         imageLocation = "Images/UI/Default.png"; 
         color = new Color(255,255,255,255);
         customColor = "true";
-        mainGenre = "Null";
-        animationStudio = "Null";
+        mainGenre = "?";
+        subGenre = "?";
+        hidden = "false";
+        animationStudio = "?";
         refreshJSON(); // creates the json for this object
 
         sort = 0;
@@ -71,6 +75,8 @@ public class AnimeObject implements Comparable<Object>{
         color = constructColorFromJSON(animeObject); // because color is an object not supported by this JSON library
         customColor = (String)animeObject.get("customColor");
         mainGenre = (String)animeObject.get("mainGenre");
+        subGenre = (String)animeObject.get("subGenre");
+        hidden = (String)animeObject.get("hidden");
         animationStudio = (String)animeObject.get("animationStudio");
 
         this.sort = sort;
@@ -124,6 +130,12 @@ public class AnimeObject implements Comparable<Object>{
     }
     public String getMainGenre(){
         return mainGenre;
+    }
+    public String getSubGenre(){
+        return subGenre;
+    }
+    public String getHidden(){
+        return hidden;
     }
     public String getAnimationStudio(){
         return animationStudio;
@@ -200,6 +212,14 @@ public class AnimeObject implements Comparable<Object>{
         this.mainGenre = mainGenre;
         refreshJSON();
     }
+    public void setSubGenre(String subGenre){
+        this.subGenre = subGenre;
+        refreshJSON();
+    }
+    public void setHidden(String hidden){
+        this.hidden = hidden;
+        refreshJSON();
+    }
     public void setAnimationStudio(String animationStudio){
         this.animationStudio = animationStudio;
         refreshJSON();
@@ -226,6 +246,8 @@ public class AnimeObject implements Comparable<Object>{
         animeJSON.put("imageLocation",imageLocation);
         animeJSON.put("customColor",customColor);
         animeJSON.put("mainGenre",mainGenre);
+        animeJSON.put("subGenre",subGenre);
+        animeJSON.put("hidden",hidden);
         animeJSON.put("animationStudio",animationStudio);
 
         // because color is an object not supported by this JSON library

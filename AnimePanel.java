@@ -5,20 +5,16 @@
 import java.awt.*; // change these later
 import java.io.File;
 import java.io.IOException;
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
 
 import javax.imageio.ImageIO;
 import javax.swing.*;
-import javax.swing.JFormattedTextField.AbstractFormatter;
 import javax.swing.border.BevelBorder;
 import javax.swing.plaf.basic.BasicProgressBarUI;
 
-import java.util.Calendar;
 import java.awt.event.*;
 import java.util.ArrayList;
+import java.util.Calendar;
 
-import com.github.lgooddatepicker.*;
 import com.github.lgooddatepicker.components.DatePicker;
 import com.github.lgooddatepicker.components.DatePickerSettings;
 import com.github.lgooddatepicker.components.DatePickerSettings.DateArea;
@@ -26,14 +22,18 @@ import com.github.lgooddatepicker.components.DatePickerSettings.DateArea;
 public class AnimePanel extends JPanel {
     private static final long serialVersionUID = 1L;
     Dimension fullDim = new Dimension(978,700);
+    boolean commitState = true;
+    boolean hiddenOverride = true; // if rightBottomPanel needs to be reloaded.
 
     Controller controller;
     String reference;
     ArrayList<String> references;
+    DatePicker datePicker;
+    JComboBox dropBox;
 
     JPanel topPanel, bottomPanel, leftTopPanel, leftBottomPanel, rightTopPanel, rightBottomPanel;
     JTextArea textArea;
-    JButton leftButton, rightButton;
+    JButton leftButton, rightButton, cancelButton, commitButton;
 
     public AnimePanel(Controller controller, String reference){
         this.controller = controller;
@@ -81,7 +81,7 @@ public class AnimePanel extends JPanel {
         JLabel[] labels = new JLabel[labelBound];
         for(int i = 0; i < labelBound; i++){
             labels[i] = new JLabel();
-            labels[i].setPreferredSize(new Dimension(100,30));
+            labels[i].setPreferredSize(new Dimension(100,29));
             labels[i].setForeground(controller.getFieldColor("text"));
             labels[i].setFont(new Font("Dialog", Font.BOLD, 15));
             labels[i].setVerticalAlignment(JLabel.CENTER);
@@ -119,7 +119,7 @@ public class AnimePanel extends JPanel {
         buttons[cb].addActionListener(new makeEditActionListener());
         leftTopPanel.add(buttons[cb++]);
 
-        labels[c1].setPreferredSize(new Dimension(40,30)); // spacer
+        labels[c1].setPreferredSize(new Dimension(40,28)); // spacer
         leftTopPanel.add(labels[c1++]);
 
         labels[c1].setPreferredSize(new Dimension(300,25));
@@ -135,7 +135,7 @@ public class AnimePanel extends JPanel {
         buttons[cb].addActionListener(new makeEditActionListener());
         leftTopPanel.add(buttons[cb++]);
         
-        labels[c1].setPreferredSize(new Dimension(40,30)); // spacer
+        labels[c1].setPreferredSize(new Dimension(40,28)); // spacer
         leftTopPanel.add(labels[c1++]);
 
         labels[c1].setPreferredSize(new Dimension(300,25));
@@ -151,11 +151,11 @@ public class AnimePanel extends JPanel {
         buttons[cb].addActionListener(new makeEditActionListener());
         leftTopPanel.add(buttons[cb++]);
         
-        labels[c1].setPreferredSize(new Dimension(40,30)); // spacer
+        labels[c1].setPreferredSize(new Dimension(40,28)); // spacer
         leftTopPanel.add(labels[c1++]);
 
         labels[c1].setPreferredSize(new Dimension(300,25));
-        labels[c1].setText("Average Episode Length:");
+        labels[c1].setText("Episode Length:");
         leftTopPanel.add(labels[c1++]);
 
         labels[c1].setPreferredSize(new Dimension(220,25));
@@ -167,7 +167,7 @@ public class AnimePanel extends JPanel {
         buttons[cb].addActionListener(new makeEditActionListener());
         leftTopPanel.add(buttons[cb++]);
         
-        labels[c1].setPreferredSize(new Dimension(40,30)); // spacer
+        labels[c1].setPreferredSize(new Dimension(40,28)); // spacer
         leftTopPanel.add(labels[c1++]);
 
         labels[c1].setPreferredSize(new Dimension(300,25));
@@ -183,7 +183,7 @@ public class AnimePanel extends JPanel {
         buttons[cb].addActionListener(new makeEditActionListener());
         leftTopPanel.add(buttons[cb++]);
         
-        labels[c1].setPreferredSize(new Dimension(40,30)); // spacer
+        labels[c1].setPreferredSize(new Dimension(40,28)); // spacer
         leftTopPanel.add(labels[c1++]);
 
         labels[c1].setPreferredSize(new Dimension(300,25));
@@ -199,7 +199,7 @@ public class AnimePanel extends JPanel {
         buttons[cb].addActionListener(new makeEditActionListener());
         leftTopPanel.add(buttons[cb++]);
         
-        labels[c1].setPreferredSize(new Dimension(40,30)); // spacer
+        labels[c1].setPreferredSize(new Dimension(40,28)); // spacer
         leftTopPanel.add(labels[c1++]);
 
         labels[c1].setPreferredSize(new Dimension(300,25));
@@ -215,7 +215,7 @@ public class AnimePanel extends JPanel {
         buttons[cb].addActionListener(new makeEditActionListener());
         leftTopPanel.add(buttons[cb++]);
         
-        labels[c1].setPreferredSize(new Dimension(40,30)); // spacer
+        labels[c1].setPreferredSize(new Dimension(40,28)); // spacer
         leftTopPanel.add(labels[c1++]);
 
         labels[c1].setPreferredSize(new Dimension(300,25));
@@ -231,7 +231,7 @@ public class AnimePanel extends JPanel {
         buttons[cb].addActionListener(new makeEditActionListener());
         leftTopPanel.add(buttons[cb++]);
         
-        labels[c1].setPreferredSize(new Dimension(40,30)); // spacer
+        labels[c1].setPreferredSize(new Dimension(40,28)); // spacer
         leftTopPanel.add(labels[c1++]);
 
         labels[c1].setPreferredSize(new Dimension(300,25));
@@ -247,7 +247,7 @@ public class AnimePanel extends JPanel {
         buttons[cb].addActionListener(new makeEditActionListener());
         leftTopPanel.add(buttons[cb++]);
         
-        labels[c1].setPreferredSize(new Dimension(40,30)); // spacer
+        labels[c1].setPreferredSize(new Dimension(40,28)); // spacer
         leftTopPanel.add(labels[c1++]);
 
         labels[c1].setPreferredSize(new Dimension(300,25));
@@ -263,7 +263,7 @@ public class AnimePanel extends JPanel {
         buttons[cb].addActionListener(new makeEditActionListener());
         leftTopPanel.add(buttons[cb++]);
         
-        labels[c1].setPreferredSize(new Dimension(40,30)); // spacer
+        labels[c1].setPreferredSize(new Dimension(40,28)); // spacer
         leftTopPanel.add(labels[c1++]);
 
         labels[c1].setPreferredSize(new Dimension(300,25));
@@ -275,23 +275,39 @@ public class AnimePanel extends JPanel {
         leftTopPanel.add(labels[c1++]);
 
         //
+        buttons[cb].setName("subGenre");
+        buttons[cb].addActionListener(new makeEditActionListener());
+        leftTopPanel.add(buttons[cb++]);
+        
+        labels[c1].setPreferredSize(new Dimension(40,28)); // spacer
+        leftTopPanel.add(labels[c1++]);
+
+        labels[c1].setPreferredSize(new Dimension(300,25));
+        labels[c1].setText("Secondary Genre:");
+        leftTopPanel.add(labels[c1++]);
+
+        labels[c1].setPreferredSize(new Dimension(220,25));
+        labels[c1].setText(controller.get(reference, "subGenre")); 
+        leftTopPanel.add(labels[c1++]);
+
+        //
         buttons[cb].setName("animationStudio");
         buttons[cb].addActionListener(new makeEditActionListener());
         leftTopPanel.add(buttons[cb++]);
         
-        labels[c1].setPreferredSize(new Dimension(40,30)); // spacer
+        labels[c1].setPreferredSize(new Dimension(40,28)); // spacer
         leftTopPanel.add(labels[c1++]);
 
         labels[c1].setPreferredSize(new Dimension(300,25));
-        labels[c1].setText("Studio:");
+        labels[c1].setText("Animation Studio:");
         leftTopPanel.add(labels[c1++]);
 
         labels[c1].setPreferredSize(new Dimension(220,25));
         labels[c1].setText(controller.get(reference, "animationStudio")); 
         leftTopPanel.add(labels[c1++]);
-
+        
         //
-        labels[c1].setPreferredSize(new Dimension(600,15)); // spacer
+        labels[c1].setPreferredSize(new Dimension(600,7)); // spacer
         leftTopPanel.add(labels[c1++]);
 
         buttons[cb].setName("finish");
@@ -300,7 +316,7 @@ public class AnimePanel extends JPanel {
         buttons[cb].addActionListener(new makeEditActionListener());
         leftTopPanel.add(buttons[cb++]);
 
-        labels[c1].setPreferredSize(new Dimension(40,30)); // spacer
+        labels[c1].setPreferredSize(new Dimension(40,28)); // spacer
         leftTopPanel.add(labels[c1++]);
 
         labels[c1].setPreferredSize(new Dimension(110,25));
@@ -352,7 +368,7 @@ public class AnimePanel extends JPanel {
         textArea.setLineWrap(true);
         textArea.setWrapStyleWord(true);
         textArea.setCaretColor(controller.getFieldColor("text"));
-        textArea.setFont(new Font("Dialog", Font.PLAIN, 14));
+        textArea.setFont(new Font("Dialog", Font.BOLD, 14));
         textArea.setText(controller.get(reference,"notepadText"));
         
         JScrollPane scrollPane = new JScrollPane(textArea,JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED,JScrollPane.HORIZONTAL_SCROLLBAR_NEVER); 
@@ -387,7 +403,27 @@ public class AnimePanel extends JPanel {
         leftBottomPanel.add(removeAnimeButton);
 
         spacer = new JLabel(); // spacer
-        spacer.setPreferredSize(new Dimension(471,10));
+        spacer.setPreferredSize(new Dimension(200,25));
+        leftBottomPanel.add(spacer);
+
+        JLabel hiddenLabel = new JLabel("Hidden?");
+        hiddenLabel.setPreferredSize(new Dimension(70,25));
+        hiddenLabel.setForeground(controller.getFieldColor("text"));
+        hiddenLabel.setFont(new Font("Dialog", Font.BOLD, 15));
+        hiddenLabel.setVerticalAlignment(JLabel.CENTER);
+        hiddenLabel.setHorizontalAlignment(JLabel.LEFT);
+        leftBottomPanel.add(hiddenLabel);
+        
+        JButton hiddenBox = new JButton();
+        if (controller.get(reference,"hidden").equals("true")) hiddenBox.setText("\u2714");
+        hiddenBox.setPreferredSize(new Dimension(15,15));
+        setButtonDefaults(hiddenBox);
+        hiddenLabel.setBackground(controller.getFieldColor("background2"));
+        hiddenBox.addActionListener(new hiddenActionListener());
+        leftBottomPanel.add(hiddenBox);
+
+        spacer = new JLabel(); // spacer
+        spacer.setPreferredSize(new Dimension(186,10));
         leftBottomPanel.add(spacer);
 
         JButton saveButton = new JButton("Save Notepad");
@@ -423,6 +459,8 @@ public class AnimePanel extends JPanel {
         if (rightBottomPanel != null) bottomPanel.remove(rightBottomPanel);
         repaint();
         revalidate();
+
+        hiddenOverride = true;
 
         rightBottomPanel = new JPanel();
         rightBottomPanel.setPreferredSize(new Dimension(316,267));
@@ -494,13 +532,15 @@ public class AnimePanel extends JPanel {
         labels[c1].setPreferredSize(new Dimension(120,30)); // get after dates overhaul
         actionPanel.add(labels[c1++]);
 
-        labels[c1].setText("% of Total Watch Time:");
-        labels[c1].setPreferredSize(new Dimension(185,30));
-        actionPanel.add(labels[c1++]);
+        if (controller.get(reference,"hidden").equals("false")){ // if true then it can't be part of the whole
+            labels[c1].setText("% of Total Watch Time:");
+            labels[c1].setPreferredSize(new Dimension(185,30));
+            actionPanel.add(labels[c1++]);
 
-        labels[c1].setText(controller.getPercentWhole(reference) +"%");
-        labels[c1].setPreferredSize(new Dimension(120,30));
-        actionPanel.add(labels[c1]);
+            labels[c1].setText(controller.getPercentWhole(reference) +"%");
+            labels[c1].setPreferredSize(new Dimension(120,30));
+            actionPanel.add(labels[c1]);
+        }
 
     }
         
@@ -509,6 +549,9 @@ public class AnimePanel extends JPanel {
         if (rightBottomPanel != null) bottomPanel.remove(rightBottomPanel);
         repaint();
         revalidate();
+
+        commitState = true;
+        hiddenOverride = false;
 
         rightBottomPanel = new JPanel();
         rightBottomPanel.setPreferredSize(new Dimension(316,267));
@@ -529,14 +572,15 @@ public class AnimePanel extends JPanel {
             case "animeName": loadTextRetrieval(sourceString, actionPanel); break; //
             case "numberOfEpisodesWatched": loadButtonInput(sourceString, actionPanel); break; //
             case "numberOfEpisodesTotal": loadButtonInput(sourceString, actionPanel); break; //
-            case "averageEpisodeLength": loadDropDown(sourceString, actionPanel); break; //
-            case "seasonReleased": loadDropDown(sourceString, actionPanel); break; //
-            case "yearReleased": loadDropDown(sourceString, actionPanel); break; //
+            case "averageEpisodeLength": loadDropDown(sourceString, actionPanel); break; 
+            case "seasonReleased": loadDropDown(sourceString, actionPanel); break; 
+            case "yearReleased": loadDropDown(sourceString, actionPanel); break; 
             case "watchingStartDate": loadDatePicker(sourceString, actionPanel); break;
             case "watchingEndDate": loadDatePicker(sourceString, actionPanel); break;
-            case "languageWatchedIn": loadDropDown(sourceString, actionPanel); break; //
-            case "ageRating": loadDropDown(sourceString, actionPanel); break; //
-            case "mainGenre": loadDropDown(sourceString, actionPanel); break; //
+            case "languageWatchedIn": loadDropDown(sourceString, actionPanel); break; 
+            case "ageRating": loadDropDown(sourceString, actionPanel); break; 
+            case "mainGenre": loadDropDown(sourceString, actionPanel); break; 
+            case "subGenre": loadDropDown(sourceString, actionPanel); break;
             case "animationStudio": loadTextRetrieval(sourceString, actionPanel); break; //
             case "finish": loadTextRetrieval(sourceString, actionPanel); break; //
             case "color": loadMiniColorPicker(actionPanel); break; //
@@ -563,14 +607,98 @@ public class AnimePanel extends JPanel {
     }
 
     public void loadDropDown(String source, JPanel actionPanel){
+        JLabel sectionLabel = new JLabel();
+        sectionLabel.setHorizontalAlignment(JLabel.CENTER);
+        sectionLabel.setVerticalAlignment(JLabel.BOTTOM);
+        sectionLabel.setPreferredSize(new Dimension(300,34));
+        sectionLabel.setFont(new Font("Dialog", Font.BOLD, 18));
+        sectionLabel.setForeground(controller.getFieldColor("text"));
+        actionPanel.add(sectionLabel);
+
+        JLabel spacer = new JLabel(); // spacer
+        spacer.setPreferredSize(new Dimension(300,10));
+        actionPanel.add(spacer);
+
+        ArrayList<String> stringList;
+        
         switch(source){
-            case "averageEpisodeLength": break; 
-            case "seasonReleased": break; 
-            case "yearReleased": break; 
-            case "languageWatchedIn": break; 
-            case "contentRating": break; 
-            case "mainGenre": break;
+            case "averageEpisodeLength":
+                stringList = new ArrayList<String>();
+                for(int i = 0; i < 100; i++){
+                    stringList.add((i+1) +"");
+                }
+                sectionLabel.setText("Set Episode Length:");
+                break; 
+            case "seasonReleased": 
+                stringList = controller.getListOfDescriptors("seasons");
+                sectionLabel.setText("Set Season Released:");
+                break; 
+            case "yearReleased": 
+                stringList = new ArrayList<String>();
+                for(int i = Calendar.getInstance().get(Calendar.YEAR); i > 1900; i--){
+                    stringList.add((i) +"");
+                }
+                sectionLabel.setText("Set Year Released:");
+                break; 
+            case "languageWatchedIn": 
+                stringList = controller.getListOfDescriptors("languages");
+                sectionLabel.setText("Set Language:");
+                break; 
+            case "ageRating": 
+                stringList = controller.getListOfDescriptors("contentRatings");
+                sectionLabel.setText("Set Content Rating:");
+                break; 
+            case "mainGenre": 
+                stringList = controller.getListOfDescriptors("genres"); 
+                sectionLabel.setText("Set Main Genre:");
+                break;
+            case "subGenre": 
+                stringList = controller.getListOfDescriptors("genres"); 
+                sectionLabel.setText("Set Secondary Genre:");
+                break;
+            default: 
+                stringList = new ArrayList<String>();
         }
+
+        dropBox = new JComboBox<String>(stringList.toArray(new String[0]));
+        dropBox.setRenderer(new CustomComboBoxRenderer(controller));
+        dropBox.setEditor(new CustomComboBoxEditor(controller));
+        dropBox.setUI(new CustomComboBoxUI(controller));
+        dropBox.setPreferredSize(new Dimension(235,25));
+        dropBox.setFont(new Font("Dialog", Font.BOLD, 12));
+        dropBox.setForeground(controller.getFieldColor("text"));
+        dropBox.setBackground(controller.getFieldColor("background3"));
+        dropBox.setBorder(BorderFactory.createLineBorder(controller.getFieldColor("buttonBorder")));
+        dropBox.setEditable(true);
+        dropBox.setSelectedItem("Select One:");
+        dropBox.setEditable(false);
+        dropBox.setFocusable(false);
+        dropBox.addActionListener(new toggleCommitActionListener()); // must be after editing of selected item or the listener throws an exception
+        actionPanel.add(dropBox);
+
+        spacer = new JLabel();
+        spacer.setPreferredSize(new Dimension(300,140));
+        actionPanel.add(spacer);
+
+        cancelButton = new JButton("Cancel");
+        cancelButton.setPreferredSize(new Dimension(100, 25));
+        cancelButton.addActionListener(new cancelButtonActionListener());
+        setButtonDefaults(cancelButton);
+        actionPanel.add(cancelButton);
+
+        spacer = new JLabel();
+        spacer.setPreferredSize(new Dimension(3,0));
+        actionPanel.add(spacer);
+
+        commitButton = new JButton("Commit");
+        commitButton.setName(source);
+        commitButton.setPreferredSize(new Dimension(100, 25));
+        commitButton.addActionListener(new commitButtonActionListener());
+        commitButton.setEnabled(false);
+        setButtonDefaults(commitButton);
+        actionPanel.add(commitButton);
+
+        commitState = false;
     }
 
     public void loadDatePicker(String source, JPanel actionPanel){
@@ -592,7 +720,7 @@ public class AnimePanel extends JPanel {
         settings.setFontValidDate(new Font("Dialog", Font.BOLD, 13));
         settings.setAllowEmptyDates(false);
         
-        DatePicker datePicker = new DatePicker();
+        datePicker = new DatePicker();
         datePicker.setSettings(settings);
         datePicker.setDateToToday();
         datePicker.setOpaque(false);
@@ -620,6 +748,28 @@ public class AnimePanel extends JPanel {
                 sectionLabel.setText("Set End Date:");
                 break;
         }
+        
+        spacer = new JLabel();
+        spacer.setPreferredSize(new Dimension(300,140));
+        actionPanel.add(spacer);
+
+        cancelButton = new JButton("Cancel");
+        cancelButton.setPreferredSize(new Dimension(100, 25));
+        cancelButton.addActionListener(new cancelButtonActionListener());
+        setButtonDefaults(cancelButton);
+        actionPanel.add(cancelButton);
+
+        spacer = new JLabel();
+        spacer.setPreferredSize(new Dimension(3,0));
+        actionPanel.add(spacer);
+
+        commitButton = new JButton("Commit");
+        commitButton.setName(source);
+        commitButton.setPreferredSize(new Dimension(100, 25));
+        commitButton.addActionListener(new commitButtonActionListener());
+        setButtonDefaults(commitButton);
+        actionPanel.add(commitButton);
+
     }
 
     public void loadMiniColorPicker(JPanel actionPanel){
@@ -660,7 +810,7 @@ public class AnimePanel extends JPanel {
         buttonPanel.add(leftButton);
 
         JLabel spacer = new JLabel(); // spacer
-        spacer.setPreferredSize(new Dimension(3,10));
+        spacer.setPreferredSize(new Dimension(3,0));
         buttonPanel.add(spacer);
 
         rightButton = new JButton("Next");
@@ -714,35 +864,54 @@ public class AnimePanel extends JPanel {
         }
     }
 
-
-
-
-
-
-
-
-
-    private class DateLabelFormatter extends AbstractFormatter {
-        private static final long serialVersionUID = 1L;
-
-        private String datePattern = "yyyy-MM-dd";
-        private SimpleDateFormat dateFormatter = new SimpleDateFormat(datePattern);
-    
+    private class cancelButtonActionListener implements ActionListener {
         @Override
-        public Object stringToValue(String text) throws ParseException {
-            return dateFormatter.parseObject(text);
-        }
-    
-        @Override
-        public String valueToString(Object value) throws ParseException {
-            if (value != null) {
-                Calendar cal = (Calendar) value;
-                return dateFormatter.format(cal.getTime());
-            }
-    
-            return "";
+        public void actionPerformed(ActionEvent V){
+            generateRightBottom();
         }
     }
-    
-    
+
+    private class commitButtonActionListener implements ActionListener {
+        @Override
+        public void actionPerformed(ActionEvent V){
+            JButton source = (JButton)(V.getSource());
+            String sourceString = source.getName();
+            switch(sourceString){
+                case "watchingStartDate": // step down
+                case "watchingEndDate": 
+                    controller.set(reference,sourceString,datePicker.getText());
+                    generateRightBottom();
+                    generateLeftTop();
+                    break;
+                case "averageEpisodeLength": // step down
+                case "seasonReleased": // step down
+                case "yearReleased": // step down
+                case "languageWatchedIn": // step down
+                case "ageRating": // step down
+                case "mainGenre": // step down
+                case "subGenre": // step down
+                    controller.set(reference,sourceString,(String)dropBox.getSelectedItem());
+                    generateRightBottom();
+                    generateLeftTop();
+            }
+        }
+    }
+
+    private class toggleCommitActionListener implements ActionListener {
+        @Override
+        public void actionPerformed(ActionEvent V){
+            commitButton.setEnabled(true);
+            commitState = true;
+        }
+    }
+
+    private class hiddenActionListener implements ActionListener {
+        @Override
+        public void actionPerformed(ActionEvent V){
+            if (controller.get(reference,"hidden").equals("true")) controller.set(reference,"hidden","false");
+            else controller.set(reference,"hidden","true");    
+            generateLeftBottom();
+            if (hiddenOverride) generateRightBottom();
+        }
+    }
 }
