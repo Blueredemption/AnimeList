@@ -35,20 +35,20 @@ public class AnimeObject implements Comparable<Object>{
         animeName = "New Anime";
         numberOfEpisodesWatched = "0";
         numberOfEpisodesTotal = "0";
-        languageWatchedIn = "Unknown";
-        ageRating = "Unknown";
-        yearReleased = "1900";
-        seasonReleased = "Unknown";
-        watchingStartDate = "Unknown";
-        watchingEndDate = "Unknown";
+        languageWatchedIn = "Null";
+        ageRating = "Null";
+        yearReleased = "Null";
+        seasonReleased = "Null";
+        watchingStartDate = "Null";
+        watchingEndDate = "Null";
         averageEpisodeLength = "20";
         referenceNumber = determineNRN();
         notepadText = "";
-        imageLocation = "Images/UI/Background.png"; 
+        imageLocation = "Images/UI/Default.png"; 
         color = new Color(255,255,255,255);
         customColor = "true";
-        mainGenre = "Unknown";
-        animationStudio = "Unknown";
+        mainGenre = "Null";
+        animationStudio = "Null";
         refreshJSON(); // creates the json for this object
 
         sort = 0;

@@ -4,6 +4,8 @@
 
 import javax.imageio.ImageIO;
 import javax.swing.*;
+import javax.swing.border.BevelBorder;
+
 import java.awt.*;
 import java.io.File;
 import java.io.IOException;
@@ -152,7 +154,7 @@ public class MainGUI extends JFrame {
         list.setPreferredSize(new Dimension(20, 35));
         list.addActionListener(new listButtonListener());
         list.setText(String.valueOf("\u2261"));
-        list.setFont(new Font("Dialog", Font.BOLD, 18));
+        list.setFont(new Font("Dialog", Font.BOLD, 17));
         setButtonDefaults(list);
         panelB.add(list);
 
@@ -168,13 +170,14 @@ public class MainGUI extends JFrame {
         notes.setPreferredSize(new Dimension(20, 35));
         notes.addActionListener(new notesButtonListener());
         notes.setText(String.valueOf("\u270E"));
-        notes.setFont(new Font("Dialog", Font.PLAIN, 15));
+        notes.setFont(new Font("Dialog", Font.PLAIN, 14));
         setButtonDefaults(notes);
         panelB.add(notes);
 
         newAnime = new JButton();
         newAnime.setPreferredSize(new Dimension(20, 35));
         newAnime.addActionListener(new animeButtonListener());
+        newAnime.setFont(new Font("Dialog", Font.PLAIN, 15));
         newAnime.setText(String.valueOf("\uFF0B"));
         setButtonDefaults(newAnime);
         panelB.add(newAnime);
@@ -296,7 +299,10 @@ public class MainGUI extends JFrame {
         JLabel imageLabel = new JLabel();
         imageLabel.setPreferredSize(new Dimension((int)leftDim.getWidth()-6,(int)leftDim.getHeight()-72));
         if (image != null) imageLabel.setIcon(new ImageIcon(image));
-        imageLabel.setBorder(BorderFactory.createLineBorder(Color.BLACK, 1));
+        imageLabel.setBorder(new BevelBorder(BevelBorder.LOWERED, controller.getFieldColor("background1"), 
+                                                                  controller.getFieldColor("background1").darker(), 
+                                                                  controller.getFieldColor("background1"), 
+                                                                  controller.getFieldColor("background1").brighter()));
         panelA.add(imageLabel, BorderLayout.CENTER);
     }
 
@@ -356,13 +362,10 @@ public class MainGUI extends JFrame {
         panelA.setPreferredSize(leftDim);
         panelA.setBackground(controller.getFieldColor("background1"));
 
-        if (reference.equals("New Anime")){
-            reference = controller.createAnime();
-            generateNavPanel("Viewing: " +controller.get(reference, "animeName"));
-            // generate new anime and enter it
-        }  
+        if (reference.equals("New Anime")) reference = controller.createAnime();
         generateNavPanel("Viewing: " +controller.get(reference, "animeName"));
-        // enter anime with given reference
+        AnimePanel anime = new AnimePanel(controller,reference);
+        panelA.add(anime,BorderLayout.WEST);
     }
 
     public void generateSettingsPage() {

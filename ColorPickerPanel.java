@@ -322,11 +322,12 @@ public class ColorPickerPanel extends JPanel {
         showBox.setRenderer(new CustomComboBoxRenderer(controller));
         showBox.setEditor(new CustomComboBoxEditor(controller));
         showBox.setUI(new CustomComboBoxUI(controller));
-        showBox.setPreferredSize(new Dimension(200,30));
+        showBox.setPreferredSize(new Dimension(200,26));
         showBox.setFont(new Font("Dialog", Font.BOLD, 12));
         showBox.setForeground(text);
         showBox.setBackground(dropdowns);
         showBox.setBorder(BorderFactory.createLineBorder(buttonBorders));
+        showBox.setFocusable(false);
         showRegularPanel.add(showBox);
 
         showButton = new JButton();
@@ -370,6 +371,7 @@ public class ColorPickerPanel extends JPanel {
         showBox.setBackground(dropdowns);
         showBox.setBorder(BorderFactory.createLineBorder(buttonBorders));
         showBox.setUI(new CustomComboBoxUI(controller, buttons, dropdowns, text));
+        showBox.setRenderer(new CustomComboBoxRenderer(dropdowns,text));
         showButton.setBackground(buttons);
         showButton.setForeground(text);
         showButton.setBorder(BorderFactory.createLineBorder(buttonBorders));

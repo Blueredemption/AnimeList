@@ -139,5 +139,58 @@ public class Controller {
         this.sort = sort;
         animeDao.setSort(sort);
     }
+    //*******************************************//
+    //       Statisitics Retrieval Methods       //
+    //*******************************************//
+    
+    // anime statistics related (specific anime)
+    public String getOnlyMinutes(String reference){
+        int averageMinutes = Integer.parseInt(get(reference, "averageEpisodeLength"));
+        int episodesWatched = Integer.parseInt(get(reference, "numberOfEpisodesWatched"));
 
+        return (averageMinutes*episodesWatched) +"";
+    }
+    
+    public String getDays(String reference){
+        int averageMinutes = Integer.parseInt(get(reference, "averageEpisodeLength"));
+        int episodesWatched = Integer.parseInt(get(reference, "numberOfEpisodesWatched"));
+
+        return (averageMinutes*episodesWatched)/1440 +"";
+    }
+
+    public String getHours(String reference){
+        int averageMinutes = Integer.parseInt(get(reference, "averageEpisodeLength"));
+        int episodesWatched = Integer.parseInt(get(reference, "numberOfEpisodesWatched"));
+
+        return ((averageMinutes*episodesWatched)%1440)/60 +"";
+    }
+
+    public String getMinutes(String reference){
+        int averageMinutes = Integer.parseInt(get(reference, "averageEpisodeLength"));
+        int episodesWatched = Integer.parseInt(get(reference, "numberOfEpisodesWatched"));
+
+        return ((averageMinutes*episodesWatched)%1440)%60 +"";
+    }
+
+    public String getPercentWhole(String reference){
+        double ratio = Double.valueOf(getMinutes(reference))/Double.valueOf(getTotalMinutes());
+        double percent = ((double)((int)((ratio*100)*100.0)))/100.0;
+        return percent +"";
+    }  
+
+    // public String getSpan(String reference){
+    //     return null;
+    // }
+    
+    // cumulative statistics
+    public String getTotalMinutes(){
+        ArrayList<String> referenceList = getReferenceList();
+        int sum = 0;
+
+        for (String string : referenceList) {
+            sum += Integer.parseInt(getMinutes(string));
+        }
+
+        return sum +"";
+    }
 }

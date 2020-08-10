@@ -4,6 +4,7 @@
 
 import java.awt.*; // change these later
 import javax.swing.*;
+import javax.swing.border.BevelBorder;
 import javax.swing.plaf.basic.BasicProgressBarUI;
 
 import java.awt.event.*;
@@ -315,6 +316,10 @@ public class ListPanel extends JPanel {
         scrollPane.remove(scrollBar); 
         scrollBar.setPreferredSize(new Dimension(10,674));
         scrollBar.setUI(new CustomScrollBarUI(controller));
+        scrollBar.setBorder(new BevelBorder(BevelBorder.RAISED, controller.getFieldColor("list"), 
+                                                                controller.getFieldColor("list").darker(), 
+                                                                controller.getFieldColor("list"), 
+                                                                controller.getFieldColor("list").brighter()));
         rightPanel.add(scrollBar,BorderLayout.EAST);
         rightPanel.add(scrollPane,BorderLayout.CENTER);
 
@@ -329,7 +334,7 @@ public class ListPanel extends JPanel {
             listPanel[i].setLayout(new FlowLayout(FlowLayout.LEFT,0,0));
             listPanel[i].setBackground(controller.getAnimeColor(references.get(i)));
 
-            listLabels[i][1] = new JLabel(i+1 +":");
+            listLabels[i][1] = new JLabel(" " +(i+1) +":");
             listLabels[i][1].setPreferredSize(new Dimension(38,30));
             listLabels[i][1].setForeground(controller.getFieldColor("text"));
             listLabels[i][1].setFont(new Font("Dialog", Font.BOLD, 13));
@@ -372,8 +377,8 @@ public class ListPanel extends JPanel {
             progressBars[i] = new JProgressBar();
             progressBars[i].setPreferredSize(new Dimension (88,25));
             progressBars[i].setValue((int)(Double.parseDouble(controller.get(references.get(i), "progress"))));
-            progressBars[i].setBackground(controller.getFieldColor("list").brighter()); 
-            progressBars[i].setForeground(controller.getFieldColor("list"));
+            progressBars[i].setBackground(controller.getAnimeColor(references.get(i)).brighter().brighter()); 
+            progressBars[i].setForeground(controller.getAnimeColor(references.get(i)).brighter());
             progressBars[i].setBorder(BorderFactory.createLineBorder(controller.getFieldColor("buttonBorder").brighter()));
             progressBars[i].setStringPainted(true);
             progressBars[i].setUI(new BasicProgressBarUI() {

@@ -18,10 +18,10 @@ public class CustomScrollBarUI extends BasicScrollBarUI {
         bool = true;
     }
 
-    public CustomScrollBarUI(Controller controller, Color buttons, Color dropdowns){ // constructor for the JComboBox call
+    public CustomScrollBarUI(Controller controller, Color buttons, Color dropdowns){ // constructor for more specific fields
         this.controller = controller;
         this.buttons = buttons;
-        this.dropdowns = dropdowns;
+        this.dropdowns = dropdowns; // can also be thought of as the track color
         bool = false;
     }
 
@@ -32,7 +32,7 @@ public class CustomScrollBarUI extends BasicScrollBarUI {
             thumbLightShadowColor = controller.getFieldColor("buttons").brighter();
             thumbDarkShadowColor = controller.getFieldColor("buttons").darker();
             trackColor = controller.getFieldColor("list");
-            trackHighlightColor = controller.getFieldColor("background1");
+            trackHighlightColor = controller.getFieldColor("list");
         }
         else{
             thumbColor = buttons;

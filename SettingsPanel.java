@@ -5,6 +5,8 @@
 import java.awt.*; // change these later
 import javax.imageio.ImageIO;
 import javax.swing.*;
+import javax.swing.border.BevelBorder;
+
 import java.awt.event.*;
 import java.io.File;
 import java.io.IOException;
@@ -69,7 +71,7 @@ public class SettingsPanel extends JPanel{
             editButtons[i] = new JButton();
             editButtons[i].setPreferredSize(new Dimension(80, 25));
             editButtons[i].addActionListener(new changeColorActionListener());
-            editButtons[i].setText("Edit");
+            editButtons[i].setText("/");
             editButtons[i].setName(labelText[i]);
             setButtonDefaults(editButtons[i]);
             panelA1.add(editButtons[i]);
@@ -167,17 +169,18 @@ public class SettingsPanel extends JPanel{
 
         JPanel panelA4 = new JPanel();
         panelA4.setPreferredSize(new Dimension(620,255));
+        panelA4.setLayout(new FlowLayout(FlowLayout.CENTER,30,5));
         panelA4.setBackground(new Color(0,0,0,0)); 
         panelA3.add(panelA4, BorderLayout.SOUTH);
 
         JButton cancel = new JButton("Cancel");
-        cancel.setPreferredSize(new Dimension(120,25));
+        cancel.setPreferredSize(new Dimension(120,30));
         cancel.addActionListener(new cancelButtonActionListener());
         setButtonDefaults(cancel);
         panelA4.add(cancel);
 
-        JButton ok = new JButton("Apply Changes");
-        ok.setPreferredSize(new Dimension(120, 25));
+        JButton ok = new JButton("Commit");
+        ok.setPreferredSize(new Dimension(120, 30));
         ok.addActionListener(new applyColorActionListener());
         setButtonDefaults(ok);
         panelA4.add(ok);
@@ -190,7 +193,10 @@ public class SettingsPanel extends JPanel{
         miniMainImage = new JLabel();
         if (image != null) miniMainImage.setIcon(new ImageIcon(image));
         miniMainImage.setPreferredSize(new Dimension(274, 195));
-        miniMainImage.setBorder(BorderFactory.createLineBorder(Color.BLACK, 1));
+        miniMainImage.setBorder(new BevelBorder(BevelBorder.LOWERED, controller.getFieldColor("background1"), 
+                                                                     controller.getFieldColor("background1").darker(), 
+                                                                     controller.getFieldColor("background1"), 
+                                                                     controller.getFieldColor("background1").brighter()));
         panelA4.add(miniMainImage);
     }
     
