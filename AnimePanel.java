@@ -26,19 +26,24 @@ public class AnimePanel extends JPanel {
     boolean hiddenOverride = true; // if rightBottomPanel needs to be reloaded.
 
     Controller controller;
+    MainGUI mainGUI;
     String reference;
     ArrayList<String> references;
     DatePicker datePicker;
     JComboBox dropBox;
 
+    JButton nButton1, nButton2, nButton3, nButton4, nButton5, nButton6;
     JPanel topPanel, bottomPanel, leftTopPanel, leftBottomPanel, rightTopPanel, rightBottomPanel;
     JTextArea textArea;
+    JTextField textInput;
     JButton leftButton, rightButton, cancelButton, commitButton;
+    JLabel numberLabel;
 
-    public AnimePanel(Controller controller, String reference){
+    public AnimePanel(Controller controller, MainGUI mainGUI, String reference){
         this.controller = controller;
+        this.mainGUI = mainGUI;
         this.reference = reference;
-
+        
         setLayout(new BorderLayout());
         setOpaque(false);
 
@@ -543,7 +548,6 @@ public class AnimePanel extends JPanel {
         }
 
     }
-        
 
     public void generateRightBottom(String sourceString){ // for inputField usage.
         if (rightBottomPanel != null) bottomPanel.remove(rightBottomPanel);
@@ -570,8 +574,8 @@ public class AnimePanel extends JPanel {
         // switch statement starts here
         switch(sourceString){
             case "animeName": loadTextRetrieval(sourceString, actionPanel); break; //
-            case "numberOfEpisodesWatched": loadButtonInput(sourceString, actionPanel); break; //
-            case "numberOfEpisodesTotal": loadButtonInput(sourceString, actionPanel); break; //
+            case "numberOfEpisodesWatched": loadButtonInput(sourceString, actionPanel); break; 
+            case "numberOfEpisodesTotal": loadButtonInput(sourceString, actionPanel); break; 
             case "averageEpisodeLength": loadDropDown(sourceString, actionPanel); break; 
             case "seasonReleased": loadDropDown(sourceString, actionPanel); break; 
             case "yearReleased": loadDropDown(sourceString, actionPanel); break; 
@@ -591,19 +595,187 @@ public class AnimePanel extends JPanel {
     
     //length cutting methods
     public void loadTextRetrieval(String source, JPanel actionPanel){
+        JLabel sectionLabel = new JLabel();
+        sectionLabel.setHorizontalAlignment(JLabel.CENTER);
+        sectionLabel.setVerticalAlignment(JLabel.BOTTOM);
+        sectionLabel.setPreferredSize(new Dimension(300,34));
+        sectionLabel.setFont(new Font("Dialog", Font.BOLD, 18));
+        sectionLabel.setForeground(controller.getFieldColor("text"));
+        actionPanel.add(sectionLabel);
+
+        JLabel spacer = new JLabel(); 
+        spacer.setPreferredSize(new Dimension(300,15));
+        actionPanel.add(spacer);
+        
+        textInput = new JTextField();
+        textInput.setPreferredSize(new Dimension(235, 20));
+        textInput.setBackground(controller.getAnimeColor(reference).brighter());
+        textInput.setForeground(controller.getFieldColor("text"));
+        textInput.setCaretColor(controller.getFieldColor("text"));
+        textInput.setBorder(BorderFactory.createLineBorder(controller.getAnimeColor(reference).brighter()));
+        textInput.setFont(new Font("Dialog", Font.BOLD, 12));
+        textInput.setName(source);
+        textInput.addActionListener(new commitButtonActionListener());
+        actionPanel.add(textInput);
+        
         switch(source){
-            case "animeName": break;
-            case "animationStudio": break;
-            case "finish": break;
-            case "remove": break;
+            case "animeName": 
+                sectionLabel.setText("Set Anime Name:");
+                break;
+            case "animationStudio": 
+                sectionLabel.setText("Set Animation Studio:");
+                break;
+            case "finish":
+                sectionLabel.setText("Finish Anime: (Type Yes)");
+                break;
+            case "remove":
+                sectionLabel.setText("Remove Anime: (Type Yes)"); 
+                break;
         }
+
+        spacer = new JLabel();
+        spacer.setPreferredSize(new Dimension(300,140));
+        actionPanel.add(spacer);
+
+        cancelButton = new JButton("Cancel");
+        cancelButton.setPreferredSize(new Dimension(100, 25));
+        cancelButton.addActionListener(new cancelButtonActionListener());
+        setButtonDefaults(cancelButton);
+        actionPanel.add(cancelButton);
+
+        spacer = new JLabel();
+        spacer.setPreferredSize(new Dimension(3,0));
+        actionPanel.add(spacer);
+
+        commitButton = new JButton("Commit");
+        commitButton.setName(source);
+        commitButton.setPreferredSize(new Dimension(100, 25));
+        commitButton.addActionListener(new commitButtonActionListener());
+        setButtonDefaults(commitButton);
+        actionPanel.add(commitButton);
+
+        textInput.requestFocus();
     }
 
     public void loadButtonInput(String source, JPanel actionPanel){
+        JLabel sectionLabel = new JLabel();
+        sectionLabel.setHorizontalAlignment(JLabel.CENTER);
+        sectionLabel.setVerticalAlignment(JLabel.BOTTOM);
+        sectionLabel.setPreferredSize(new Dimension(300,34));
+        sectionLabel.setFont(new Font("Dialog", Font.BOLD, 18));
+        sectionLabel.setForeground(controller.getFieldColor("text"));
+        actionPanel.add(sectionLabel);
+
+        JLabel spacer = new JLabel(); 
+        spacer.setPreferredSize(new Dimension(300,10));
+        actionPanel.add(spacer);
+
+        nButton1 = new JButton("+1");
+        nButton1.setName("1");
+        nButton1.setPreferredSize(new Dimension(77,25));
+        nButton1.addActionListener(new numberButtonActionListener());
+        setButtonDefaults(nButton1);
+        actionPanel.add(nButton1);
+        
+        spacer = new JLabel(); 
+        spacer.setPreferredSize(new Dimension(2,0));
+        actionPanel.add(spacer);
+
+        nButton2 = new JButton("+10");
+        nButton2.setName("10");
+        nButton2.setPreferredSize(new Dimension(77,25));
+        nButton2.addActionListener(new numberButtonActionListener());
+        setButtonDefaults(nButton2);
+        actionPanel.add(nButton2);
+
+        spacer = new JLabel(); 
+        spacer.setPreferredSize(new Dimension(2,0));
+        actionPanel.add(spacer);
+
+        nButton3 = new JButton("+100");
+        nButton3.setName("100");
+        nButton3.setPreferredSize(new Dimension(77,25));
+        nButton3.addActionListener(new numberButtonActionListener());
+        setButtonDefaults(nButton3);
+        actionPanel.add(nButton3);
+
+        spacer = new JLabel(); 
+        spacer.setPreferredSize(new Dimension(300,2));
+        actionPanel.add(spacer);
+
+        nButton4 = new JButton("-1");
+        nButton4.setName("-1");
+        nButton4.setPreferredSize(new Dimension(77,25));
+        nButton4.addActionListener(new numberButtonActionListener());
+        setButtonDefaults(nButton4);
+        actionPanel.add(nButton4);
+
+        spacer = new JLabel();
+        spacer.setPreferredSize(new Dimension(2,0));
+        actionPanel.add(spacer);
+
+        nButton5 = new JButton("-10");
+        nButton5.setName("-10");
+        nButton5.setPreferredSize(new Dimension(77,25));
+        nButton5.addActionListener(new numberButtonActionListener());
+        setButtonDefaults(nButton5);
+        actionPanel.add(nButton5);
+
+        spacer = new JLabel(); 
+        spacer.setPreferredSize(new Dimension(2,0));
+        actionPanel.add(spacer);
+
+        nButton6 = new JButton("-100");
+        nButton6.setName("-100");
+        nButton6.setPreferredSize(new Dimension(77,25));
+        nButton6.addActionListener(new numberButtonActionListener());
+        setButtonDefaults(nButton6);
+        actionPanel.add(nButton6);
+
+        spacer = new JLabel(); 
+        spacer.setPreferredSize(new Dimension(300,44));
+        actionPanel.add(spacer);
+
+        numberLabel = new JLabel();
+        numberLabel.setHorizontalAlignment(JLabel.CENTER);
+        numberLabel.setVerticalAlignment(JLabel.BOTTOM);
+        numberLabel.setPreferredSize(new Dimension(300,25));
+        numberLabel.setFont(new Font("Dialog", Font.BOLD, 25));
+        numberLabel.setForeground(controller.getFieldColor("text"));
+        actionPanel.add(numberLabel);
+
         switch(source){
-            case "numberOfEpisodesWatched": break; 
-            case "numberOfEpsiodesTotal": break;
+            case "numberOfEpisodesWatched": 
+                sectionLabel.setText("Set Episodes Watched:");
+                numberLabel.setText(controller.get(reference,"numberOfEpisodesWatched"));
+                break; 
+            case "numberOfEpisodesTotal": 
+                sectionLabel.setText("Set Total Episodes:");
+                numberLabel.setText(controller.get(reference,"numberOfEpisodesTotal"));
+                break;
         }
+
+        spacer = new JLabel();
+        spacer.setPreferredSize(new Dimension(300,44));
+        actionPanel.add(spacer);
+
+        cancelButton = new JButton("Cancel");
+        cancelButton.setPreferredSize(new Dimension(100, 25));
+        cancelButton.addActionListener(new cancelButtonActionListener());
+        setButtonDefaults(cancelButton);
+        actionPanel.add(cancelButton);
+
+        spacer = new JLabel();
+        spacer.setPreferredSize(new Dimension(3,0));
+        actionPanel.add(spacer);
+
+        commitButton = new JButton("Commit");
+        commitButton.setName(source);
+        commitButton.setPreferredSize(new Dimension(100, 25));
+        commitButton.addActionListener(new commitButtonActionListener());
+        setButtonDefaults(commitButton);
+        actionPanel.add(commitButton);
+
     }
 
     public void loadDropDown(String source, JPanel actionPanel){
@@ -729,6 +901,7 @@ public class AnimePanel extends JPanel {
                                                                               // or something similar to get the effect I want.
         toggleButton.setText("\u2B9F");
         setButtonDefaults(toggleButton);
+        toggleButton.setFont(new Font("Dialog", Font.BOLD, 10));
 
         JTextField dateField = datePicker.getComponentDateTextField();
         dateField.setHorizontalAlignment(JTextField.CENTER);
@@ -874,8 +1047,9 @@ public class AnimePanel extends JPanel {
     private class commitButtonActionListener implements ActionListener {
         @Override
         public void actionPerformed(ActionEvent V){
-            JButton source = (JButton)(V.getSource());
+            JComponent source = (JComponent)V.getSource();
             String sourceString = source.getName();
+
             switch(sourceString){
                 case "watchingStartDate": // step down
                 case "watchingEndDate": 
@@ -889,11 +1063,73 @@ public class AnimePanel extends JPanel {
                 case "languageWatchedIn": // step down
                 case "ageRating": // step down
                 case "mainGenre": // step down
-                case "subGenre": // step down
+                case "subGenre": 
                     controller.set(reference,sourceString,(String)dropBox.getSelectedItem());
                     generateRightBottom();
                     generateLeftTop();
+                    break;
+                case "numberOfEpisodesWatched": // step down
+                case "numberOfEpisodesTotal": 
+                    int num = Integer.parseInt(numberLabel.getText());
+                    int epW = Integer.parseInt(controller.get(reference,"numberOfEpisodesWatched"));
+                    int epT = Integer.parseInt(controller.get(reference,"numberOfEpisodesTotal"));
+
+                    if (sourceString.equals("numberOfEpisodesWatched")&&(num > epT)){
+                        controller.set(reference,sourceString,num +"");
+                        controller.set(reference,"numberOfEpisodesTotal",num +"");
+                    }
+                    else if (sourceString.equals("numberOfEpisodesTotal")&&(num < epW)){
+                        controller.set(reference,sourceString,num +"");
+                        controller.set(reference,"numberOfEpisodesWatched",num +"");
+                    }
+                    else {
+                        controller.set(reference,sourceString,num +"");
+                    }
+                    generateRightBottom();
+                    generateLeftTop();
+                    break;   
+                case "animeName":
+                    controller.set(reference,sourceString,textInput.getText()); 
+                    mainGUI.setNavigationText(controller.get(reference,sourceString));
+                    generateRightBottom();
+                    generateLeftTop();
+                    break;
+                case "animationStudio":
+                    controller.set(reference,sourceString,textInput.getText());
+                    generateRightBottom();
+                    generateLeftTop();
+                    break;
+                case "finish": 
+                    if (textInput.getText().trim().toUpperCase().equals("YES")){
+                        controller.set(reference,"numberOfEpisodesWatched",(controller.get(reference,"numberOfEpisodesTotal")));
+                        datePicker = new DatePicker(); // getting the date in the format from the datepicker
+                        datePicker.setDateToToday();
+                        controller.set(reference,"watchingEndDate",datePicker.getText());
+                        generateRightBottom();
+                        generateLeftTop();
+                    }
+                    break;
+                case "remove": 
+                    if (textInput.getText().trim().toUpperCase().equals("YES")){
+                        controller.deleteAnime(reference);
+                        mainGUI.generateListPage();
+                    }       
             }
+        }
+    }
+
+    private class numberButtonActionListener implements ActionListener {
+        @Override
+        public void actionPerformed(ActionEvent V){
+            JButton source = (JButton)(V.getSource());
+
+            int num = Integer.parseInt(numberLabel.getText());
+            int sourceNum = Integer.parseInt(source.getName());
+
+            if ((num + sourceNum) <0) numberLabel.setText("0");
+            else numberLabel.setText((num + sourceNum) +"");
+
+
         }
     }
 

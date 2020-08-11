@@ -25,7 +25,7 @@ public class MainGUI extends JFrame {
     JButton nav1, nav2, home, list, stats, notes, newAnime, settings;
     JTextField pathNameField;
 
-    ListPanel listPanel; // only reason this is global is to prevent scrolling while navigation is open. It is set to null when not in use.
+    ListPanel listPanel; // only reason this is global is to prevent scrolling while navigation is open. It is set equal to null when not in use.
 
 
     Dimension standardDim = new Dimension(1024, 768);
@@ -102,8 +102,7 @@ public class MainGUI extends JFrame {
         subNavPanel2.setBackground(controller.getFieldColor("navigation"));
         navPanel.add(subNavPanel2, BorderLayout.EAST);
 
-        fillLabel = new JLabel(); // this label moves the navLabel over ever so slightly because of flowLayout. It
-                                  // will be used elswhere to shift objects around.
+        fillLabel = new JLabel(); // this label moves the navLabel over ever so slightly because of flowLayout.
         fillLabel.setPreferredSize(new Dimension(180, 25));
         subNavPanel1.add(fillLabel);
 
@@ -140,8 +139,6 @@ public class MainGUI extends JFrame {
         nav1.setText("|||");
         setButtonDefaults(nav1);
         panelB.add(nav1);
-
-        // need to add action listeners for these
 
         home = new JButton();
         home.setPreferredSize(new Dimension(20, 35));
@@ -364,7 +361,7 @@ public class MainGUI extends JFrame {
 
         if (reference.equals("New Anime")) reference = controller.createAnime();
         generateNavPanel("Viewing: " +controller.get(reference, "animeName"));
-        AnimePanel anime = new AnimePanel(controller,reference);
+        AnimePanel anime = new AnimePanel(controller,this,reference);
         panelA.add(anime,BorderLayout.WEST);
     }
 
@@ -426,6 +423,12 @@ public class MainGUI extends JFrame {
     public void setNavsDisabled(){
         nav1.setEnabled(false); // to prevent overlay issues with color editor in SettingsPanel
         nav2.setEnabled(false);
+    }
+
+    public void setNavigationText(String text){ // for animePanel to set the text after a name change
+        navLabel.setText(" " +text +" ");
+        navPanel.repaint();
+        navPanel.revalidate();
     }
 
     // ACTION LISTENERS

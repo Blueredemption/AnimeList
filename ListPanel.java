@@ -302,8 +302,8 @@ public class ListPanel extends JPanel {
         int n = references.size();
 
         JPanel scrollPanel = new JPanel();
-        scrollPanel.setPreferredSize(new Dimension(760,n*31));
-        scrollPanel.setLayout(new FlowLayout(FlowLayout.LEFT,0,1));
+        scrollPanel.setPreferredSize(new Dimension(760,n*31 -1));
+        scrollPanel.setLayout(new FlowLayout(FlowLayout.LEFT,0,0));
         scrollPanel.setBackground(controller.getFieldColor("background1").brighter());
         
         scrollPane = new JScrollPane(scrollPanel,JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED,JScrollPane.HORIZONTAL_SCROLLBAR_NEVER); // global for disable purposes
@@ -329,6 +329,11 @@ public class ListPanel extends JPanel {
         JProgressBar[] progressBars = new JProgressBar[n];
 
         for (int i = 0; i < n; i++){
+            if (i != 0) {
+                JLabel spacers = new JLabel();
+                spacers.setPreferredSize(new Dimension(5,1));
+                scrollPanel.add(spacers);
+            }
             listPanel[i] = new JPanel();
             listPanel[i].setPreferredSize(new Dimension (782,30));
             listPanel[i].setLayout(new FlowLayout(FlowLayout.LEFT,0,0));

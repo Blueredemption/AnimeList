@@ -158,7 +158,7 @@ public class AnimeDao {
         this.order = order;
     }
 
-    public ArrayList<String> returnListOfReferences(){ 
+    public ArrayList<String> returnListOfReferences(){  // no filtering
         Collections.sort(list);
         ArrayList<String> references = new ArrayList<String>();
         for (AnimeObject anime : list) {
@@ -169,8 +169,12 @@ public class AnimeDao {
         return references; 
     }
 
-    public ArrayList<String> returnListOfSearchedReferences(String inquiry){
-        return narrowedList(returnListOfReferences(), inquiry);
+    public ArrayList<String> returnListOfFilteredReferences(){ // filtered
+        return returnListOfReferences();
+    }
+
+    public ArrayList<String> returnListOfSearchedReferences(String inquiry){ // filtered and searched
+        return narrowedList(returnListOfFilteredReferences(), inquiry);
     }
     public ArrayList<String> getListOfDescriptors(String inquiry){
         switch(inquiry){
