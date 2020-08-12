@@ -332,6 +332,8 @@ public class MainGUI extends JFrame {
         panelA.setBackground(controller.getFieldColor("background1"));
 
         generateNavPanel("Viewing: Statistics");
+        StatisticsPanel statisticsPanel = new StatisticsPanel(controller, this);
+        panelA.add(statisticsPanel,BorderLayout.WEST);
     }
 
     public void generateNotesPage() {
@@ -420,9 +422,20 @@ public class MainGUI extends JFrame {
         }
     } 
     
-    public void setNavsDisabled(){
-        nav1.setEnabled(false); // to prevent overlay issues with color editor in SettingsPanel
+    public void setNavsDisabled(){  // to prevent overlay issues with color editor in SettingsPanel
+        nav1.setEnabled(false);
         nav2.setEnabled(false);
+    }
+
+    public void setNavs(boolean bool){ // to prevent people from navigating off settings page while threads are still compiling data.
+        nav1.setEnabled(bool);
+        nav2.setEnabled(bool);
+        home.setEnabled(bool);
+        list.setEnabled(bool);
+        stats.setEnabled(bool);
+        notes.setEnabled(bool);
+        newAnime.setEnabled(bool);
+        settings.setEnabled(bool);
     }
 
     public void setNavigationText(String text){ // for animePanel to set the text after a name change
@@ -464,7 +477,11 @@ public class MainGUI extends JFrame {
     private class listButtonListener implements ActionListener {
         @Override
         public void actionPerformed(ActionEvent V){
-            if(controller.getState() != 1) generateListPage();
+            if(controller.getState() != 1){
+                generateListPage();
+                listPanel.setSearchFocus();
+            } 
+            else listPanel.setSearchFocus();
         }
     }
 

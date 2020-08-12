@@ -30,7 +30,7 @@ public class AnimePanel extends JPanel {
     String reference;
     ArrayList<String> references;
     DatePicker datePicker;
-    JComboBox dropBox;
+    JComboBox<String> dropBox;
 
     JButton nButton1, nButton2, nButton3, nButton4, nButton5, nButton6;
     JPanel topPanel, bottomPanel, leftTopPanel, leftBottomPanel, rightTopPanel, rightBottomPanel;
@@ -39,14 +39,13 @@ public class AnimePanel extends JPanel {
     JButton leftButton, rightButton, cancelButton, commitButton;
     JLabel numberLabel;
 
-    public AnimePanel(Controller controller, MainGUI mainGUI, String reference){
+    public AnimePanel(Controller controller, MainGUI mainGUI, String reference){  // constructor
         this.controller = controller;
         this.mainGUI = mainGUI;
         this.reference = reference;
         
         setLayout(new BorderLayout());
         setOpaque(false);
-
 
         generateTopBottom();
         generateLeftTop();

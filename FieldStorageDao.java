@@ -9,6 +9,7 @@ import org.json.simple.*;
 import org.json.simple.parser.*;
 import java.awt.Color;
 
+
 public class FieldStorageDao {
     Color buttons, background1, background2, background3, list, navigation, text, buttonBorder; // buttonBorder is also be used to panels
     Color defaultButtons, defaultBackground1, defaultBackground2, defaultBackground3, defaultList, defaultNavigation, defaultText, defaultButtonBorder; 
@@ -288,7 +289,7 @@ public class FieldStorageDao {
         }
         return true;
     }
-
+    
     public Color colorJSONtoColor(JSONObject json){ // takes a json that stores a color and returns a color object of it
         return new Color(((Long)json.get("r")).intValue(),
                          ((Long)json.get("g")).intValue(),
@@ -296,15 +297,17 @@ public class FieldStorageDao {
                          ((Long)json.get("a")).intValue());
     }
 
+    @SuppressWarnings("all") // removing the warning "references to generic type HashMap<K,V> should be parameterized" that is due to the age of the json library I am using.
     public JSONObject colorIntoJSON(Color color){ // takes a color object and returns a JSONObject of it
         JSONObject json = new JSONObject();
-        json.put("r",color.getRed());
+        json.put("r",color.getRed()); 
         json.put("g",color.getGreen());
         json.put("b",color.getBlue());
         json.put("a",color.getAlpha());
         return json;
     }
 
+    @SuppressWarnings("all") // same as above
     public JSONObject stringIntoJSON(String string){ // puts string into a json object and returns it
         JSONObject json = new JSONObject();
         json.put("string",string);

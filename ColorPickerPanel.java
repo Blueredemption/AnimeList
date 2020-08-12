@@ -22,7 +22,7 @@ public class ColorPickerPanel extends JPanel {
     JLayeredPane showPanel;
     JPanel showRegularPanel, showNavPanel, showListPanel;
     JButton showButton;
-    JComboBox showBox;
+    JComboBox<String> showBox; 
     JTextField showTextField;
     JLabel showLabel, showLabel2;
 
@@ -364,7 +364,7 @@ public class ColorPickerPanel extends JPanel {
         showListPanel.setBackground(defaultList);
         showRegularPanel.add(showListPanel);
     }
-
+    
     public void refreshShowPanel() {
         showPanel.setBackground(background);
         showBox.setForeground(text);

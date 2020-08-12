@@ -20,6 +20,7 @@ public class ListPanel extends JPanel {
     ArrayList<String> references;
     JFrame superior; // access to the object that called it is only here to tell it when to self destruct (move to the anime window)
 
+    JTextField searchField;
     JPanel leftPanel;
     JPanel rightPanel; 
     JScrollPane scrollPane;
@@ -38,6 +39,8 @@ public class ListPanel extends JPanel {
 
         generateLeft();
         generateRight();
+        searchField.requestFocusInWindow();
+        searchField.requestFocus();
     }
     
     public void generateLeft(){
@@ -78,7 +81,7 @@ public class ListPanel extends JPanel {
         bufferLabel[c1].setPreferredSize(new Dimension(12,8));
         leftPanel.add(bufferLabel[c1++]);
 
-        JTextField searchField = new JTextField();
+        searchField = new JTextField();
         searchField.setPreferredSize(new Dimension(160, 20));
         searchField.setBackground(controller.getFieldColor("background2"));
         searchField.setForeground(controller.getFieldColor("text"));
@@ -331,7 +334,7 @@ public class ListPanel extends JPanel {
         for (int i = 0; i < n; i++){
             if (i != 0) {
                 JLabel spacers = new JLabel();
-                spacers.setPreferredSize(new Dimension(5,1));
+                spacers.setPreferredSize(new Dimension(100,1));
                 scrollPanel.add(spacers);
             }
             listPanel[i] = new JPanel();
@@ -438,6 +441,10 @@ public class ListPanel extends JPanel {
         }
     }
 
+    public void setSearchFocus(){
+        searchField.requestFocus();
+    }
+
     // Action Listeners
     private class orderListener implements ActionListener { 
         @Override
@@ -450,6 +457,7 @@ public class ListPanel extends JPanel {
             references = controller.getReferenceList();
             generateLeft();
             generateRight(); 
+            searchField.requestFocus();
         }
     }
     private class sortListener implements ActionListener { 
@@ -468,6 +476,7 @@ public class ListPanel extends JPanel {
             references = controller.getReferenceList();
             generateLeft();
             generateRight();
+            searchField.requestFocus();
         }
     }
 
@@ -477,6 +486,7 @@ public class ListPanel extends JPanel {
             references = controller.getSearchedReferenceList(((JTextField)V.getSource()).getText());
             generateLeft();
             generateRight();
+            searchField.requestFocus();
         }
     }
 

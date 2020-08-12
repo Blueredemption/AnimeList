@@ -9,6 +9,7 @@ import java.awt.Color;
 public class Controller {
     AnimeDao animeDao;
     FieldStorageDao fieldStorageDao;
+    StatisticsAggregator statisticsAggregator;
 
     int state;
     int order; // can be 0 (up) or 1 (down)
@@ -134,7 +135,9 @@ public class Controller {
     public void loadDarkPreset(){
         fieldStorageDao.loadPreset1();
     }
-
+    
+    // StatisticsAggregator related
+    
     // Window abstraction related
     public int getOrder(){
         return order;
@@ -152,11 +155,10 @@ public class Controller {
         animeDao.setSort(sort);
     }
 
+    //*******************************************// 
+    //         Anime Specific Statistics         // 
     //*******************************************//
-    //       Statisitics Retrieval Methods       //
-    //*******************************************//
-    
-    // anime statistics related (specific anime)
+
     private int getOnlyMinutes(String reference){ 
         int averageMinutes = Integer.parseInt(get(reference, "averageEpisodeLength"));
         int episodesWatched = Integer.parseInt(get(reference, "numberOfEpisodesWatched"));

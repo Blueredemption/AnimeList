@@ -39,8 +39,8 @@ public class AnimeObject implements Comparable<Object>{
         numberOfEpisodesTotal = "0";
         languageWatchedIn = "?";
         ageRating = "?";
-        yearReleased = "?";
-        seasonReleased = "?";
+        yearReleased = "1900";
+        seasonReleased = "Spring";
         watchingStartDate = "?";
         watchingEndDate = "?";
         averageEpisodeLength = "20";
@@ -228,7 +228,7 @@ public class AnimeObject implements Comparable<Object>{
         this.sort = sort;
     }
 
-
+    @SuppressWarnings("all") // removing the warning "references to generic type HashMap<K,V> should be parameterized" that is due to the age of the json library I am using.
     public boolean refreshJSON(){// method for rewriting the json files after a change is made in the live object or to create it outright.
         JSONObject animeJSON = new JSONObject(); // creating the json and adding all of the elements
         animeJSON.put("animeName",animeName);
@@ -312,7 +312,7 @@ public class AnimeObject implements Comparable<Object>{
             case 0: return -((Integer)Integer.parseInt(referenceNumber)).compareTo((Integer)Integer.parseInt(((AnimeObject)o).getReferenceNumber()));
             case 1: return animeName.toUpperCase().compareTo(((AnimeObject)o).getAnimeName().toUpperCase());
             case 2: return ((Integer)Integer.parseInt(numberOfEpisodesTotal)).compareTo((Integer)Integer.parseInt(((AnimeObject)o).getNumberOfEpisodesTotal()));
-            case 3: return getSeasonNumber().compareTo(((AnimeObject)o).getSeasonNumber());
+            case 3: return (getSeasonNumber()*10000 +((Integer)Integer.parseInt(yearReleased)).compareTo(((AnimeObject)o).getSeasonNumber()*10000 +(Integer.parseInt(((AnimeObject)o).getYearReleased()))));
             case 4: return ((Integer)(Integer.parseInt(yearReleased)*100+getSeasonNumber())).compareTo((Integer)(Integer.parseInt(((AnimeObject)o).getYearReleased())*100+((AnimeObject)o).getSeasonNumber())); // maybe expand
             case 5: return getProgress().compareTo(((AnimeObject)o).getProgress());
             case 6: return ((Integer)color.getRGB()).compareTo((Integer)((AnimeObject)o).getColor().getRGB());
