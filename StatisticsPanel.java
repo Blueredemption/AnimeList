@@ -15,7 +15,9 @@ public class StatisticsPanel extends JPanel {
     Controller controller;
     MainGUI mainGUI;
 
-    int progress = 0;
+    JPanel loadingPanel;
+    JProgressBar progressBar;
+    JLabel label;
 
     public StatisticsPanel(Controller controller, MainGUI mainGUI){
         this.controller = controller;
@@ -24,14 +26,15 @@ public class StatisticsPanel extends JPanel {
         setLayout(new BorderLayout());
         setOpaque(false);
 
-        load(); // creates a loading screen. and loads everything needed for the page to be painted.
+        load(); // creates a loading screen and loads everything needed for the page to be painted
     }
 
+    @SuppressWarnings("rawtypes") 
     public void load(){
         mainGUI.setNavs(false);
-        JPanel loadingPanel = new JPanel();
+        loadingPanel = new JPanel();
         loadingPanel.setLayout(new FlowLayout(FlowLayout.CENTER,0,10));
-        loadingPanel.setBackground(Color.RED);
+        loadingPanel.setBackground(controller.getFieldColor("background1"));
         loadingPanel.setPreferredSize(fullDim);
         add(loadingPanel,BorderLayout.CENTER);
         
@@ -39,7 +42,7 @@ public class StatisticsPanel extends JPanel {
         spacer.setPreferredSize(new Dimension(500,250));
         loadingPanel.add(spacer);
 
-        JLabel label = new JLabel("Loading...");
+        label = new JLabel("Generating Statistics...");
         label.setHorizontalAlignment(JLabel.CENTER);
         label.setVerticalAlignment(JLabel.CENTER);
         label.setPreferredSize(new Dimension(800,30));
@@ -47,7 +50,7 @@ public class StatisticsPanel extends JPanel {
         label.setForeground(controller.getFieldColor("text"));
         loadingPanel.add(label);
 
-        JProgressBar progressBar = new JProgressBar();
+        progressBar = new JProgressBar();
         progressBar.setPreferredSize(new Dimension (276,15));
         progressBar.setValue(0);
         progressBar.setBackground(controller.getFieldColor("background2").brighter().brighter()); 
@@ -59,89 +62,21 @@ public class StatisticsPanel extends JPanel {
             protected Color getSelectionForeground() { return controller.getFieldColor("text");} });
         loadingPanel.add(progressBar);
         
-        @SuppressWarnings("rawtypes") 
         SwingWorker worker1 = new SwingWorker<Boolean, Integer>() {
             @Override
             protected Boolean doInBackground() throws Exception{
-                Thread.sleep(4000);
+                // tasks
+                setProgressN(25);
+                //
+                setProgressN(50);
+                //
+                setProgressN(75);
+                //
+                setProgressN(100);
                 return true;
-            }
-        
-            @Override
-            protected void done() {
-                progressBar.setValue(progress + 25);
-                setProgressN(progress + 25);
             }
         };
         worker1.execute();
-
-        @SuppressWarnings("rawtypes") 
-        SwingWorker worker2 = new SwingWorker<Boolean, Integer>() {
-            @Override
-            protected Boolean doInBackground() throws Exception{
-                Thread.sleep(3000);
-                return true;
-            }
-        
-            @Override
-            protected void done() {
-                progressBar.setValue(progress + 25);
-                setProgressN(progress + 25);
-            }
-        };
-        worker2.execute();
-
-        @SuppressWarnings("rawtypes") 
-        SwingWorker worker3 = new SwingWorker<Boolean, Integer>() {
-            @Override
-            protected Boolean doInBackground() throws Exception{
-                Thread.sleep(2000);
-                return true;
-            }
-        
-            @Override
-            protected void done() {
-                progressBar.setValue(progress + 25);
-                setProgressN(progress + 25);
-            }
-        };
-        worker3.execute();
-
-        @SuppressWarnings("rawtypes") 
-        SwingWorker worker4 = new SwingWorker<Boolean, Integer>() {
-            @Override
-            protected Boolean doInBackground() throws Exception{
-                Thread.sleep(1000);
-                return true;
-            }
-        
-            @Override
-            protected void done() {
-                progressBar.setValue(progress + 25);
-                setProgressN(progress + 25);
-            }
-        };
-        worker4.execute();
-
-        @SuppressWarnings("rawtypes") 
-        SwingWorker wait = new SwingWorker<Boolean, Integer>() {
-            @Override
-            protected Boolean doInBackground() throws Exception{
-                while (progress != 100){
-                    Thread.sleep(10); // check every 100th of a second.
-                }
-                Thread.sleep(300); // gives the bar a little time at 100%
-                return true;
-            }
-        
-            @Override
-            protected void done() {
-                remove(loadingPanel);
-                generate();
-                mainGUI.setNavs(true);
-            }
-        };
-        wait.execute();
     }
 
     public void generate(){
@@ -150,13 +85,34 @@ public class StatisticsPanel extends JPanel {
 
         JPanel structurePanel = new JPanel();
         structurePanel.setLayout(new BorderLayout());
-        structurePanel.setBackground(Color.BLUE);
+        structurePanel.setBackground(controller.getFieldColor("background1"));
         structurePanel.setPreferredSize(fullDim);
         add(structurePanel,BorderLayout.CENTER);
     }
 
-    public void setProgressN(int value){ // method that the threads use to communicate to the loading bar
-        System.out.println("Hi!");
-        progress = value;
+    public void setProgressN(int value){ // method that the threads use to change the loading bar value
+        @SuppressWarnings("rawtypes")
+        SwingWorker continuous = new SwingWorker<Boolean, Integer>() {
+            @Override
+            protected Boolean doInBackground() throws Exception{
+                while (progressBar.getValue() < value) {
+                    progressBar.setValue(progressBar.getValue() + 1);
+                    Thread.sleep(5);
+                }
+                if (value == 100) label.setText("Done!");
+                Thread.sleep(100);
+                return true;
+            }
+        
+            @Override
+            protected void done() {
+                if (value == 100){
+                    remove(loadingPanel);
+                    generate();
+                    mainGUI.setNavs(true);
+                }
+            }
+        };
+        continuous.execute();
     }
 }

@@ -27,6 +27,7 @@ class CustomComboBoxRenderer extends JLabel implements ListCellRenderer<Object> 
         this.text = text;
     }
 
+    @SuppressWarnings("rawtypes") 
     public Component getListCellRendererComponent(JList list,Object value,int index,boolean isSelected,boolean cellHasFocus) {
         setText(" " +value.toString());
 

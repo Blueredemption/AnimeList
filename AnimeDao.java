@@ -33,11 +33,11 @@ public class AnimeDao {
         seasons = new ArrayList<String>(Arrays.asList("Spring","Summer","Fall","Winter"));
         languages = new ArrayList<String>(Arrays.asList("Subbed","Dubbed", "Other"));
         contentRatings = new ArrayList<String>(Arrays.asList("G","PG","PG-13","R-17+","R+"));
-        genres = new ArrayList<String>(Arrays.asList("Action","Adventure","Comedy","Dementia","Demons","Drama","Ecchi","Fantasy","Hentai",
+        genres = new ArrayList<String>(Arrays.asList("Action","Adventure","Comedy","Dementia","Demons","Drama","Ecchi","Fantasy",
                                                      "Historical","Horror","Harem","Isekai","Josei","Magic","Martial Arts","Mecha","Military","Music",
                                                      "Mystery","Parody","Police","Psychological","Romance","Samurai","School","Sci-Fi",
                                                      "Seinen","Shoujo","Shoujo Ai","Shounen","Shounen Ai","Slice of Life","Space","Sports",
-                                                     "Super Power","Supernatural","Thriller","Vampire","Yaoi","Yuri"));
+                                                     "Super Power","Supernatural","Thriller","Vampire","Yaoi","Yuri","Hentai","Other"));
     }
     
     public void refresh(){ // refreshes the list of anime objects
