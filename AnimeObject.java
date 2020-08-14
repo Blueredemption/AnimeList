@@ -201,7 +201,8 @@ public class AnimeObject implements Comparable<Object>{
         refreshJSON();
     }
     public void setColor(Color color){
-        this.color =  color;
+        this.color = color;
+        setCustomColor("false");
         refreshJSON();
     }
     public void setCustomColor(String customColor){

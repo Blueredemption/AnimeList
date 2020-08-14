@@ -31,13 +31,14 @@ public class AnimePanel extends JPanel {
     ArrayList<String> references;
     DatePicker datePicker;
     JComboBox<String> dropBox;
+    MiniColorPickerPanel colorPanel;
 
     JButton nButton1, nButton2, nButton3, nButton4, nButton5, nButton6;
     JPanel topPanel, bottomPanel, leftTopPanel, leftBottomPanel, rightTopPanel, rightBottomPanel;
     JTextArea textArea;
     JTextField textInput;
     JButton leftButton, rightButton, cancelButton, commitButton;
-    JLabel numberLabel;
+    JLabel numberLabel, toggleSpacer;
 
     public AnimePanel(Controller controller, MainGUI mainGUI, String reference){  // constructor
         this.controller = controller;
@@ -831,6 +832,11 @@ public class AnimePanel extends JPanel {
                 stringList = new ArrayList<String>();
         }
 
+        toggleSpacer = new JLabel(); // appears to fill gap when datepicker his hidden when nav is opened.
+        toggleSpacer.setPreferredSize(new Dimension(100,25));
+        toggleSpacer.setVisible(false);
+        actionPanel.add(toggleSpacer);
+
         dropBox = new JComboBox<String>(stringList.toArray(new String[0]));
         dropBox.setRenderer(new CustomComboBoxRenderer(controller));
         dropBox.setEditor(new CustomComboBoxEditor(controller));
@@ -902,6 +908,11 @@ public class AnimePanel extends JPanel {
         setButtonDefaults(toggleButton);
         toggleButton.setFont(new Font("Dialog", Font.BOLD, 10));
 
+        toggleSpacer = new JLabel(); // appears to fill gap when datepicker his hidden when nav is opened.
+        toggleSpacer.setPreferredSize(new Dimension(100,25));
+        toggleSpacer.setVisible(false);
+        actionPanel.add(toggleSpacer);
+
         JTextField dateField = datePicker.getComponentDateTextField();
         dateField.setHorizontalAlignment(JTextField.CENTER);
         dateField.setBackground(controller.getFieldColor("background2"));
@@ -945,6 +956,8 @@ public class AnimePanel extends JPanel {
     }
 
     public void loadMiniColorPicker(JPanel actionPanel){
+        colorPanel = new MiniColorPickerPanel(reference,controller, this);
+        actionPanel.add(colorPanel);
 
     }
 
@@ -992,11 +1005,34 @@ public class AnimePanel extends JPanel {
         setButtonDefaults(rightButton);
         buttonPanel.add(rightButton);
     }
+    
+    public void refreshPage(){
+        mainGUI.generateAnimePage(reference);
+    }
+
+    public void toggleEnables(boolean bool){ // I would use looping if it was feasible.
+        if (cancelButton != null) cancelButton.setEnabled(bool);
+        if (commitButton != null) commitButton.setEnabled(bool);
+        if (leftButton != null) leftButton.setEnabled(bool);
+        if (rightButton != null) rightButton.setEnabled(bool);
+        if (datePicker != null) datePicker.setVisible(bool);
+        if (dropBox != null) dropBox.setVisible(bool);
+        if (textInput != null) textInput.setEnabled(bool);
+        if (nButton1 != null) nButton1.setEnabled(bool);
+        if (nButton2 != null) nButton2.setEnabled(bool); 
+        if (nButton3 != null) nButton3.setEnabled(bool);
+        if (nButton4 != null) nButton4.setEnabled(bool); 
+        if (nButton5 != null) nButton5.setEnabled(bool); 
+        if (nButton6 != null) nButton6.setEnabled(bool);
+        if (colorPanel != null) colorPanel.toggleEnables(bool);
+        if (toggleSpacer != null) toggleSpacer.setVisible(!bool);
+    }
 
     //ACTION LISTENERS
     private class makeEditActionListener implements ActionListener {
         @Override
         public void actionPerformed(ActionEvent V){
+            mainGUI.generateNavigationPageSmall();
             JButton source = (JButton)(V.getSource());
             String sourceString = source.getName();
             generateRightBottom(sourceString);
@@ -1006,6 +1042,8 @@ public class AnimePanel extends JPanel {
     private class changeImageActionListener implements ActionListener {
         @Override
         public void actionPerformed(ActionEvent V){
+            mainGUI.generateNavigationPageSmall();
+            toggleEnables(true);
             JFileChooser fc = new JFileChooser();
             fc.setCurrentDirectory(new File ("Images/Anime"));
             fc.showOpenDialog(null);
@@ -1100,8 +1138,8 @@ public class AnimePanel extends JPanel {
                     break;
                 case "finish": 
                     if (textInput.getText().trim().toUpperCase().equals("YES")){
-                        controller.set(reference,"numberOfEpisodesWatched",(controller.get(reference,"numberOfEpisodesTotal")));
-                        datePicker = new DatePicker(); // getting the date in the format from the datepicker
+                        controller.set(reference,"numberOfEpisodesWatched",controller.get(reference,"numberOfEpisodesTotal"));
+                        datePicker = new DatePicker(); // somewhat lazy way of getting the date in the format from the datepicker
                         datePicker.setDateToToday();
                         controller.set(reference,"watchingEndDate",datePicker.getText());
                         generateRightBottom();
@@ -1120,6 +1158,7 @@ public class AnimePanel extends JPanel {
     private class numberButtonActionListener implements ActionListener {
         @Override
         public void actionPerformed(ActionEvent V){
+            mainGUI.generateNavigationPageSmall();
             JButton source = (JButton)(V.getSource());
 
             int num = Integer.parseInt(numberLabel.getText());
@@ -1143,6 +1182,8 @@ public class AnimePanel extends JPanel {
     private class hiddenActionListener implements ActionListener {
         @Override
         public void actionPerformed(ActionEvent V){
+            mainGUI.generateNavigationPageSmall();
+            toggleEnables(true);
             if (controller.get(reference,"hidden").equals("true")) controller.set(reference,"hidden","false");
             else controller.set(reference,"hidden","true");    
             generateLeftBottom();

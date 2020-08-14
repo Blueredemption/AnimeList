@@ -28,7 +28,6 @@ public class ColorPickerPanel extends JPanel {
 
     Controller controller;
 
-    // I could just pass the controller into this, and will next time. It would have saved me a lot of time.
     public ColorPickerPanel(String field, Controller controller) { // constructor
         this.controller = controller;
         this.field = field;

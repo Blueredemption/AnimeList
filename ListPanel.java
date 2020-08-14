@@ -449,6 +449,7 @@ public class ListPanel extends JPanel {
     private class orderListener implements ActionListener { 
         @Override
         public void actionPerformed(ActionEvent V){
+            ((MainGUI)superior).generateNavigationPageSmall();
             JButton source = (JButton)(V.getSource());
             switch(source.getName()){
                 case "Up": controller.setOrder(0); break;
@@ -463,6 +464,7 @@ public class ListPanel extends JPanel {
     private class sortListener implements ActionListener { 
         @Override
         public void actionPerformed(ActionEvent V){
+            ((MainGUI)superior).generateNavigationPageSmall();
             JButton source = (JButton)(V.getSource());
             switch(source.getName()){
                 case "Added": controller.setSort(0); break;
@@ -480,9 +482,17 @@ public class ListPanel extends JPanel {
         }
     }
 
+    // private class filterListener implements ActionListener {
+    //     @Override
+    //     public void actionPerformed(ActionEvent V){
+    //         ((MainGUI)superior).generateNavigationPageSmall();
+    //     }
+    // }
+
     private class quickSearchListener implements ActionListener {
         @Override
         public void actionPerformed(ActionEvent V){
+            ((MainGUI)superior).generateNavigationPageSmall();
             references = controller.getSearchedReferenceList(((JTextField)V.getSource()).getText());
             generateLeft();
             generateRight();

@@ -52,8 +52,8 @@ public class Controller {
         return animeDao.getValue(reference, key);
     }
     public Color getAnimeColor(String reference){
-        if (get(reference, "customColor").equals("false")) return animeDao.getColor(reference);
-        return fieldStorageDao.getList();
+        if (animeDao.getValue(reference, "customColor").equals("false")) return animeDao.getColor(reference);
+        else return fieldStorageDao.getList();
     }
 
     public String set(String reference, String key, String value){

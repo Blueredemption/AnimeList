@@ -25,8 +25,10 @@ public class MainGUI extends JFrame {
     JButton nav1, nav2, home, list, stats, notes, newAnime, settings;
     JTextField pathNameField;
 
-    ListPanel listPanel; // only reason this is global is to prevent scrolling while navigation is open. It is set equal to null when not in use.
-
+    ListPanel listPanel; // these are global to toggle the active components off when the nav tab is open
+    AnimePanel animePanel;
+    StatisticsPanel statisticsPanel;
+    NotesPanel notesPanel;
 
     Dimension standardDim = new Dimension(1024, 768);
     Dimension leftDim = new Dimension(978, 768);
@@ -277,7 +279,7 @@ public class MainGUI extends JFrame {
 
     public void generateHomePage() {
         controller.setState(0);
-        listPanel = null; // these are here to make sure this object doesn't hog memory
+        nullifyPanels();
         generateNavigationPageSmall();
         panelA.removeAll();
         panelA.repaint();
@@ -305,7 +307,7 @@ public class MainGUI extends JFrame {
 
     public void generateListPage() {
         controller.setState(1);
-        // listPanel = null; not needed it can't be there for this method to run.
+        nullifyPanels();
         generateNavigationPageSmall();
         panelA.removeAll();
         panelA.repaint();
@@ -322,7 +324,7 @@ public class MainGUI extends JFrame {
 
     public void generateStatisticsPage() {
         controller.setState(2);
-        listPanel = null;
+        nullifyPanels();
         generateNavigationPageSmall();
         panelA.removeAll();
         panelA.repaint();
@@ -332,13 +334,13 @@ public class MainGUI extends JFrame {
         panelA.setBackground(controller.getFieldColor("background1"));
 
         generateNavPanel("Viewing: Statistics");
-        StatisticsPanel statisticsPanel = new StatisticsPanel(controller, this);
+        statisticsPanel = new StatisticsPanel(controller, this);
         panelA.add(statisticsPanel,BorderLayout.WEST);
     }
 
     public void generateNotesPage() {
         controller.setState(3);
-        listPanel = null;
+        nullifyPanels();
         generateNavigationPageSmall();
         panelA.removeAll();
         panelA.repaint();
@@ -352,7 +354,7 @@ public class MainGUI extends JFrame {
 
     public void generateAnimePage(String reference) {
         controller.setState(4);
-        listPanel = null;
+        nullifyPanels();
         generateNavigationPageSmall();
         panelA.removeAll();
         panelA.repaint();
@@ -363,13 +365,13 @@ public class MainGUI extends JFrame {
 
         if (reference.equals("New Anime")) reference = controller.createAnime();
         generateNavPanel("Viewing: " +controller.get(reference, "animeName"));
-        AnimePanel anime = new AnimePanel(controller,this,reference);
-        panelA.add(anime,BorderLayout.WEST);
+        animePanel = new AnimePanel(controller,this,reference);
+        panelA.add(animePanel,BorderLayout.WEST);
     }
 
     public void generateSettingsPage() {
         controller.setState(5);
-        listPanel = null;
+        nullifyPanels();
         generateNavigationPageSmall();
         panelA.removeAll();
         panelA.repaint();
@@ -422,6 +424,12 @@ public class MainGUI extends JFrame {
         }
     } 
     
+    public void nullifyPanels() { // to save memory when these pages are not in use this method is called. 
+        listPanel = null; 
+        animePanel = null;
+        statisticsPanel = null;
+        notesPanel =  null;
+    }
     public void setNavsDisabled(){  // to prevent overlay issues with color editor in SettingsPanel
         nav1.setEnabled(false);
         nav2.setEnabled(false);
@@ -453,6 +461,10 @@ public class MainGUI extends JFrame {
                     listPanel.disableScrollBar();
                     listPanel.disableButtons();
                 } 
+                else if (animePanel != null){
+                    animePanel.toggleEnables(false);
+                    animePanel.toggleEnables(false);
+                } 
                 swapNavPanelFocus(false);
                 generateNavigationPageLarge();
             }
@@ -460,6 +472,10 @@ public class MainGUI extends JFrame {
                 if (listPanel != null){
                     listPanel.enableScrollBar();
                     listPanel.enableButtons();
+                } 
+                else if (animePanel != null){
+                    animePanel.toggleEnables(true);
+                    animePanel.toggleEnables(true);
                 } 
                 swapNavPanelFocus(true);
                 generateNavigationPageSmall();
