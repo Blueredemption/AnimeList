@@ -212,7 +212,7 @@ public class AnimePanel extends JPanel {
         leftTopPanel.add(labels[c1++]);
 
         labels[c1].setPreferredSize(new Dimension(220,25));
-        labels[c1].setText(controller.get(reference, "watchingStartDate")); 
+        labels[c1].setText(controller.getDateAsString(reference, "watchingStartDate")); 
         leftTopPanel.add(labels[c1++]);
 
         //
@@ -228,7 +228,7 @@ public class AnimePanel extends JPanel {
         leftTopPanel.add(labels[c1++]);
 
         labels[c1].setPreferredSize(new Dimension(220,25));
-        labels[c1].setText(controller.get(reference, "watchingEndDate")); 
+        labels[c1].setText(controller.getDateAsString(reference, "watchingEndDate")); 
         leftTopPanel.add(labels[c1++]);
 
         //
@@ -533,7 +533,7 @@ public class AnimePanel extends JPanel {
         labels[c1].setPreferredSize(new Dimension(185,30));
         actionPanel.add(labels[c1++]);
 
-        labels[c1].setText("Unknown Days");
+        labels[c1].setText(controller.getSpan(reference));
         labels[c1].setPreferredSize(new Dimension(120,30)); // get after dates overhaul
         actionPanel.add(labels[c1++]);
 
@@ -832,9 +832,12 @@ public class AnimePanel extends JPanel {
                 stringList = new ArrayList<String>();
         }
 
-        toggleSpacer = new JLabel(); // appears to fill gap when datepicker his hidden when nav is opened.
-        toggleSpacer.setPreferredSize(new Dimension(100,25));
+        toggleSpacer = new JLabel("Hidden while Navigation is open"); // appears to fill gap when datepicker his hidden when nav is opened.
+        toggleSpacer.setPreferredSize(new Dimension(200,25));
         toggleSpacer.setVisible(false);
+        toggleSpacer.setForeground(controller.getFieldColor("text"));
+        toggleSpacer.setFont(new Font("Dialog", Font.BOLD, 10));
+        toggleSpacer.setHorizontalAlignment(JLabel.CENTER);
         actionPanel.add(toggleSpacer);
 
         dropBox = new JComboBox<String>(stringList.toArray(new String[0]));
@@ -908,8 +911,11 @@ public class AnimePanel extends JPanel {
         setButtonDefaults(toggleButton);
         toggleButton.setFont(new Font("Dialog", Font.BOLD, 10));
 
-        toggleSpacer = new JLabel(); // appears to fill gap when datepicker his hidden when nav is opened.
-        toggleSpacer.setPreferredSize(new Dimension(100,25));
+        toggleSpacer = new JLabel("Hidden while Navigation is open"); // appears to fill gap when datepicker his hidden when nav is opened.
+        toggleSpacer.setForeground(controller.getFieldColor("text"));
+        toggleSpacer.setFont(new Font("Dialog", Font.BOLD, 10));
+        toggleSpacer.setPreferredSize(new Dimension(200,25));
+        toggleSpacer.setHorizontalAlignment(JLabel.CENTER);
         toggleSpacer.setVisible(false);
         actionPanel.add(toggleSpacer);
 
@@ -1004,6 +1010,16 @@ public class AnimePanel extends JPanel {
         rightButton.addActionListener(new switchButtonActionListener());
         setButtonDefaults(rightButton);
         buttonPanel.add(rightButton);
+
+        if (!swapable()){
+            leftButton.setEnabled(false);
+            rightButton.setEnabled(false);
+        } 
+    }
+
+    public boolean swapable(){
+        references = controller.getFilteredReferenceList();
+        return (references.indexOf(reference) > -1);
     }
     
     public void refreshPage(){
@@ -1012,9 +1028,9 @@ public class AnimePanel extends JPanel {
 
     public void toggleEnables(boolean bool){ // I would use looping if it was feasible.
         if (cancelButton != null) cancelButton.setEnabled(bool);
-        if (commitButton != null) commitButton.setEnabled(bool);
-        if (leftButton != null) leftButton.setEnabled(bool);
-        if (rightButton != null) rightButton.setEnabled(bool);
+        if (commitButton != null) commitButton.setEnabled(bool&&commitState);
+        if (leftButton != null) leftButton.setEnabled(bool&&swapable());
+        if (rightButton != null) rightButton.setEnabled(bool&&swapable());
         if (datePicker != null) datePicker.setVisible(bool);
         if (dropBox != null) dropBox.setVisible(bool);
         if (textInput != null) textInput.setEnabled(bool);
@@ -1060,6 +1076,8 @@ public class AnimePanel extends JPanel {
         }
     }
 
+
+
     private class saveButtonActionListener implements ActionListener {
         @Override
         public void actionPerformed(ActionEvent V){
@@ -1070,7 +1088,23 @@ public class AnimePanel extends JPanel {
     private class switchButtonActionListener implements ActionListener {
         @Override
         public void actionPerformed(ActionEvent V){
-            // do something
+            JComponent source = (JComponent)V.getSource();
+            String sourceString = source.getName();
+
+            references = controller.getFilteredReferenceList();
+            int index = references.indexOf(reference);
+            switch(sourceString){ // neither of these break statements should ever be reached, but they are there just in case.
+                case "left": 
+                    if (index < 0) System.out.println("current anime index not found"); // the index of the current anime is not found, should never happen
+                    else if (index == 0) mainGUI.generateAnimePage(references.get(references.size() - 1)); // loop to bottom of array
+                    else mainGUI.generateAnimePage(references.get(index - 1)); // move one anime to the left (up if looking at the list)
+                    break;
+                case "right": 
+                if (index < 0) System.out.println("current anime index not found"); // the index of the current anime is not found, should never happen
+                else if (index == (references.size() - 1)) mainGUI.generateAnimePage(references.get(0)); // loop to top of array
+                else mainGUI.generateAnimePage(references.get(index + 1)); // move one anime to the right (up if looking at the list)
+                    break;
+            }
         }
     }
 
@@ -1090,7 +1124,7 @@ public class AnimePanel extends JPanel {
             switch(sourceString){
                 case "watchingStartDate": // step down
                 case "watchingEndDate": 
-                    controller.set(reference,sourceString,datePicker.getText());
+                    controller.set(reference,sourceString,datePicker.getDate().toString());
                     generateRightBottom();
                     generateLeftTop();
                     break;
@@ -1187,6 +1221,10 @@ public class AnimePanel extends JPanel {
             if (controller.get(reference,"hidden").equals("true")) controller.set(reference,"hidden","false");
             else controller.set(reference,"hidden","true");    
             generateLeftBottom();
+            if (!swapable()){
+                leftButton.setEnabled(false);
+                rightButton.setEnabled(false);
+            }
             if (hiddenOverride) generateRightBottom();
         }
     }

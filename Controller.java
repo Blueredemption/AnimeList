@@ -5,6 +5,9 @@
 
 import java.util.*;
 import java.awt.Color;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
+import java.time.temporal.ChronoUnit;
 
 public class Controller {
     AnimeDao animeDao;
@@ -51,9 +54,25 @@ public class Controller {
     public String get(String reference, String key){
         return animeDao.getValue(reference, key);
     }
+
     public Color getAnimeColor(String reference){
         if (animeDao.getValue(reference, "customColor").equals("false")) return animeDao.getColor(reference);
         else return fieldStorageDao.getList();
+    }
+
+    public String getDateAsString(String reference, String key){
+        Date date;
+        try{
+            date = new SimpleDateFormat("yyyy-MM-dd").parse(get(reference,key));
+        }
+        catch (Exception E) {
+            date = new Date();
+            System.out.println("parseing of date string failed, assuming the field is empty.");
+            return "?";
+        }
+        
+        DateFormat dateFormat = new SimpleDateFormat("MMMM dd, yyyy");  
+        return dateFormat.format(date); 
     }
 
     public String set(String reference, String key, String value){
@@ -184,11 +203,25 @@ public class Controller {
         return percent +"";
     }  
 
-    // public String getSpan(String reference){
-    //     return null;
-    // }
-    
-    // cumulative statistics
+    public String getSpan(String reference){
+        Date start;
+        Date end;
+        try{
+            start = new SimpleDateFormat("yyyy-MM-dd").parse(get(reference,"watchingStartDate"));
+            end = new SimpleDateFormat("yyyy-MM-dd").parse(get(reference,"watchingEndDate"));
+            ChronoUnit.DAYS.between(start.toInstant(),end.toInstant());
+        }
+        catch (Exception E) {
+            System.out.println("parseing of date strings failed, assuming a field is empty.");
+            return "Unknown Days";
+        }
+       
+        if (ChronoUnit.DAYS.between(start.toInstant(),end.toInstant()) < 0) return "Timey Wimey";
+        else if (ChronoUnit.DAYS.between(start.toInstant(),end.toInstant()) == 0)  return " < 1 Day";
+        else if (ChronoUnit.DAYS.between(start.toInstant(),end.toInstant()) == 1) return "1 Day";
+        return ChronoUnit.DAYS.between(start.toInstant(),end.toInstant()) +" Days";
+    }
+
     private int getTotalMinutes(){ // excludes hidden but not filtered anime
         ArrayList<String> referenceList = getReferenceList();
         int sum = 0;

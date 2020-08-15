@@ -54,7 +54,6 @@ public class MainGUI extends JFrame {
         generatePane();
         generatePanelB();
         generatePanelA();
-
     }
 
     public void generatePane() { // generates layered pane that holds the two main pains
@@ -70,6 +69,7 @@ public class MainGUI extends JFrame {
         panelA = new JPanel();
         pane.add(panelA, BorderLayout.WEST);
         generateHomePage();
+        swapNavPanelFocus(true);
     }
 
     public void generateNavPanel(String label) { // generates the nav panel on the left (content) pane
@@ -194,6 +194,8 @@ public class MainGUI extends JFrame {
         nav2.setText("|||");
         setButtonDefaults(nav2);
         panelB.add(nav2);
+        
+        if (subNavPanel2 != null) swapNavPanelFocus(true);
     }
 
     public void generateNavigationPageLarge() {
