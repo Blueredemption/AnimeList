@@ -423,7 +423,6 @@ public class AnimePanel extends JPanel {
         if (controller.get(reference,"hidden").equals("true")) hiddenBox.setText("\u2714");
         hiddenBox.setPreferredSize(new Dimension(15,15));
         setButtonDefaults(hiddenBox);
-        hiddenLabel.setBackground(controller.getFieldColor("background2"));
         hiddenBox.addActionListener(new hiddenActionListener());
         leftBottomPanel.add(hiddenBox);
 
@@ -573,7 +572,7 @@ public class AnimePanel extends JPanel {
 
         // switch statement starts here
         switch(sourceString){
-            case "animeName": loadTextRetrieval(sourceString, actionPanel); break; //
+            case "animeName": loadTextRetrieval(sourceString, actionPanel); break; 
             case "numberOfEpisodesWatched": loadButtonInput(sourceString, actionPanel); break; 
             case "numberOfEpisodesTotal": loadButtonInput(sourceString, actionPanel); break; 
             case "averageEpisodeLength": loadDropDown(sourceString, actionPanel); break; 
@@ -585,10 +584,12 @@ public class AnimePanel extends JPanel {
             case "ageRating": loadDropDown(sourceString, actionPanel); break; 
             case "mainGenre": loadDropDown(sourceString, actionPanel); break; 
             case "subGenre": loadDropDown(sourceString, actionPanel); break;
-            case "animationStudio": loadTextRetrieval(sourceString, actionPanel); break; //
-            case "finish": loadTextRetrieval(sourceString, actionPanel); break; //
-            case "color": loadMiniColorPicker(actionPanel); break; //
-            case "remove": loadTextRetrieval(sourceString, actionPanel); break; //
+            case "animationStudio": loadTextRetrieval(sourceString, actionPanel); break; 
+            case "finish": loadTextRetrieval(sourceString, actionPanel); break; 
+            case "color": loadMiniColorPicker(actionPanel); break; 
+            case "remove": loadTextRetrieval(sourceString, actionPanel); break; 
+            case "removeStartDate": loadTextRetrieval(sourceString, actionPanel); break; 
+            case "removeEndDate": loadTextRetrieval(sourceString, actionPanel); break; 
             default: System.out.println("Invalid source: " +sourceString);
         } 
     }
@@ -630,6 +631,12 @@ public class AnimePanel extends JPanel {
                 break;
             case "remove":
                 sectionLabel.setText("Remove Anime: (Type Yes)"); 
+                break;
+            case "removeStartDate":
+                sectionLabel.setText("Remove Date: (Type Yes)");
+                break;
+            case "removeEndDate":
+                sectionLabel.setText("Remove Date: (Type Yes)");
                 break;
         }
 
@@ -796,7 +803,7 @@ public class AnimePanel extends JPanel {
         switch(source){
             case "averageEpisodeLength":
                 stringList = new ArrayList<String>();
-                for(int i = 0; i < 100; i++){
+                for(int i = 4; i < 100; i++){
                     stringList.add((i+1) +"");
                 }
                 sectionLabel.setText("Set Episode Length:");
@@ -890,8 +897,19 @@ public class AnimePanel extends JPanel {
         sectionLabel.setForeground(controller.getFieldColor("text"));
         actionPanel.add(sectionLabel);
 
-        JLabel spacer = new JLabel(); // spacer
+        JLabel spacer = new JLabel(); 
         spacer.setPreferredSize(new Dimension(300,10));
+        actionPanel.add(spacer);
+
+        JButton unknownButton = new JButton("?");
+        unknownButton.setPreferredSize(new Dimension(25,25));
+        unknownButton.setName(source);
+        setButtonDefaults(unknownButton);
+        unknownButton.addActionListener(new unknownButtonActionListener());
+        actionPanel.add(unknownButton);
+
+        spacer = new JLabel(); 
+        spacer.setPreferredSize(new Dimension(3,0));
         actionPanel.add(spacer);
 
         DatePickerSettings settings = new DatePickerSettings(); // edit what needs to be edited in the settings
@@ -1102,7 +1120,7 @@ public class AnimePanel extends JPanel {
                 case "right": 
                 if (index < 0) System.out.println("current anime index not found"); // the index of the current anime is not found, should never happen
                 else if (index == (references.size() - 1)) mainGUI.generateAnimePage(references.get(0)); // loop to top of array
-                else mainGUI.generateAnimePage(references.get(index + 1)); // move one anime to the right (up if looking at the list)
+                else mainGUI.generateAnimePage(references.get(index + 1)); // move one anime to the right (down if looking at the list)
                     break;
             }
         }
@@ -1160,13 +1178,13 @@ public class AnimePanel extends JPanel {
                     generateLeftTop();
                     break;   
                 case "animeName":
-                    controller.set(reference,sourceString,textInput.getText()); 
+                    controller.set(reference,sourceString,textInput.getText().trim()); 
                     mainGUI.setNavigationText(controller.get(reference,sourceString));
                     generateRightBottom();
                     generateLeftTop();
                     break;
                 case "animationStudio":
-                    controller.set(reference,sourceString,textInput.getText());
+                    controller.set(reference,sourceString,textInput.getText().trim());
                     generateRightBottom();
                     generateLeftTop();
                     break;
@@ -1184,7 +1202,22 @@ public class AnimePanel extends JPanel {
                     if (textInput.getText().trim().toUpperCase().equals("YES")){
                         controller.deleteAnime(reference);
                         mainGUI.generateListPage();
-                    }       
+                    } 
+                    break; 
+                case "removeStartDate":
+                    if (textInput.getText().trim().toUpperCase().equals("YES")){
+                        controller.set(reference,"watchingStartDate","?");
+                        generateRightBottom();
+                        generateLeftTop();
+                    } 
+                    break; 
+                case "removeEndDate":
+                    if (textInput.getText().trim().toUpperCase().equals("YES")){
+                        controller.set(reference,"watchingEndDate","?");
+                        generateRightBottom();
+                        generateLeftTop();
+                    } 
+                    break; 
             }
         }
     }
@@ -1226,6 +1259,19 @@ public class AnimePanel extends JPanel {
                 rightButton.setEnabled(false);
             }
             if (hiddenOverride) generateRightBottom();
+        }
+    }
+
+    private class unknownButtonActionListener implements ActionListener {
+        @Override
+        public void actionPerformed(ActionEvent V){
+            JComponent source = (JComponent)V.getSource();
+            String sourceString = source.getName();
+
+            switch(sourceString){
+                case "watchingStartDate": generateRightBottom("removeStartDate"); break;
+                case "watchingEndDate": generateRightBottom("removeEndDate"); break;
+            }
         }
     }
 }

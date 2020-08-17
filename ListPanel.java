@@ -9,11 +9,12 @@ import javax.swing.plaf.basic.BasicProgressBarUI;
 
 import java.awt.event.*;
 import java.util.ArrayList;
+import java.util.Calendar;
 
 public class ListPanel extends JPanel {
     private static final long serialVersionUID = 1L;
     Dimension fullDim = new Dimension(978,700);
-    Dimension leftDim = new Dimension(184,700);
+    Dimension leftDim = new Dimension(183,700);
     Dimension rightDim = new Dimension(794,700);
 
     Controller controller;
@@ -27,12 +28,11 @@ public class ListPanel extends JPanel {
     JScrollBar scrollBar;
     JButton[] listButtons;
 
-
     public ListPanel(JFrame superior, Controller controller){ // constructor
         this.controller = controller;
         this.superior = superior;
 
-        references = controller.getReferenceList();
+        references = controller.getFilteredReferenceList();
         
         setLayout(new BorderLayout());
         setOpaque(false);
@@ -53,15 +53,15 @@ public class ListPanel extends JPanel {
         leftPanel.setBackground(controller.getFieldColor("background1"));
         add(leftPanel,BorderLayout.WEST);
 
-        JLabel[] bufferLabel = new JLabel[20];
-        for (int i = 0; i < 20; i++) {
+        JLabel[] bufferLabel = new JLabel[18];
+        for (int i = 0; i < 18; i++) {
             bufferLabel[i] = new JLabel();
-            bufferLabel[i].setPreferredSize(new Dimension(12,30));
+            bufferLabel[i].setPreferredSize(new Dimension(5,30));
         }
-        JLabel[] actualLabel = new JLabel[10];
-        for (int i = 0; i < 10; i++) {
+        JLabel[] actualLabel = new JLabel[11];
+        for (int i = 0; i < 11; i++) {
             actualLabel[i] = new JLabel();
-            actualLabel[i].setPreferredSize(new Dimension(70,30));
+            actualLabel[i].setPreferredSize(new Dimension(80,28));
             actualLabel[i].setForeground(controller.getFieldColor("text"));
             actualLabel[i].setFont(new Font("Dialog", Font.BOLD, 15));
             actualLabel[i].setVerticalAlignment(JLabel.CENTER);
@@ -70,6 +70,7 @@ public class ListPanel extends JPanel {
         int c1 = 0;
         int c2 = 0;
 
+        // search related components
         JLabel searchLabel = new JLabel("Quick Search:");
         searchLabel.setPreferredSize(new Dimension(184,30));
         searchLabel.setForeground(controller.getFieldColor("text"));
@@ -78,11 +79,11 @@ public class ListPanel extends JPanel {
         searchLabel.setHorizontalAlignment(JLabel.CENTER);
         leftPanel.add(searchLabel);
 
-        bufferLabel[c1].setPreferredSize(new Dimension(12,8));
+        bufferLabel[c1].setPreferredSize(new Dimension(5,8));
         leftPanel.add(bufferLabel[c1++]);
 
         searchField = new JTextField();
-        searchField.setPreferredSize(new Dimension(160, 20));
+        searchField.setPreferredSize(new Dimension(172, 20));
         searchField.setBackground(controller.getFieldColor("background2"));
         searchField.setForeground(controller.getFieldColor("text"));
         searchField.setCaretColor(controller.getFieldColor("text"));
@@ -91,9 +92,10 @@ public class ListPanel extends JPanel {
         searchField.addActionListener(new quickSearchListener());
         leftPanel.add(searchField);
 
-        bufferLabel[c1].setPreferredSize(new Dimension(20,150));
+        bufferLabel[c1].setPreferredSize(new Dimension(20,100));
         leftPanel.add(bufferLabel[c1++]);
 
+        // sort related components
         JLabel sortLabel = new JLabel("Sort List By:");
         sortLabel.setPreferredSize(new Dimension(184,30));
         sortLabel.setForeground(controller.getFieldColor("text"));
@@ -102,15 +104,14 @@ public class ListPanel extends JPanel {
         sortLabel.setHorizontalAlignment(JLabel.CENTER);
         leftPanel.add(sortLabel);
 
+        bufferLabel[c1].setPreferredSize(new Dimension(5,28));
         leftPanel.add(bufferLabel[c1++]);
 
         actualLabel[c2].setText("Order:");
         leftPanel.add(actualLabel[c2++]);
 
-        leftPanel.add(bufferLabel[c1++]);
-
         JButton upButton = new JButton();
-        upButton.setPreferredSize(new Dimension(37, 25));
+        upButton.setPreferredSize(new Dimension(45, 24));
         upButton.addActionListener(new orderListener());
         upButton.setText(String.valueOf("\u25B2"));
         upButton.setName("Up");
@@ -119,11 +120,11 @@ public class ListPanel extends JPanel {
         if (controller.getOrder()==0) upButton.setEnabled(false);
         leftPanel.add(upButton);
 
-        bufferLabel[c1].setPreferredSize(new Dimension(6,30));
+        bufferLabel[c1].setPreferredSize(new Dimension(4,30));
         leftPanel.add(bufferLabel[c1++]);
 
         JButton downButton = new JButton();
-        downButton.setPreferredSize(new Dimension(37, 25));
+        downButton.setPreferredSize(new Dimension(45, 24));
         downButton.addActionListener(new orderListener());
         downButton.setText(String.valueOf("\u25BC"));
         downButton.setName("Down");
@@ -132,117 +133,163 @@ public class ListPanel extends JPanel {
         if (controller.getOrder()==1) downButton.setEnabled(false);
         leftPanel.add(downButton);
 
+        bufferLabel[c1].setPreferredSize(new Dimension(5,28));
         leftPanel.add(bufferLabel[c1++]);
 
-        actualLabel[c2].setText("Added:");
+        actualLabel[c2].setText("Attribute:");
         leftPanel.add(actualLabel[c2++]);
 
-        leftPanel.add(bufferLabel[c1++]);
+        String[] sortTypes = {"Started","Name","Episodes","Season","Year","Progress","Color"};
+        JComboBox<String> sortBox = new JComboBox<String>(sortTypes); 
+        sortBox.setRenderer(new CustomComboBoxRenderer(controller));
+        sortBox.setEditor(new CustomComboBoxEditor(controller));
+        sortBox.setUI(new CustomComboBoxUI(controller));
+        sortBox.setPreferredSize(new Dimension(94,25));
+        sortBox.setFont(new Font("Dialog", Font.BOLD, 12));
+        sortBox.setForeground(controller.getFieldColor("text"));
+        sortBox.setBackground(controller.getFieldColor("background3"));
+        sortBox.setBorder(BorderFactory.createLineBorder(controller.getFieldColor("buttonBorder")));
+        sortBox.setEditable(true);
+        sortBox.setSelectedIndex(controller.getSort());
+        sortBox.setEditable(false);
+        sortBox.setFocusable(false);
+        sortBox.addActionListener(new sortBoxActionListener()); 
+        leftPanel.add(sortBox);
         
-        JButton addedButton = new JButton();
-        addedButton.setPreferredSize(new Dimension(80, 25));
-        addedButton.addActionListener(new sortListener());
-        addedButton.setText("Select");
-        addedButton.setName("Added");
-        setButtonDefaults(addedButton);
-        if (controller.getSort()==0) addedButton.setEnabled(false);
-        leftPanel.add(addedButton);
-
+        bufferLabel[c1].setPreferredSize(new Dimension(20,20));
         leftPanel.add(bufferLabel[c1++]);
 
-        actualLabel[c2].setText("Name:");
+        // filter related components
+        actualLabel[c2] = new JLabel("Filter List By:");
+        actualLabel[c2].setPreferredSize(new Dimension(184,30));
+        actualLabel[c2].setForeground(controller.getFieldColor("text"));
+        actualLabel[c2].setFont(new Font("Dialog", Font.BOLD, 15));
+        actualLabel[c2].setVerticalAlignment(JLabel.CENTER);
+        actualLabel[c2].setHorizontalAlignment(JLabel.CENTER);
         leftPanel.add(actualLabel[c2++]);
 
-        leftPanel.add(bufferLabel[c1++]);
-        
-        JButton nameButton = new JButton();
-        nameButton.setPreferredSize(new Dimension(80, 25));
-        nameButton.addActionListener(new sortListener());
-        nameButton.setText("Select");
-        nameButton.setName("Name");
-        setButtonDefaults(nameButton);
-        if (controller.getSort()==1) nameButton.setEnabled(false);
-        leftPanel.add(nameButton);
+        ArrayList<String> stringList = new ArrayList<String>(); // for the list years
+        for(int i = Calendar.getInstance().get(Calendar.YEAR); i > 1900; i--){
+            stringList.add((i) +"");
+        }
+
+        Object[] lists = {controller.getListOfDescriptors("seasons"), // these are the items in the combobox dropdowns
+                          stringList,
+                          stringList,
+                          controller.getListOfDescriptors("languages"),
+                          controller.getListOfDescriptors("contentRatings"),
+                          controller.getListOfDescriptors("genres"),
+                          controller.getListOfStudios()};
+
+        @SuppressWarnings("unchecked") // I can't put <String> after the JComboBox when initializing the array :/
+        JComboBox<String>[] filterBox = new JComboBox[7];
+        for (int i = 0; i < 7; i++){
+            @SuppressWarnings("unchecked") // this will always be an ArrayList<String>
+            String[] listString = ((ArrayList<String>)lists[i]).toArray(new String[0]);
+            filterBox[i] = new JComboBox<String>(listString);
+            filterBox[i].setRenderer(new CustomComboBoxRenderer(controller));
+            filterBox[i].setEditor(new CustomComboBoxEditor(controller));
+            filterBox[i].setUI(new CustomComboBoxUI(controller));
+            filterBox[i].setPreferredSize(new Dimension(94,25));
+            filterBox[i].setFont(new Font("Dialog", Font.BOLD, 12));
+            filterBox[i].setForeground(controller.getFieldColor("text"));
+            filterBox[i].setBackground(controller.getFieldColor("background3"));
+            filterBox[i].setBorder(BorderFactory.createLineBorder(controller.getFieldColor("buttonBorder")));
+            filterBox[i].setEditable(true);
+            String string = controller.getPreApplyFilterField(i);
+            if (string.equals("Select One:")) filterBox[i].setSelectedItem("Select One:");
+            else{
+                @SuppressWarnings("unchecked") // this will always be an ArrayList<String>
+                int index = ((ArrayList<String>)lists[i]).indexOf(string);
+                filterBox[i].setSelectedIndex(index);
+            }
+            filterBox[i].setEditable(false);
+            filterBox[i].setFocusable(false);
+            filterBox[i].addActionListener(new filterBoxActionListener()); 
+        }
+
+        int iter = 0;
 
         leftPanel.add(bufferLabel[c1++]);
-
-        actualLabel[c2].setText("Episodes:");
-        leftPanel.add(actualLabel[c2++]);
-
-        leftPanel.add(bufferLabel[c1++]);
-        
-        JButton episodesButton = new JButton();
-        episodesButton.setPreferredSize(new Dimension(80, 25));
-        episodesButton.addActionListener(new sortListener());
-        episodesButton.setText("Select");
-        episodesButton.setName("Episodes");
-        setButtonDefaults(episodesButton);
-        if (controller.getSort()==2) episodesButton.setEnabled(false);
-        leftPanel.add(episodesButton);
-
-        leftPanel.add(bufferLabel[c1++]);
-
         actualLabel[c2].setText("Season:");
         leftPanel.add(actualLabel[c2++]);
+        filterBox[iter].setName("Season");
+        leftPanel.add(filterBox[iter++]);
 
         leftPanel.add(bufferLabel[c1++]);
-        
-        JButton seasonButton = new JButton();
-        seasonButton.setPreferredSize(new Dimension(80, 25));
-        seasonButton.addActionListener(new sortListener());
-        seasonButton.setText("Select");
-        seasonButton.setName("Season");
-        setButtonDefaults(seasonButton);
-        if (controller.getSort()==3) seasonButton.setEnabled(false);
-        leftPanel.add(seasonButton);
-
-        leftPanel.add(bufferLabel[c1++]);
-
         actualLabel[c2].setText("Year:");
         leftPanel.add(actualLabel[c2++]);
+        filterBox[iter].setName("Year");
+        leftPanel.add(filterBox[iter++]);
 
         leftPanel.add(bufferLabel[c1++]);
-        
-        JButton yearButton = new JButton();
-        yearButton.setPreferredSize(new Dimension(80, 25));
-        yearButton.addActionListener(new sortListener());
-        yearButton.setText("Select");
-        yearButton.setName("Year");
-        setButtonDefaults(yearButton);
-        if (controller.getSort()==4) yearButton.setEnabled(false);
-        leftPanel.add(yearButton);
-
-        leftPanel.add(bufferLabel[c1++]);
-
-        actualLabel[c2].setText("Progress:");
+        actualLabel[c2].setText("Started:");
         leftPanel.add(actualLabel[c2++]);
-
-        leftPanel.add(bufferLabel[c1++]);
+        filterBox[iter].setName("Started");
+        leftPanel.add(filterBox[iter++]);
         
-        JButton progressButton = new JButton();
-        progressButton.setPreferredSize(new Dimension(80, 25));
-        progressButton.addActionListener(new sortListener());
-        progressButton.setText("Select");
-        progressButton.setName("Progress");
-        setButtonDefaults(progressButton);
-        if (controller.getSort()==5) progressButton.setEnabled(false);
-        leftPanel.add(progressButton);
-
         leftPanel.add(bufferLabel[c1++]);
-
-        actualLabel[c2].setText("Color:");
+        actualLabel[c2].setText("Language:");
         leftPanel.add(actualLabel[c2++]);
+        filterBox[iter].setName("Language");
+        leftPanel.add(filterBox[iter++]);
 
         leftPanel.add(bufferLabel[c1++]);
+        actualLabel[c2].setText("Rating:");
+        leftPanel.add(actualLabel[c2++]);
+        filterBox[iter].setName("Rating");
+        leftPanel.add(filterBox[iter++]);
+
+        leftPanel.add(bufferLabel[c1++]);
+        actualLabel[c2].setText("Genre:");
+        leftPanel.add(actualLabel[c2++]);
+        filterBox[iter].setName("Genre");
+        leftPanel.add(filterBox[iter++]);
+
+        leftPanel.add(bufferLabel[c1++]);
+        actualLabel[c2].setText("Studio:");
+        leftPanel.add(actualLabel[c2++]);
+        filterBox[iter].setName("Studio");
+        leftPanel.add(filterBox[iter++]);
+
+        bufferLabel[c1].setPreferredSize(new Dimension(9,30));
+        leftPanel.add(bufferLabel[c1++]);
+
+        JButton resetButton = new JButton("Reset");
+        resetButton.setPreferredSize(new Dimension(80,24));
+        resetButton.addActionListener(new resetButtonActionListener());
+        setButtonDefaults(resetButton);
+        leftPanel.add(resetButton);
         
-        JButton colorButton = new JButton();
-        colorButton.setPreferredSize(new Dimension(80, 25));
-        colorButton.addActionListener(new sortListener());
-        colorButton.setText("Select");
-        colorButton.setName("Color");
-        setButtonDefaults(colorButton);
-        if (controller.getSort()==6) colorButton.setEnabled(false);
-        leftPanel.add(colorButton);
+        bufferLabel[c1].setPreferredSize(new Dimension(4,39));
+        leftPanel.add(bufferLabel[c1++]);
+
+        JButton applyButton = new JButton("Apply");
+        applyButton.setPreferredSize(new Dimension(80,24));
+        applyButton.addActionListener(new applyButtonActionListener());
+        setButtonDefaults(applyButton);
+        applyButton.setEnabled(controller.checkForFilterChange());
+        leftPanel.add(applyButton);
+
+        bufferLabel[c1].setPreferredSize(new Dimension(184,135));
+        leftPanel.add(bufferLabel[c1++]);
+
+        bufferLabel[c1].setPreferredSize(new Dimension(25,39));
+        leftPanel.add(bufferLabel[c1++]);
+        
+        actualLabel[c2] = new JLabel("Show Hidden?");
+        actualLabel[c2].setPreferredSize(new Dimension(110,30));
+        actualLabel[c2].setFont(new Font("Dialog", Font.BOLD, 15));
+        actualLabel[c2].setForeground(controller.getFieldColor("text"));
+        actualLabel[c2].setVerticalAlignment(JLabel.CENTER);
+        leftPanel.add(actualLabel[c2++]); 
+
+        JButton hiddenBox = new JButton();
+        if (controller.getHidden()) hiddenBox.setText("\u2714");
+        hiddenBox.setPreferredSize(new Dimension(15,15));
+        setButtonDefaults(hiddenBox);
+        hiddenBox.addActionListener(new hiddenButtonActionListener());
+        leftPanel.add(hiddenBox);
     }
 
     public void generateRight(){
@@ -455,19 +502,20 @@ public class ListPanel extends JPanel {
                 case "Up": controller.setOrder(0); break;
                 case "Down": controller.setOrder(1); break;
             }
-            references = controller.getReferenceList();
+            references = controller.getFilteredReferenceList();
             generateLeft();
             generateRight(); 
             searchField.requestFocus();
         }
     }
-    private class sortListener implements ActionListener { 
+    private class sortBoxActionListener implements ActionListener { 
         @Override
         public void actionPerformed(ActionEvent V){
             ((MainGUI)superior).generateNavigationPageSmall();
-            JButton source = (JButton)(V.getSource());
-            switch(source.getName()){
-                case "Added": controller.setSort(0); break;
+            @SuppressWarnings("unchecked")
+            String source = ((String)((JComboBox<String>)V.getSource()).getSelectedItem());
+            switch(source){
+                case "Started": controller.setSort(0); break;
                 case "Name": controller.setSort(1); break;
                 case "Episodes": controller.setSort(2); break;
                 case "Season": controller.setSort(3); break;
@@ -475,19 +523,72 @@ public class ListPanel extends JPanel {
                 case "Progress": controller.setSort(5); break;
                 case "Color": controller.setSort(6); break;
             } 
-            references = controller.getReferenceList();
+            references = controller.getFilteredReferenceList();
             generateLeft();
             generateRight();
             searchField.requestFocus();
         }
     }
 
-    // private class filterListener implements ActionListener {
-    //     @Override
-    //     public void actionPerformed(ActionEvent V){
-    //         ((MainGUI)superior).generateNavigationPageSmall();
-    //     }
-    // }
+    private class filterBoxActionListener implements ActionListener { 
+        @Override
+        public void actionPerformed(ActionEvent V){
+            ((MainGUI)superior).generateNavigationPageSmall();
+            @SuppressWarnings("unchecked")
+            String string = ((String)((JComboBox<String>)V.getSource()).getSelectedItem());
+            @SuppressWarnings("unchecked")
+            String name = ((String)((JComboBox<String>)V.getSource()).getName());
+            switch(name){
+                case "Season": controller.setPreApplyFilterField(0,string); break;
+                case "Year": controller.setPreApplyFilterField(1,string); break;
+                case "Started": controller.setPreApplyFilterField(2,string); break;
+                case "Language": controller.setPreApplyFilterField(3,string); break;
+                case "Rating": controller.setPreApplyFilterField(4,string); break;
+                case "Genre": controller.setPreApplyFilterField(5,string); break;
+                case "Studio": controller.setPreApplyFilterField(6,string); break;
+            } 
+            references = controller.getFilteredReferenceList();
+            generateLeft();
+            generateRight();
+            searchField.requestFocus();
+        }
+    }
+
+    private class hiddenButtonActionListener implements ActionListener {
+        @Override
+        public void actionPerformed(ActionEvent V){
+            ((MainGUI)superior).generateNavigationPageSmall();
+            controller.setHidden(!controller.getHidden());
+            references = controller.getFilteredReferenceList();
+            generateLeft();
+            generateRight();
+            searchField.requestFocus();
+        }
+    }
+
+    private class applyButtonActionListener implements ActionListener{
+        @Override
+        public void actionPerformed(ActionEvent V){
+            ((MainGUI)superior).generateNavigationPageSmall();
+            controller.applyFilters();
+            references = controller.getFilteredReferenceList();
+            generateLeft();
+            generateRight();
+            searchField.requestFocus();
+        }
+    }
+
+    private class resetButtonActionListener implements ActionListener{
+        @Override
+        public void actionPerformed(ActionEvent V){
+            ((MainGUI)superior).generateNavigationPageSmall();
+            controller.resetFilters();
+            references = controller.getFilteredReferenceList();
+            generateLeft();
+            generateRight();
+            searchField.requestFocus();
+        }
+    }
 
     private class quickSearchListener implements ActionListener {
         @Override

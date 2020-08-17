@@ -4,23 +4,29 @@
 
 import java.util.*;
 import java.io.*;
+import java.text.SimpleDateFormat;
+
 import org.json.simple.*;
 import org.json.simple.parser.*;
 import java.awt.Color;
 
 public class AnimeDao {
     ArrayList<AnimeObject> list;
-    int sort;
-    int order;
- 
+    int sort = 0;
+    int order = 0;
+    boolean[] filter; // these are updated dynamically because the array references are the same ones as the ones being changed in the controller. 
+    String[] filterField;
+    Boolean[] hidden; 
+
     ArrayList<String> seasons, languages, contentRatings, genres;
     
 
-    public AnimeDao(){ // constructor
+    public AnimeDao(boolean[] filter, String[] filterField, Boolean[] hidden){ // constructor
         refresh();
         generateLists();
-        sort = 0;
-        order = 0;
+        this.filter = filter;
+        this.filterField = filterField;
+        this.hidden = hidden;
     }
 
     public String create(){
@@ -170,12 +176,32 @@ public class AnimeDao {
     }
 
     public ArrayList<String> returnListOfFilteredReferences(){ // filtered
-        return returnListOfReferences();
+        ArrayList<String> fullReferences = returnListOfReferences();
+        ArrayList<String> references = new ArrayList<String>();
+        for (String reference : fullReferences) { // loop only adds what can pass all the field checks
+            if (filter[0]) if (!getValue(reference,"seasonReleased").equals(filterField[0])) continue; // checking season
+            if (filter[1]) if (!getValue(reference,"yearReleased").equals(filterField[1])) continue; // checking year released
+            if (filter[2]){ // checking year started
+                if (getValue(reference,"watchingStartDate").equals("?")) continue; // this is checking if the field has been set (Date objects can't parse "?")
+                Calendar calendar = Calendar.getInstance();
+                calendar.setTime(getDateObject(getValue(reference,"watchingStartDate")));
+                String value = calendar.get(Calendar.YEAR) +"";
+                if (!value.equals(filterField[2])) continue; 
+            } 
+            if (filter[3]) if (!getValue(reference,"languageWatchedIn").equals(filterField[3])) continue; // checking language
+            if (filter[4]) if (!getValue(reference,"ageRating").equals(filterField[4])) continue; // checking content rating
+            if (filter[5]) if (!(getValue(reference,"mainGenre").equals(filterField[5])||(getValue(reference,"subGenre").equals(filterField[5])))) continue; // checking genre
+            if (filter[6]) if (!getValue(reference,"animationStudio").equals(filterField[6])) continue; // checking studio
+            if (!hidden[0]) if (getValue(reference,"hidden").equals("true")) continue; // checking hidden
+            references.add(reference); // this is only reached if all of the if all of the continue statements fail to trigger
+        }
+        return references;
     }
 
     public ArrayList<String> returnListOfSearchedReferences(String inquiry){ // filtered and searched
         return narrowedList(returnListOfFilteredReferences(), inquiry);
     }
+
     public ArrayList<String> getListOfDescriptors(String inquiry){
         switch(inquiry){
             case "seasons": return seasons;
@@ -204,6 +230,15 @@ public class AnimeDao {
         return returnable;
     }
 
+    public ArrayList<String> returnListOfStudios(){
+        ArrayList<String> returnable = new ArrayList<String>();
+        for (AnimeObject ano : list) {
+            String string = ano.getAnimationStudio();
+            if ((returnable.indexOf(string) == -1)&&(!string.equals("?"))) returnable.add(string); // this statement prevents only exact duplicates duplicates.
+        }
+        return returnable;
+    }
+
     public JSONObject getJSON(String pathname){ // utility method to take a pathname and return its json
         String toBeJson = "";
         try {
@@ -226,5 +261,16 @@ public class AnimeDao {
             System.out.println(e);
         }
         return json;
+    }
+
+    public Date getDateObject(String dateString){
+        Date date;
+        try{
+            date = new SimpleDateFormat("yyyy-MM-dd").parse(dateString);
+            return date;
+        }
+        catch (Exception E) {
+            return null;
+        }
     }
 }

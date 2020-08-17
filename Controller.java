@@ -14,21 +14,17 @@ public class Controller {
     FieldStorageDao fieldStorageDao;
     StatisticsAggregator statisticsAggregator;
 
-    int state;
-    int order; // can be 0 (up) or 1 (down)
-    int sort; // can be 0 through 6
-    boolean[] filter;
-    String[] filterField;
+    int state = 0;
+    int order = 0; // can be 0 (up) or 1 (down)
+    int sort = 0; // can be 0 through 6
+    Boolean[] hidden = {false};
+    boolean[] filter = new boolean[7]; // defaults are false.
+    String[] filterField = {"Select One:","Select One:","Select One:","Select One:","Select One:","Select One:","Select One:"}; // 7 long
+    String[] preApplyFilterField = {"Select One:","Select One:","Select One:","Select One:","Select One:","Select One:","Select One:"};
 
     public Controller(){ // default constructor
-        animeDao = new AnimeDao();
+        animeDao = new AnimeDao(filter, filterField, hidden);
         fieldStorageDao = new FieldStorageDao();
-        state = 0;
-        order = 0;
-        sort = 0;
-        filter = new boolean[5]; // or however many filters there are, defaults are false.
-        filterField = new String[5];
-        
     }
 
     public int getState(){
@@ -71,7 +67,7 @@ public class Controller {
             return "?";
         }
         
-        DateFormat dateFormat = new SimpleDateFormat("MMMM dd, yyyy");  
+        DateFormat dateFormat = new SimpleDateFormat("MMMM d, yyyy");  
         return dateFormat.format(date); 
     }
 
@@ -93,7 +89,10 @@ public class Controller {
     public ArrayList<String> getSearchedReferenceList(String inquiry){
         return animeDao.returnListOfSearchedReferences(inquiry);
     }
-
+    
+    public ArrayList<String> getListOfStudios(){
+        return animeDao.returnListOfStudios();
+    }
 
     // FieldStorageDao related
     public Color getFieldColor(String reference){
@@ -154,10 +153,8 @@ public class Controller {
     public void loadDarkPreset(){
         fieldStorageDao.loadPreset1();
     }
-    
-    // StatisticsAggregator related
-    
-    // Window abstraction related
+
+    // Sort related
     public int getOrder(){
         return order;
     }
@@ -172,6 +169,52 @@ public class Controller {
     public void setSort(int sort){
         this.sort = sort;
         animeDao.setSort(sort);
+    }
+
+    // Filter related
+    public String getFilterField(int index){
+        return filterField[index];
+    }
+    public void setFilterField(int index, String string){
+        filterField[index] = string;
+    }
+
+    public String getPreApplyFilterField(int index){
+        return preApplyFilterField[index];
+    }
+    public void setPreApplyFilterField(int index, String string){
+        preApplyFilterField[index] = string;
+    }
+
+    public void applyFilters(){
+        for (int i = 0; i < 7; i++) {
+            filterField[i] = preApplyFilterField[i];
+            if (!filterField[i].equals("Select One:")) filter[i] = true;
+            else filter[i] = false;
+        }
+    }
+
+    public void resetFilters(){
+        for (int i = 0; i < 7; i++) {
+            filterField[i] = preApplyFilterField[i] = "Select One:";
+            filter[i] = false;
+        }
+    }
+
+    public boolean checkForFilterChange(){
+        for (int i = 0; i < 7; i++){
+            if (!filterField[i].equals(preApplyFilterField[i])){
+                return true;
+            }
+        }
+        return false;
+    }
+
+    public boolean getHidden(){
+        return hidden[0];
+    }
+    public void setHidden(boolean hidden){
+        this.hidden[0] = hidden; 
     }
 
     //*******************************************// 
