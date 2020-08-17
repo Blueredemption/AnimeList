@@ -1,8 +1,0 @@
-{
-    "java.dependency.packagePresentation": "flat",
-    "java.project.referencedLibraries": [
-        "lib/**/*.jar",
-        "Jars/json-simple-1.1.1.jar",
-        "Jars/LGoodDatePicker-10.4.1.jar"
-    ]
-}
