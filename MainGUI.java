@@ -319,7 +319,6 @@ public class MainGUI extends JFrame {
         panelA.setBackground(controller.getFieldColor("background1"));
 
         generateNavPanel("Viewing: Anime List");
-
         listPanel = new ListPanel(this, controller);
         panelA.add(listPanel,BorderLayout.WEST);
     }
@@ -352,6 +351,8 @@ public class MainGUI extends JFrame {
         panelA.setBackground(controller.getFieldColor("background1"));
 
         generateNavPanel("Viewing: Notes");
+        notesPanel = new NotesPanel(controller, this);
+        panelA.add(notesPanel,BorderLayout.WEST);
     }
 
     public void generateAnimePage(String reference) {
@@ -432,6 +433,7 @@ public class MainGUI extends JFrame {
         statisticsPanel = null;
         notesPanel =  null;
     }
+
     public void setNavsDisabled(){  // to prevent overlay issues with color editor in SettingsPanel
         nav1.setEnabled(false);
         nav2.setEnabled(false);
@@ -465,8 +467,10 @@ public class MainGUI extends JFrame {
                 } 
                 else if (animePanel != null){
                     animePanel.toggleEnables(false);
-                    animePanel.toggleEnables(false);
                 } 
+                else if (notesPanel != null){
+                    notesPanel.toggleEnables(false);
+                }
                 swapNavPanelFocus(false);
                 generateNavigationPageLarge();
             }
@@ -477,8 +481,10 @@ public class MainGUI extends JFrame {
                 } 
                 else if (animePanel != null){
                     animePanel.toggleEnables(true);
-                    animePanel.toggleEnables(true);
                 } 
+                else if (notesPanel != null){
+                    notesPanel.toggleEnables(true);
+                }
                 swapNavPanelFocus(true);
                 generateNavigationPageSmall();
             } 

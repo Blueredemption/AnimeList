@@ -14,7 +14,7 @@ import java.util.Calendar;
 public class ListPanel extends JPanel {
     private static final long serialVersionUID = 1L;
     Dimension fullDim = new Dimension(978,700);
-    Dimension leftDim = new Dimension(183,700);
+    Dimension leftDim = new Dimension(184,700);
     Dimension rightDim = new Dimension(794,700);
 
     Controller controller;
@@ -61,7 +61,7 @@ public class ListPanel extends JPanel {
         JLabel[] actualLabel = new JLabel[11];
         for (int i = 0; i < 11; i++) {
             actualLabel[i] = new JLabel();
-            actualLabel[i].setPreferredSize(new Dimension(80,28));
+            actualLabel[i].setPreferredSize(new Dimension(81,28));
             actualLabel[i].setForeground(controller.getFieldColor("text"));
             actualLabel[i].setFont(new Font("Dialog", Font.BOLD, 15));
             actualLabel[i].setVerticalAlignment(JLabel.CENTER);
@@ -92,7 +92,7 @@ public class ListPanel extends JPanel {
         searchField.addActionListener(new quickSearchListener());
         leftPanel.add(searchField);
 
-        bufferLabel[c1].setPreferredSize(new Dimension(20,100));
+        bufferLabel[c1].setPreferredSize(new Dimension(20,85));
         leftPanel.add(bufferLabel[c1++]);
 
         // sort related components
@@ -252,26 +252,29 @@ public class ListPanel extends JPanel {
         filterBox[iter].setName("Studio");
         leftPanel.add(filterBox[iter++]);
 
-        bufferLabel[c1].setPreferredSize(new Dimension(9,30));
+        bufferLabel[c1].setPreferredSize(new Dimension(4,28));
+        leftPanel.add(bufferLabel[c1++]);
+
+        bufferLabel[c1].setPreferredSize(new Dimension(4,28));
         leftPanel.add(bufferLabel[c1++]);
 
         JButton resetButton = new JButton("Reset");
-        resetButton.setPreferredSize(new Dimension(80,24));
+        resetButton.setPreferredSize(new Dimension(86,24));
         resetButton.addActionListener(new resetButtonActionListener());
         setButtonDefaults(resetButton);
         leftPanel.add(resetButton);
         
-        bufferLabel[c1].setPreferredSize(new Dimension(4,39));
+        bufferLabel[c1].setPreferredSize(new Dimension(4,28));
         leftPanel.add(bufferLabel[c1++]);
 
         JButton applyButton = new JButton("Apply");
-        applyButton.setPreferredSize(new Dimension(80,24));
+        applyButton.setPreferredSize(new Dimension(86,24));
         applyButton.addActionListener(new applyButtonActionListener());
         setButtonDefaults(applyButton);
         applyButton.setEnabled(controller.checkForFilterChange());
         leftPanel.add(applyButton);
 
-        bufferLabel[c1].setPreferredSize(new Dimension(184,135));
+        bufferLabel[c1].setPreferredSize(new Dimension(184,161));
         leftPanel.add(bufferLabel[c1++]);
 
         bufferLabel[c1].setPreferredSize(new Dimension(25,39));

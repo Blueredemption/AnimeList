@@ -53,6 +53,7 @@ public class CustomComboBoxEditor extends BasicComboBoxEditor {
      
     public void setItem(Object item) {
         this.selectedItem = item;
-        label.setText(item.toString());
+        if (item != null) label.setText(item.toString());
+        else label.setText("");
     }
 }

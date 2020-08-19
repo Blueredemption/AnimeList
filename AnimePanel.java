@@ -21,7 +21,6 @@ import com.github.lgooddatepicker.components.DatePickerSettings.DateArea;
 
 public class AnimePanel extends JPanel {
     private static final long serialVersionUID = 1L;
-    Dimension fullDim = new Dimension(978,700);
     boolean commitState = true;
     boolean hiddenOverride = true; // if rightBottomPanel needs to be reloaded.
 
@@ -367,7 +366,7 @@ public class AnimePanel extends JPanel {
         leftBottomPanel.add(spacer);
 
         textArea = new JTextArea();
-        textArea.setPreferredSize(new Dimension(600,n));
+        textArea.setPreferredSize(new Dimension(643,n));
         textArea.setBackground(controller.getAnimeColor(reference).brighter());
         textArea.setForeground(controller.getFieldColor("text"));
         textArea.setLineWrap(true);
@@ -382,7 +381,7 @@ public class AnimePanel extends JPanel {
                                                                  controller.getAnimeColor(reference).darker(), 
                                                                  controller.getAnimeColor(reference), 
                                                                  controller.getAnimeColor(reference).brighter()));
-        scrollPane.setPreferredSize(new Dimension (648,223));
+        scrollPane.setPreferredSize(new Dimension (643,223));
         scrollPane.getVerticalScrollBar().setUnitIncrement(20);
 
         JScrollBar scrollBar = scrollPane.getVerticalScrollBar();
@@ -395,6 +394,10 @@ public class AnimePanel extends JPanel {
                                                                  controller.getAnimeColor(reference).brighter()));
         leftBottomPanel.add(scrollPane);
         leftBottomPanel.add(scrollBar);
+
+        spacer = new JLabel(); // spacer
+        spacer.setPreferredSize(new Dimension(5,10));
+        leftBottomPanel.add(spacer);
 
         spacer = new JLabel(); // spacer
         spacer.setPreferredSize(new Dimension(5,10));
@@ -1044,7 +1047,7 @@ public class AnimePanel extends JPanel {
         mainGUI.generateAnimePage(reference);
     }
 
-    public void toggleEnables(boolean bool){ // I would use looping if it was feasible.
+    public void toggleEnables(boolean bool){ 
         if (cancelButton != null) cancelButton.setEnabled(bool);
         if (commitButton != null) commitButton.setEnabled(bool&&commitState);
         if (leftButton != null) leftButton.setEnabled(bool&&swapable());
