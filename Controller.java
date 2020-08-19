@@ -1,6 +1,3 @@
-//*****************************************//
-// Created by Cooper Eisnor                //
-//*****************************************//
 // outlet that the GUI uses to retrieve stored fields. The barrier between graphics and logic.
 
 import java.util.*;
@@ -217,10 +214,7 @@ public class Controller {
         this.hidden[0] = hidden; 
     }
 
-    //*******************************************// 
-    //         Anime Specific Statistics         // 
-    //*******************************************//
-
+    // animePanel related       
     private int getOnlyMinutes(String reference){ 
         int averageMinutes = Integer.parseInt(get(reference, "averageEpisodeLength"));
         int episodesWatched = Integer.parseInt(get(reference, "numberOfEpisodesWatched"));

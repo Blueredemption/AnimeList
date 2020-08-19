@@ -1,13 +1,9 @@
-//*****************************************//
-// Created by Cooper Eisnor                //
-//*****************************************//
-
 import java.io.File;
 import javax.swing.*;
 
 public class Action
 {
-  public static void main(String[] args)
+  public static void main(String[] args) // runs the program
   {
     SwingUtilities.invokeLater(new Runnable()
     {

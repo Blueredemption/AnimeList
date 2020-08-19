@@ -1,6 +1,3 @@
-//*****************************************//
-// Created by Cooper Eisnor                //
-//*****************************************//
 // this class handles the design (and functionality) of the dropdown dropdown (modified copy of source)
 
 import java.awt.Color;
@@ -27,7 +24,7 @@ class CustomComboBoxRenderer extends JLabel implements ListCellRenderer<Object> 
         this.text = text;
     }
 
-    @SuppressWarnings("rawtypes") 
+    @SuppressWarnings("rawtypes") // warning due to generic list object
     public Component getListCellRendererComponent(JList list,Object value,int index,boolean isSelected,boolean cellHasFocus) {
         setText(" " +value.toString());
 

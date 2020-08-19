@@ -1,7 +1,3 @@
-//*****************************************//
-// Created by Cooper Eisnor                //
-//*****************************************//
-
 import java.util.*;
 import java.io.*;
 import java.text.SimpleDateFormat;
@@ -154,12 +150,14 @@ public class AnimeDao {
         }
         return Color.BLACK;
     }
+    
     public void setSort(int sort){
         this.sort = sort;
         for (AnimeObject animeObject : list) {
             animeObject.setSort(sort);
         }
     }
+    
     public void setOrder(int order){
         this.order = order;
     }

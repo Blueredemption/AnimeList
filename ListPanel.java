@@ -1,7 +1,3 @@
-//*****************************************//
-// Created by Cooper Eisnor                //
-//*****************************************//
-
 import java.awt.*; // change these later
 import javax.swing.*;
 import javax.swing.border.BevelBorder;

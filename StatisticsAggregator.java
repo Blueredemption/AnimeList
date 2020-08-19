@@ -8,7 +8,9 @@ public class StatisticsAggregator {
     public StatisticsAggregator(ArrayList<String> fullList, ArrayList<String> filteredList, AnimeDao animeDao){ // constuctor
         this.fullList = fullList;
         this.filteredList = filteredList;
-        this.animeDao = animeDao;
+        this.animeDao = animeDao; 
+
+        // generate method
     }
 
     // a ton of getters

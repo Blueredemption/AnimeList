@@ -1,6 +1,3 @@
-//*****************************************//
-// Created by Cooper Eisnor                //
-//*****************************************//
 // custom look for JscrollBars
 
 import javax.swing.JButton;

@@ -1,7 +1,3 @@
-//*****************************************//
-// Created by Cooper Eisnor                //
-//*****************************************//
-
 import java.awt.*; // change these later
 import javax.imageio.ImageIO;
 import javax.swing.*;

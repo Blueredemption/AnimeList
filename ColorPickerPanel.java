@@ -1,6 +1,3 @@
-//*****************************************//
-// Created by Cooper Eisnor                //
-//*****************************************//
 // generates and handles the colorpicker in the SettingsPanel
 
 import javax.swing.*; // make these imports more specific later

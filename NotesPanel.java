@@ -20,11 +20,12 @@ public class NotesPanel extends JPanel{
         this.mainGUI = mainGUI;
 
         setLayout(new BorderLayout());
-        generateBot();
+        generateTop();
         generateLeft();
         generateRight();
     }
-    public void generateBot() {
+
+    public void generateTop() {
         JPanel topPanel = new JPanel();
         topPanel.setPreferredSize(new Dimension(978,29));
         topPanel.setBackground(controller.getFieldColor("background1"));
@@ -40,6 +41,7 @@ public class NotesPanel extends JPanel{
         saveButton.setFocusPainted(false);
         topPanel.add(saveButton);
     }
+
     public void generateLeft() {
         leftPanel = new JPanel();
         leftPanel.setPreferredSize(new Dimension(748,675));
@@ -136,7 +138,6 @@ public class NotesPanel extends JPanel{
         }
         
     }
-
 
     private class saveButtonActionListener implements ActionListener {
         @Override

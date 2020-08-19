@@ -1,6 +1,3 @@
-//*****************************************//
-// Created by Cooper Eisnor                //
-//*****************************************//
 // this class handles the design (and functionality) of the scroll pane inside of the dropdown dropdown
 
 import javax.swing.JScrollPane;

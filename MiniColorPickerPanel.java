@@ -253,5 +253,4 @@ public class MiniColorPickerPanel extends JPanel {
             abovePanel.refreshPage();
         }
     }
-
 }

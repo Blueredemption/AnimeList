@@ -1,7 +1,3 @@
-//*****************************************//
-// Created by Cooper Eisnor                //
-//*****************************************//
-
 import javax.imageio.ImageIO;
 import javax.swing.*;
 import javax.swing.border.BevelBorder;
@@ -11,7 +7,6 @@ import java.io.File;
 import java.io.IOException;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-
 
 public class MainGUI extends JFrame {
 

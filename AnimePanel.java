@@ -1,7 +1,3 @@
-//*****************************************//
-// Created by Cooper Eisnor                //
-//*****************************************//
-
 import java.awt.*; // change these later
 import java.io.File;
 import java.io.IOException;
@@ -597,7 +593,7 @@ public class AnimePanel extends JPanel {
         } 
     }
     
-    //length cutting methods
+    // length cutting methods
     public void loadTextRetrieval(String source, JPanel actionPanel){
         JLabel sectionLabel = new JLabel();
         sectionLabel.setHorizontalAlignment(JLabel.CENTER);
@@ -1096,8 +1092,6 @@ public class AnimePanel extends JPanel {
             }
         }
     }
-
-
 
     private class saveButtonActionListener implements ActionListener {
         @Override

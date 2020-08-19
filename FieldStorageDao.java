@@ -1,6 +1,3 @@
-//*****************************************//
-// Created by Cooper Eisnor                //
-//*****************************************//
 // this class handles all the storage and retrieval of colors and other non anime object related items
 
 import java.util.*;
