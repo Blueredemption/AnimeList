@@ -60,7 +60,7 @@ public class Controller {
         }
         catch (Exception E) {
             date = new Date();
-            System.out.println("parseing of date string failed, assuming the field is empty.");
+            //System.out.println("parseing of date string failed, assuming the field is empty.");
             return "?";
         }
         
@@ -249,7 +249,7 @@ public class Controller {
             ChronoUnit.DAYS.between(start.toInstant(),end.toInstant());
         }
         catch (Exception E) {
-            System.out.println("parseing of date strings failed, assuming a field is empty.");
+            //System.out.println("parseing of date strings failed, assuming a field is empty.");
             return "Unknown Days";
         }
        

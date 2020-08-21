@@ -435,5 +435,4 @@ public class ColorPickerPanel extends JPanel {
 
         }
   }
-
 }

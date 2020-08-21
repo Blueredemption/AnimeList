@@ -324,7 +324,7 @@ public class AnimePanel extends JPanel {
         leftTopPanel.add(labels[c1++]);
 
         JProgressBar progressBar = new JProgressBar();
-        progressBar.setPreferredSize(new Dimension (276,25));
+        progressBar.setPreferredSize(new Dimension (261,25));
         progressBar.setValue((int)(Double.parseDouble(controller.get(reference, "progress"))));
         progressBar.setBackground(controller.getAnimeColor(reference).brighter().brighter()); 
         progressBar.setForeground(controller.getAnimeColor(reference).brighter());
@@ -335,8 +335,16 @@ public class AnimePanel extends JPanel {
             protected Color getSelectionForeground() { return controller.getFieldColor("text");} });
         leftTopPanel.add(progressBar);
 
-        labels[c1].setPreferredSize(new Dimension(40,30)); // spacer
+        labels[c1].setPreferredSize(new Dimension(35,30)); // spacer
         leftTopPanel.add(labels[c1++]);
+
+        JButton colorBox = new JButton();
+        if (controller.get(reference,"customColor").equals("false")) colorBox.setText("\u2714");
+        else colorBox.setText("");
+        colorBox.setPreferredSize(new Dimension(15,15));
+        setButtonDefaults(colorBox);
+        colorBox.addActionListener(new toggleColorActionListener());
+        leftTopPanel.add(colorBox);
 
         buttons[cb].setName("color");
         buttons[cb].setText("Color");
@@ -1269,6 +1277,15 @@ public class AnimePanel extends JPanel {
                 case "watchingStartDate": generateRightBottom("removeStartDate"); break;
                 case "watchingEndDate": generateRightBottom("removeEndDate"); break;
             }
+        }
+    }
+
+    private class toggleColorActionListener implements ActionListener {
+        @Override
+        public void actionPerformed(ActionEvent V){
+            if (controller.get(reference,"customColor").equals("true")) controller.set(reference,"customColor","false");
+            else controller.set(reference,"customColor","true");    
+            refreshPage();
         }
     }
 }

@@ -29,7 +29,7 @@ public class NotesPanel extends JPanel{
         JPanel topPanel = new JPanel();
         topPanel.setPreferredSize(new Dimension(978,29));
         topPanel.setBackground(controller.getFieldColor("background1"));
-        topPanel.setLayout(new FlowLayout(FlowLayout.LEFT,1,2));
+        topPanel.setLayout(new FlowLayout(FlowLayout.LEFT,5,2));
         add(topPanel,BorderLayout.NORTH);
 
         saveButton = new JButton("Save");
@@ -45,9 +45,8 @@ public class NotesPanel extends JPanel{
     public void generateLeft() {
         leftPanel = new JPanel();
         leftPanel.setPreferredSize(new Dimension(748,675));
-        leftPanel.setLayout(new FlowLayout(FlowLayout.CENTER,0,0));
-        leftPanel.setOpaque(false);
-        leftPanel.setBackground(Color.BLUE);
+        leftPanel.setLayout(new FlowLayout(FlowLayout.RIGHT,0,0));
+        leftPanel.setBackground(controller.getFieldColor("background1"));
         add(leftPanel, BorderLayout.WEST);
 
         int n = 3000;
@@ -68,12 +67,12 @@ public class NotesPanel extends JPanel{
                                                                  controller.getFieldColor("background2").darker(), 
                                                                  controller.getFieldColor("background2"), 
                                                                  controller.getFieldColor("background2").brighter()));
-        scrollPane.setPreferredSize(new Dimension (738,675));
+        scrollPane.setPreferredSize(new Dimension (733,670));
         scrollPane.getVerticalScrollBar().setUnitIncrement(20);
 
         JScrollBar scrollBar = scrollPane.getVerticalScrollBar();
         scrollPane.remove(scrollBar); 
-        scrollBar.setPreferredSize(new Dimension(10,675));
+        scrollBar.setPreferredSize(new Dimension(10,670));
         scrollBar.setUI(new CustomScrollBarUI(controller,controller.getFieldColor("buttons"),controller.getFieldColor("background2").brighter()));
         scrollBar.setBorder(new BevelBorder(BevelBorder.LOWERED, controller.getFieldColor("background2"), 
                                                                  controller.getFieldColor("background2").darker(), 
@@ -86,9 +85,8 @@ public class NotesPanel extends JPanel{
     public void generateRight(){
         rightPanel = new JPanel();
         rightPanel.setPreferredSize(new Dimension(230,675));
-        rightPanel.setLayout(new BorderLayout());
-        //rightPanel.setOpaque(false);
-        rightPanel.setBackground(controller.getFieldColor("background2").brighter());
+        rightPanel.setLayout(new FlowLayout(FlowLayout.LEFT,0,0));
+        rightPanel.setBackground(controller.getFieldColor("background1"));
         add(rightPanel, BorderLayout.EAST);
 
         int n = 3000;
@@ -109,12 +107,12 @@ public class NotesPanel extends JPanel{
                                                                  controller.getFieldColor("background2").darker(), 
                                                                  controller.getFieldColor("background2"), 
                                                                  controller.getFieldColor("background2").brighter()));
-        rightScrollPane.setPreferredSize(new Dimension (220,675));
+        rightScrollPane.setPreferredSize(new Dimension (215,670));
         rightScrollPane.getVerticalScrollBar().setUnitIncrement(20);
 
         rightScrollBar = rightScrollPane.getVerticalScrollBar();
         rightScrollPane.remove(rightScrollBar); 
-        rightScrollBar.setPreferredSize(new Dimension(10,675));
+        rightScrollBar.setPreferredSize(new Dimension(10,670));
         rightScrollBar.setUI(new CustomScrollBarUI(controller,controller.getFieldColor("buttons"),controller.getFieldColor("background2").brighter()));
         rightScrollBar.setBorder(new BevelBorder(BevelBorder.LOWERED, controller.getFieldColor("background2"), 
                                                                  controller.getFieldColor("background2").darker(), 

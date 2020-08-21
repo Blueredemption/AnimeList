@@ -250,6 +250,7 @@ public class MiniColorPickerPanel extends JPanel {
         @Override
         public void actionPerformed(ActionEvent e) {
             controller.setAnimeColor(reference, getPickedColor());
+            controller.set(reference, "customColor", "false");
             abovePanel.refreshPage();
         }
     }

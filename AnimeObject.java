@@ -296,8 +296,7 @@ public class AnimeObject implements Comparable<Object>{
                          ((Long)json.get("b")).intValue(),
                          ((Long)json.get("a")).intValue());
     }
-
-    
+  
     public Date getDateObject(String dateString){
         Date date;
         try{
