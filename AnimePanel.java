@@ -32,7 +32,7 @@ public class AnimePanel extends JPanel {
     JPanel topPanel, bottomPanel, leftTopPanel, leftBottomPanel, rightTopPanel, rightBottomPanel;
     JTextArea textArea;
     JTextField textInput;
-    JButton leftButton, rightButton, cancelButton, commitButton;
+    JButton leftButton, rightButton, cancelButton, commitButton, unknownButton;
     JLabel numberLabel, toggleSpacer;
 
     public AnimePanel(Controller controller, MainGUI mainGUI, String reference){  // constructor
@@ -908,7 +908,7 @@ public class AnimePanel extends JPanel {
         spacer.setPreferredSize(new Dimension(300,10));
         actionPanel.add(spacer);
 
-        JButton unknownButton = new JButton("?");
+        unknownButton = new JButton("?");
         unknownButton.setPreferredSize(new Dimension(25,25));
         unknownButton.setName(source);
         setButtonDefaults(unknownButton);
@@ -939,7 +939,7 @@ public class AnimePanel extends JPanel {
         toggleSpacer = new JLabel("Hidden while Navigation is open"); // appears to fill gap when datepicker his hidden when nav is opened.
         toggleSpacer.setForeground(controller.getFieldColor("text"));
         toggleSpacer.setFont(new Font("Dialog", Font.BOLD, 10));
-        toggleSpacer.setPreferredSize(new Dimension(200,25));
+        toggleSpacer.setPreferredSize(new Dimension(235,25));
         toggleSpacer.setHorizontalAlignment(JLabel.CENTER);
         toggleSpacer.setVisible(false);
         actionPanel.add(toggleSpacer);
@@ -1067,6 +1067,7 @@ public class AnimePanel extends JPanel {
         if (nButton6 != null) nButton6.setEnabled(bool);
         if (colorPanel != null) colorPanel.toggleEnables(bool);
         if (toggleSpacer != null) toggleSpacer.setVisible(!bool);
+        if (unknownButton != null) unknownButton.setEnabled(bool);
     }
 
     //ACTION LISTENERS

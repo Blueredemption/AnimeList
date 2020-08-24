@@ -1,11 +1,16 @@
 import java.awt.*;
+
+import javax.imageio.ImageIO;
 import javax.swing.*;
+import javax.swing.border.BevelBorder;
 //import javax.swing.border.BevelBorder;
 import javax.swing.plaf.basic.BasicProgressBarUI;
 
 //import java.awt.event.*;
 import java.awt.Dimension;
+import java.io.File;
 //import java.util.ArrayList;
+import java.io.IOException;
 
 public class StatisticsPanel extends JPanel {
     private static final long serialVersionUID = 1L;
@@ -155,7 +160,7 @@ public class StatisticsPanel extends JPanel {
         leftPanel.setPreferredSize(new Dimension(489,671));
         leftPanel.setLayout(new FlowLayout());
         //leftPanel.setOpaque(false);
-        leftPanel.setBackground(Color.BLUE);
+        leftPanel.setBackground(Color.GREEN);
 
         rightPanel = new JPanel();
         rightPanel.setPreferredSize(new Dimension(489,671));
@@ -165,22 +170,19 @@ public class StatisticsPanel extends JPanel {
         rightLeftPanel = new JPanel();
         rightLeftPanel.setPreferredSize(new Dimension(200,481));
         rightLeftPanel.setLayout(new FlowLayout());
-        //rightLeftPanel.setOpaque(false);
-        rightLeftPanel.setBackground(Color.WHITE);
+        rightLeftPanel.setOpaque(false);
         rightPanel.add(rightLeftPanel,BorderLayout.WEST);
 
         rightRightPanel = new JPanel();
         rightRightPanel.setPreferredSize(new Dimension(289,481));
         rightRightPanel.setLayout(new FlowLayout());
-        //rightRightPanel.setOpaque(false);
-        rightRightPanel.setBackground(Color.ORANGE);
+        rightRightPanel.setOpaque(false);
         rightPanel.add(rightRightPanel,BorderLayout.EAST);
 
         rightBottomPanel = new JPanel();
         rightBottomPanel.setPreferredSize(new Dimension(489,190));
-        rightBottomPanel.setLayout(new FlowLayout());
-        //rightBottomPanel.setOpaque(false);
-        rightBottomPanel.setBackground(Color.YELLOW);
+        rightBottomPanel.setLayout(new FlowLayout(FlowLayout.CENTER,33,5));
+        rightBottomPanel.setOpaque(false);
         rightPanel.add(rightBottomPanel,BorderLayout.SOUTH);
     }
 
@@ -193,11 +195,318 @@ public class StatisticsPanel extends JPanel {
     }
 
     public void generateRightUpperPanels() {
+        // rightRightPanel
+        JLabel sLabel = new JLabel();
+        sLabel.setText("####"); // total # anime watched
+        sLabel.setPreferredSize(new Dimension(289,90));
+        sLabel.setHorizontalAlignment(JLabel.CENTER);
+        sLabel.setVerticalAlignment(JLabel.CENTER);
+        sLabel.setFont(new Font("Dialog", Font.BOLD, 105));
+        sLabel.setForeground(controller.getFieldColor("text"));
+        rightRightPanel.add(sLabel);
 
+        sLabel = new JLabel();
+        sLabel.setText("Anime Watched"); 
+        sLabel.setPreferredSize(new Dimension(289,20));
+        sLabel.setHorizontalAlignment(JLabel.CENTER);
+        sLabel.setVerticalAlignment(JLabel.CENTER);
+        sLabel.setFont(new Font("Dialog", Font.BOLD, 16));
+        sLabel.setForeground(controller.getFieldColor("text"));
+        rightRightPanel.add(sLabel);
+
+        sLabel = new JLabel();
+        sLabel.setText("####"); // total # episodes watched
+        sLabel.setPreferredSize(new Dimension(320,90));
+        sLabel.setHorizontalAlignment(JLabel.CENTER);
+        sLabel.setVerticalAlignment(JLabel.CENTER);
+        sLabel.setFont(new Font("Dialog", Font.BOLD, 105));
+        sLabel.setForeground(controller.getFieldColor("text"));
+        rightRightPanel.add(sLabel);
+
+        sLabel = new JLabel();
+        sLabel.setText("Episodes Watched"); 
+        sLabel.setPreferredSize(new Dimension(289,20));
+        sLabel.setHorizontalAlignment(JLabel.CENTER);
+        sLabel.setVerticalAlignment(JLabel.CENTER);
+        sLabel.setFont(new Font("Dialog", Font.BOLD, 16));
+        sLabel.setForeground(controller.getFieldColor("text"));
+        rightRightPanel.add(sLabel);
+
+        sLabel = new JLabel(); // spacer
+        sLabel.setPreferredSize(new Dimension(289,15));
+        rightRightPanel.add(sLabel);
+
+        sLabel = new JLabel();
+        sLabel.setText("Overall Time Spent"); 
+        sLabel.setPreferredSize(new Dimension(289,20));
+        sLabel.setHorizontalAlignment(JLabel.CENTER);
+        sLabel.setVerticalAlignment(JLabel.CENTER);
+        sLabel.setFont(new Font("Dialog", Font.BOLD, 16));
+        sLabel.setForeground(controller.getFieldColor("text"));
+        rightRightPanel.add(sLabel);
+
+        sLabel = new JLabel("####");
+        sLabel.setPreferredSize(new Dimension(289,35));
+        sLabel.setHorizontalAlignment(JLabel.CENTER);
+        sLabel.setFont(new Font("Dialog", Font.BOLD, 45));
+        sLabel.setForeground(controller.getFieldColor("text"));
+        rightRightPanel.add(sLabel);
+
+        sLabel = new JLabel("Days");
+        sLabel.setPreferredSize(new Dimension(289,15));
+        sLabel.setHorizontalAlignment(JLabel.CENTER);
+        sLabel.setFont(new Font("Dialog", Font.BOLD, 14));
+        sLabel.setForeground(controller.getFieldColor("text"));
+        rightRightPanel.add(sLabel);
+        
+        sLabel = new JLabel("##");
+        sLabel.setPreferredSize(new Dimension(289,35));
+        sLabel.setHorizontalAlignment(JLabel.CENTER);
+        sLabel.setFont(new Font("Dialog", Font.BOLD, 45));
+        sLabel.setForeground(controller.getFieldColor("text"));
+        rightRightPanel.add(sLabel);
+        
+        sLabel = new JLabel("Hours");
+        sLabel.setPreferredSize(new Dimension(289,15));
+        sLabel.setHorizontalAlignment(JLabel.CENTER);
+        sLabel.setFont(new Font("Dialog", Font.BOLD, 14));
+        sLabel.setForeground(controller.getFieldColor("text"));
+        rightRightPanel.add(sLabel);
+        
+        sLabel = new JLabel("##"); 
+        sLabel.setPreferredSize(new Dimension(289,35));
+        sLabel.setHorizontalAlignment(JLabel.CENTER);
+        sLabel.setFont(new Font("Dialog", Font.BOLD, 45));
+        sLabel.setForeground(controller.getFieldColor("text"));
+        rightRightPanel.add(sLabel);
+        
+        sLabel = new JLabel("Minutes");
+        sLabel.setPreferredSize(new Dimension(289,15));
+        sLabel.setHorizontalAlignment(JLabel.CENTER);
+        sLabel.setFont(new Font("Dialog", Font.BOLD, 14));
+        sLabel.setForeground(controller.getFieldColor("text"));
+        rightRightPanel.add(sLabel);
+
+        //rightLeftPanel
+
+        sLabel = new JLabel(); // spacer
+        sLabel.setPreferredSize(new Dimension(200,3));
+        rightLeftPanel.add(sLabel);
+
+        JComboBox<String> dropdown = new JComboBox<String>(/*list of anime subbed*/);
+        dropdown.setRenderer(new CustomComboBoxRenderer(controller));
+        dropdown.setEditor(new CustomComboBoxEditor(controller));
+        dropdown.setUI(new CustomComboBoxUI(controller));
+        dropdown.setPreferredSize(new Dimension(200,25));
+        dropdown.setFont(new Font("Dialog", Font.BOLD, 12));
+        dropdown.setForeground(controller.getFieldColor("text"));
+        dropdown.setBackground(controller.getFieldColor("background3"));
+        dropdown.setBorder(BorderFactory.createLineBorder(controller.getFieldColor("buttonBorder")));
+        dropdown.setEditable(true);
+        dropdown.setSelectedItem("Subbed:  ## Anime"); // # of subbed anime watched
+        dropdown.setEditable(false);
+        dropdown.setFocusable(false);
+        //dropdown.addActionListener(); 
+        rightLeftPanel.add(dropdown);
+        
+        dropdown = new JComboBox<String>(/*list of anime dubbed*/);
+        dropdown.setRenderer(new CustomComboBoxRenderer(controller));
+        dropdown.setEditor(new CustomComboBoxEditor(controller));
+        dropdown.setUI(new CustomComboBoxUI(controller));
+        dropdown.setPreferredSize(new Dimension(200,25));
+        dropdown.setFont(new Font("Dialog", Font.BOLD, 12));
+        dropdown.setForeground(controller.getFieldColor("text"));
+        dropdown.setBackground(controller.getFieldColor("background3"));
+        dropdown.setBorder(BorderFactory.createLineBorder(controller.getFieldColor("buttonBorder")));
+        dropdown.setEditable(true);
+        dropdown.setSelectedItem("Dubbed:  ## Anime"); // # of dubbed anime watched
+        dropdown.setEditable(false);
+        dropdown.setFocusable(false);
+        //dropdown.addActionListener(); 
+        rightLeftPanel.add(dropdown);
+
+        dropdown = new JComboBox<String>(/*list of anime other*/);
+        dropdown.setRenderer(new CustomComboBoxRenderer(controller));
+        dropdown.setEditor(new CustomComboBoxEditor(controller));
+        dropdown.setUI(new CustomComboBoxUI(controller));
+        dropdown.setPreferredSize(new Dimension(200,25));
+        dropdown.setFont(new Font("Dialog", Font.BOLD, 12));
+        dropdown.setForeground(controller.getFieldColor("text"));
+        dropdown.setBackground(controller.getFieldColor("background3"));
+        dropdown.setBorder(BorderFactory.createLineBorder(controller.getFieldColor("buttonBorder")));
+        dropdown.setEditable(true);
+        dropdown.setSelectedItem("Other:  ## Anime"); // # of other anime watched
+        dropdown.setEditable(false);
+        dropdown.setFocusable(false);
+        //dropdown.addActionListener(); 
+        rightLeftPanel.add(dropdown);
+
+        sLabel = new JLabel(); // spacer
+        sLabel.setPreferredSize(new Dimension(200,25));
+        rightLeftPanel.add(sLabel);
+
+        dropdown = new JComboBox<String>(/*list of epsiodes subbed*/); // make sure these 3 dropdowns are sorted by episodes not by whatever the sortstate is?
+        dropdown.setRenderer(new CustomComboBoxRenderer(controller));
+        dropdown.setEditor(new CustomComboBoxEditor(controller));
+        dropdown.setUI(new CustomComboBoxUI(controller));
+        dropdown.setPreferredSize(new Dimension(200,25));
+        dropdown.setFont(new Font("Dialog", Font.BOLD, 12));
+        dropdown.setForeground(controller.getFieldColor("text"));
+        dropdown.setBackground(controller.getFieldColor("background3"));
+        dropdown.setBorder(BorderFactory.createLineBorder(controller.getFieldColor("buttonBorder")));
+        dropdown.setEditable(true);
+        dropdown.setSelectedItem("Subbed:  ##### Episodes"); // # of subbed anime watched
+        dropdown.setEditable(false);
+        dropdown.setFocusable(false);
+        //dropdown.addActionListener(); 
+        rightLeftPanel.add(dropdown);
+        
+        dropdown = new JComboBox<String>(/*list of episodes dubbed*/);
+        dropdown.setRenderer(new CustomComboBoxRenderer(controller));
+        dropdown.setEditor(new CustomComboBoxEditor(controller));
+        dropdown.setUI(new CustomComboBoxUI(controller));
+        dropdown.setPreferredSize(new Dimension(200,25));
+        dropdown.setFont(new Font("Dialog", Font.BOLD, 12));
+        dropdown.setForeground(controller.getFieldColor("text"));
+        dropdown.setBackground(controller.getFieldColor("background3"));
+        dropdown.setBorder(BorderFactory.createLineBorder(controller.getFieldColor("buttonBorder")));
+        dropdown.setEditable(true);
+        dropdown.setSelectedItem("Dubbed:  ##### Epsiodes"); // # of dubbed episodes watched
+        dropdown.setEditable(false);
+        dropdown.setFocusable(false);
+        //dropdown.addActionListener(); 
+        rightLeftPanel.add(dropdown);
+
+        dropdown = new JComboBox<String>(/*list of episodes other*/);
+        dropdown.setRenderer(new CustomComboBoxRenderer(controller));
+        dropdown.setEditor(new CustomComboBoxEditor(controller));
+        dropdown.setUI(new CustomComboBoxUI(controller));
+        dropdown.setPreferredSize(new Dimension(200,25));
+        dropdown.setFont(new Font("Dialog", Font.BOLD, 12));
+        dropdown.setForeground(controller.getFieldColor("text"));
+        dropdown.setBackground(controller.getFieldColor("background3"));
+        dropdown.setBorder(BorderFactory.createLineBorder(controller.getFieldColor("buttonBorder")));
+        dropdown.setEditable(true);
+        dropdown.setSelectedItem("Other:  ##### Episodes"); // # of other anime watched
+        dropdown.setEditable(false);
+        dropdown.setFocusable(false);
+        //dropdown.addActionListener(); 
+        rightLeftPanel.add(dropdown);
+
+        sLabel = new JLabel(); // spacer
+        sLabel.setPreferredSize(new Dimension(200,35));
+        rightLeftPanel.add(sLabel);
+
+        sLabel = new JLabel("Favorite Anime 1");
+        sLabel.setPreferredSize(new Dimension(200,20));
+        sLabel.setHorizontalAlignment(JLabel.CENTER);
+        sLabel.setFont(new Font("Dialog", Font.BOLD, 16));
+        sLabel.setForeground(controller.getFieldColor("text"));
+        rightLeftPanel.add(sLabel);
+
+        dropdown = new JComboBox<String>(/*selector for favorite 1*/);
+        dropdown.setRenderer(new CustomComboBoxRenderer(controller));
+        dropdown.setEditor(new CustomComboBoxEditor(controller));
+        dropdown.setUI(new CustomComboBoxUI(controller));
+        dropdown.setPreferredSize(new Dimension(200,25));
+        dropdown.setFont(new Font("Dialog", Font.BOLD, 12));
+        dropdown.setForeground(controller.getFieldColor("text"));
+        dropdown.setBackground(controller.getFieldColor("background3"));
+        dropdown.setBorder(BorderFactory.createLineBorder(controller.getFieldColor("buttonBorder")));
+        dropdown.setEditable(true);
+        dropdown.setSelectedItem("Select One:"/*index of selected item OR "Select One:" */); // this will take some conditional statements
+        dropdown.setEditable(false);
+        dropdown.setFocusable(false);
+        //dropdown.addActionListener(); 
+        rightLeftPanel.add(dropdown);
+
+        sLabel = new JLabel(); // spacer
+        sLabel.setPreferredSize(new Dimension(200,20));
+        rightLeftPanel.add(sLabel);
+
+        sLabel = new JLabel("Favorite Anime 2");
+        sLabel.setPreferredSize(new Dimension(200,20));
+        sLabel.setHorizontalAlignment(JLabel.CENTER);
+        sLabel.setFont(new Font("Dialog", Font.BOLD, 16));
+        sLabel.setForeground(controller.getFieldColor("text"));
+        rightLeftPanel.add(sLabel);
+
+        dropdown = new JComboBox<String>(/*selector for favorite 1*/);
+        dropdown.setRenderer(new CustomComboBoxRenderer(controller));
+        dropdown.setEditor(new CustomComboBoxEditor(controller));
+        dropdown.setUI(new CustomComboBoxUI(controller));
+        dropdown.setPreferredSize(new Dimension(200,25));
+        dropdown.setFont(new Font("Dialog", Font.BOLD, 12));
+        dropdown.setForeground(controller.getFieldColor("text"));
+        dropdown.setBackground(controller.getFieldColor("background3"));
+        dropdown.setBorder(BorderFactory.createLineBorder(controller.getFieldColor("buttonBorder")));
+        dropdown.setEditable(true);
+        dropdown.setSelectedItem("Select One:"/*index of selected item OR "Select One:" */); // this will take some conditional statements
+        dropdown.setEditable(false);
+        dropdown.setFocusable(false);
+        //dropdown.addActionListener(); 
+        rightLeftPanel.add(dropdown);
+
+        sLabel = new JLabel(); // spacer
+        sLabel.setPreferredSize(new Dimension(200,20));
+        rightLeftPanel.add(sLabel);
+
+        sLabel = new JLabel("Favorite Anime 3");
+        sLabel.setPreferredSize(new Dimension(200,20));
+        sLabel.setHorizontalAlignment(JLabel.CENTER);
+        sLabel.setFont(new Font("Dialog", Font.BOLD, 16));
+        sLabel.setForeground(controller.getFieldColor("text"));
+        rightLeftPanel.add(sLabel);
+
+        dropdown = new JComboBox<String>(/*selector for favorite 1*/);
+        dropdown.setRenderer(new CustomComboBoxRenderer(controller));
+        dropdown.setEditor(new CustomComboBoxEditor(controller));
+        dropdown.setUI(new CustomComboBoxUI(controller));
+        dropdown.setPreferredSize(new Dimension(200,25));
+        dropdown.setFont(new Font("Dialog", Font.BOLD, 12));
+        dropdown.setForeground(controller.getFieldColor("text"));
+        dropdown.setBackground(controller.getFieldColor("background3"));
+        dropdown.setBorder(BorderFactory.createLineBorder(controller.getFieldColor("buttonBorder")));
+        dropdown.setEditable(true);
+        dropdown.setSelectedItem("Select One:"/*index of selected item OR "Select One:" */); // this will take some conditional statements
+        dropdown.setEditable(false);
+        dropdown.setFocusable(false);
+        //dropdown.addActionListener(); 
+        rightLeftPanel.add(dropdown);
     }
 
     public void generateRightBottomPanel() {
+        rightBottomPanel.removeAll(); // if this is refreshing after a change of favorite image the components need to be generated (better than refreshing the whole page)
 
+        Image imageOne = getImage(controller.getFieldText("favorite1"), new Dimension(129,180));
+        JLabel favoriteImageOne = new JLabel();
+        if (imageOne != null) favoriteImageOne.setIcon(new ImageIcon(imageOne));
+        favoriteImageOne.setPreferredSize(new Dimension(125,180));
+        favoriteImageOne.setBorder(new BevelBorder(BevelBorder.LOWERED, controller.getFieldColor("background1"), 
+                                                                        controller.getFieldColor("background1").darker(), 
+                                                                        controller.getFieldColor("background1"), 
+                                                                        controller.getFieldColor("background1").brighter()));
+        rightBottomPanel.add(favoriteImageOne);
+
+        Image imageTwo = getImage(controller.getFieldText("favorite2"), new Dimension(129,180));
+        JLabel favoriteImageTwo = new JLabel();
+        if (imageTwo != null) favoriteImageTwo.setIcon(new ImageIcon(imageTwo));
+        favoriteImageTwo.setPreferredSize(new Dimension(125,180));
+        favoriteImageTwo.setBorder(new BevelBorder(BevelBorder.LOWERED, controller.getFieldColor("background1"), 
+                                                                        controller.getFieldColor("background1").darker(), 
+                                                                        controller.getFieldColor("background1"), 
+                                                                        controller.getFieldColor("background1").brighter()));
+        rightBottomPanel.add(favoriteImageTwo);
+
+        Image imageThree = getImage(controller.getFieldText("favorite3"), new Dimension(129,180));
+        JLabel favoriteImageThree = new JLabel();
+        if (imageThree != null) favoriteImageThree.setIcon(new ImageIcon(imageThree));
+        favoriteImageThree.setPreferredSize(new Dimension(125,180));
+        favoriteImageThree.setBorder(new BevelBorder(BevelBorder.LOWERED, controller.getFieldColor("background1"), 
+                                                                          controller.getFieldColor("background1").darker(), 
+                                                                          controller.getFieldColor("background1"), 
+                                                                          controller.getFieldColor("background1").brighter()));
+        rightBottomPanel.add(favoriteImageThree);
     }
 
     public void addComponentsToStructurePanel() {
@@ -216,5 +525,18 @@ public class StatisticsPanel extends JPanel {
         revalidate();
 
         add(structurePanel,BorderLayout.CENTER);
+    }
+
+    // length cutting methods
+    public Image getImage(String location, Dimension dim) {
+        try {
+            Image thisImage = ImageIO.read(new File(location));
+            thisImage = thisImage.getScaledInstance((int) dim.getWidth(), (int) dim.getHeight(), Image.SCALE_DEFAULT);
+            return thisImage;
+        }
+        catch (IOException e) { // if image read fails return null
+            Image thisImage = null;
+            return thisImage;
+        }
     }
 }

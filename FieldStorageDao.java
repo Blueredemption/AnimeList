@@ -6,7 +6,6 @@ import org.json.simple.*;
 import org.json.simple.parser.*;
 import java.awt.Color;
 
-
 public class FieldStorageDao {
     Color buttons, background1, background2, background3, list, navigation, text, buttonBorder; // buttonBorder is also be used to panels
     Color defaultButtons, defaultBackground1, defaultBackground2, defaultBackground3, defaultList, defaultNavigation, defaultText, defaultButtonBorder; 
@@ -136,9 +135,9 @@ public class FieldStorageDao {
         defaultButtonBorder = new Color(0, 0, 255);
 
         defaultMainScreenImage = "Images/UI/Background.png";
-        defaultFavorite1 = "Images/UI/Background.png";
-        defaultFavorite2 = "Images/UI/Background.png";
-        defaultFavorite3 = "Images/UI/Background.png";
+        defaultFavorite1 = "Images/UI/Default.png";
+        defaultFavorite2 = "Images/UI/Default.png";
+        defaultFavorite3 = "Images/UI/Default.png";
         defaultNotepadLeft = "";
         defaultNotepadRight = "";
     }
