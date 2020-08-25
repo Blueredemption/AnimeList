@@ -16,8 +16,8 @@ public class Controller {
     int sort = 0; // can be 0 through 6
     Boolean[] hidden = {false};
     boolean[] filter = new boolean[7]; // defaults are false.
-    String[] filterField = {"Select One:","Select One:","Select One:","Select One:","Select One:","Select One:","Select One:"}; // 7 long
-    String[] preApplyFilterField = {"Select One:","Select One:","Select One:","Select One:","Select One:","Select One:","Select One:"};
+    String[] filterField = {"Season?","Year?","Started?","Language?","Rating?","Genre?","Studio?"}; // 7 long
+    String[] preApplyFilterField = {"Season?","Year?","Started?","Language?","Rating?","Genre?","Studio?"};
 
     public Controller(){ // default constructor
         animeDao = new AnimeDao(filter, filterField, hidden);
@@ -184,16 +184,18 @@ public class Controller {
     }
 
     public void applyFilters(){
+        String[] checkers = {"Season?","Year?","Started?","Language?","Rating?","Genre?","Studio?"};
         for (int i = 0; i < 7; i++) {
             filterField[i] = preApplyFilterField[i];
-            if (!filterField[i].equals("Select One:")) filter[i] = true;
+            if (!filterField[i].equals(checkers[i])) filter[i] = true;
             else filter[i] = false;
         }
     }
 
     public void resetFilters(){
+        String[] checkers = {"Season?","Year?","Started?","Language?","Rating?","Genre?","Studio?"};
         for (int i = 0; i < 7; i++) {
-            filterField[i] = preApplyFilterField[i] = "Select One:";
+            filterField[i] = preApplyFilterField[i] = checkers[i];
             filter[i] = false;
         }
     }

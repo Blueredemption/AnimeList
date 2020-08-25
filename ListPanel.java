@@ -179,6 +179,7 @@ public class ListPanel extends JPanel {
 
         @SuppressWarnings("unchecked") // I can't put <String> after the JComboBox when initializing the array :/
         JComboBox<String>[] filterBox = new JComboBox[7];
+        String[] checkers = {"Season?","Year?","Started?","Language?","Rating?","Genre?","Studio?"};
         for (int i = 0; i < 7; i++){
             @SuppressWarnings("unchecked") // this will always be an ArrayList<String>
             String[] listString = ((ArrayList<String>)lists[i]).toArray(new String[0]);
@@ -193,7 +194,7 @@ public class ListPanel extends JPanel {
             filterBox[i].setBorder(BorderFactory.createLineBorder(controller.getFieldColor("buttonBorder")));
             filterBox[i].setEditable(true);
             String string = controller.getPreApplyFilterField(i);
-            if (string.equals("Select One:")) filterBox[i].setSelectedItem("Select One:");
+            if (string.equals(checkers[i])) filterBox[i].setSelectedItem(checkers[i]);
             else{
                 @SuppressWarnings("unchecked") // this will always be an ArrayList<String>
                 int index = ((ArrayList<String>)lists[i]).indexOf(string);
