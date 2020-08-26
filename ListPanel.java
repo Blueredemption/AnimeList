@@ -176,6 +176,10 @@ public class ListPanel extends JPanel {
                           controller.getListOfDescriptors("contentRatings"),
                           controller.getListOfDescriptors("genres"),
                           controller.getListOfStudios()};
+        
+        @SuppressWarnings("unchecked") // will always be a string array
+        ArrayList<String> checking = ((ArrayList<String>)lists[6]);            
+        if (checking.size() == 0) checking.add("");
 
         @SuppressWarnings("unchecked") // I can't put <String> after the JComboBox when initializing the array :/
         JComboBox<String>[] filterBox = new JComboBox[7];
@@ -545,7 +549,12 @@ public class ListPanel extends JPanel {
                 case "Language": controller.setPreApplyFilterField(3,string); break;
                 case "Rating": controller.setPreApplyFilterField(4,string); break;
                 case "Genre": controller.setPreApplyFilterField(5,string); break;
-                case "Studio": controller.setPreApplyFilterField(6,string); break;
+                case "Studio": 
+                    if (controller.getListOfStudios().size() == 0){
+                        // do nothing (don't apply the change)
+                    }
+                    else controller.setPreApplyFilterField(6,string); 
+                    break;
             } 
             references = controller.getFilteredReferenceList();
             generateLeft();

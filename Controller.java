@@ -32,6 +32,10 @@ public class Controller {
     }
 
     // AnimeDao related
+    public AnimeDao getAnimeDao(){ // used only for statisticsAggregator
+        return animeDao;
+    }
+
     public String createAnime(){
         return animeDao.create();
     }
@@ -79,6 +83,10 @@ public class Controller {
         return animeDao.returnListOfReferences();
     }
 
+    public ArrayList<String> getNameList(){
+        return animeDao.returnListOfNames();
+    }
+
     public ArrayList<String> getFilteredReferenceList(){
         return animeDao.returnListOfFilteredReferences();
     }
@@ -86,7 +94,7 @@ public class Controller {
     public ArrayList<String> getSearchedReferenceList(String inquiry){
         return animeDao.returnListOfSearchedReferences(inquiry);
     }
-    
+
     public ArrayList<String> getListOfStudios(){
         return animeDao.returnListOfStudios();
     }

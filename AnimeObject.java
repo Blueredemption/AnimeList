@@ -43,7 +43,7 @@ public class AnimeObject implements Comparable<Object>{
         watchingStartDate = "?";
         watchingEndDate = "?";
         averageEpisodeLength = "20";
-        referenceNumber = determineNRN();
+        referenceNumber = System.currentTimeMillis() +"";
         notepadText = "";
         imageLocation = "Images/UI/Default.png"; 
         color = new Color(255,255,255,255);
@@ -269,27 +269,6 @@ public class AnimeObject implements Comparable<Object>{
         return true;
     }
 
-    public String determineNRN(){// method that determines the newest reference number for a new anime (for default constructor)
-        // gather all of the file names 
-        String[] fileNames;
-        File file = new File("Anime Objects");
-        fileNames = file.list();
-        // find the highest number n and return 1+n
-        int n = 0;
-        if (fileNames.length==0){
-            return "" + n;
-        }
-        else{
-            for (int i = 0; i < fileNames.length; i++){
-                int m = Integer.parseInt(fileNames[i].substring(0,fileNames[i].length()-5));
-                if(m >= n){
-                    n = m+1;
-                }
-            }
-            return "" + n;
-        }
-    }
-
     public Color constructColorFromJSON(JSONObject json){ // takes a json that stores a color and returns a color object of it
         return new Color(((Long)json.get("r")).intValue(),
                          ((Long)json.get("g")).intValue(),
@@ -320,12 +299,12 @@ public class AnimeObject implements Comparable<Object>{
 
     public int compareTo(final Object o) {
         switch(sort){
-            case 0: 
+            case 0: // startDate
                 if ((getDateObject(watchingStartDate)!=null)&&(getDateObject(((AnimeObject)o).getWatchingStartDate())!=null)) {
                     return -getDateObject(watchingStartDate).compareTo(getDateObject(((AnimeObject)o).getWatchingStartDate()));
                 }
                 else if  ((getDateObject(watchingStartDate)==null)&&(getDateObject(((AnimeObject)o).getWatchingStartDate())==null)) {
-                    return -((Integer)Integer.parseInt(referenceNumber)).compareTo((Integer)Integer.parseInt(((AnimeObject)o).getReferenceNumber()));
+                    return -((Long)Long.parseLong(referenceNumber)).compareTo((Long)Long.parseLong(((AnimeObject)o).getReferenceNumber()));
                 }
                 else if (getDateObject(watchingStartDate)==null){
                     return 1;
@@ -333,12 +312,13 @@ public class AnimeObject implements Comparable<Object>{
                 else { 
                     return -1;
                 }
-            case 1: return animeName.toUpperCase().compareTo(((AnimeObject)o).getAnimeName().toUpperCase());
-            case 2: return ((Integer)Integer.parseInt(numberOfEpisodesTotal)).compareTo((Integer)Integer.parseInt(((AnimeObject)o).getNumberOfEpisodesTotal()));
-            case 3: return (getSeasonNumber()*10000 +((Integer)Integer.parseInt(yearReleased)).compareTo(((AnimeObject)o).getSeasonNumber()*10000 +(Integer.parseInt(((AnimeObject)o).getYearReleased()))));
-            case 4: return ((Integer)(Integer.parseInt(yearReleased)*100+getSeasonNumber())).compareTo((Integer)(Integer.parseInt(((AnimeObject)o).getYearReleased())*100+((AnimeObject)o).getSeasonNumber())); 
-            case 5: return getProgress().compareTo(((AnimeObject)o).getProgress());
-            case 6: return ((Integer)color.getRGB()).compareTo((Integer)((AnimeObject)o).getColor().getRGB());
+            case 1: return animeName.toUpperCase().compareTo(((AnimeObject)o).getAnimeName().toUpperCase()); // name
+            case 2: return ((Integer)Integer.parseInt(numberOfEpisodesTotal)).compareTo((Integer)Integer.parseInt(((AnimeObject)o).getNumberOfEpisodesTotal())); // episodes
+            case 3: return (getSeasonNumber()*10000 +((Integer)Integer.parseInt(yearReleased)).compareTo(((AnimeObject)o).getSeasonNumber()*10000 +(Integer.parseInt(((AnimeObject)o).getYearReleased())))); // year released
+            case 4: return ((Integer)(Integer.parseInt(yearReleased)*100+getSeasonNumber())).compareTo((Integer)(Integer.parseInt(((AnimeObject)o).getYearReleased())*100+((AnimeObject)o).getSeasonNumber())); // season
+            case 5: return getProgress().compareTo(((AnimeObject)o).getProgress()); // progress
+            case 6: return ((Integer)color.getRGB()).compareTo((Integer)((AnimeObject)o).getColor().getRGB()); // color
+            case 7: return ((Integer)Integer.parseInt(numberOfEpisodesWatched)).compareTo((Integer)Integer.parseInt(((AnimeObject)o).getNumberOfEpisodesWatched()));// episodes watched
             default: return 0;
         }
     }

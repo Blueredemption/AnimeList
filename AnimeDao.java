@@ -151,6 +151,9 @@ public class AnimeDao {
         return Color.BLACK;
     }
     
+    public int getSort(){
+        return sort;
+    }
     public void setSort(int sort){
         this.sort = sort;
         for (AnimeObject animeObject : list) {
@@ -158,6 +161,9 @@ public class AnimeDao {
         }
     }
     
+    public int getOrder(){
+        return order;
+    }
     public void setOrder(int order){
         this.order = order;
     }
@@ -170,6 +176,15 @@ public class AnimeDao {
         }
         if (order == 0) return references;
         Collections.reverse(references);
+        return references; 
+    }
+
+    public ArrayList<String> returnListOfNames(){
+        ArrayList<String> fullReferences = returnListOfReferences();
+        ArrayList<String> references = new ArrayList<String>();
+        for (String reference : fullReferences) {
+            references.add(getValue(reference,"animeName"));
+        }
         return references; 
     }
 

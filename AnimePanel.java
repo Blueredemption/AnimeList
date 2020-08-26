@@ -49,6 +49,22 @@ public class AnimePanel extends JPanel {
         generateRightTop();
         generateRightBottom();
     }
+    public AnimePanel(Controller controller, MainGUI mainGUI, String reference, String textAreaText){  // refresh constructor
+        this.controller = controller;
+        this.mainGUI = mainGUI;
+        this.reference = reference;
+        
+        setLayout(new BorderLayout());
+        setOpaque(false);
+
+        generateTopBottom();
+        generateLeftTop();
+        generateLeftBottom();
+        generateRightTop();
+        generateRightBottom();
+
+        textArea.setText(textAreaText);
+    }
 
     public void generateTopBottom(){
         topPanel = new JPanel();
@@ -987,7 +1003,7 @@ public class AnimePanel extends JPanel {
     }
 
     public void loadMiniColorPicker(JPanel actionPanel){
-        colorPanel = new MiniColorPickerPanel(reference,controller, this);
+        colorPanel = new MiniColorPickerPanel(textArea.getText(),reference,controller,this);
         actionPanel.add(colorPanel);
 
     }
@@ -1049,6 +1065,9 @@ public class AnimePanel extends JPanel {
     
     public void refreshPage(){
         mainGUI.generateAnimePage(reference);
+    }
+    public void refreshPage(String text){
+        mainGUI.generateAnimePage(reference,text);
     }
 
     public void toggleEnables(boolean bool){ 
@@ -1199,7 +1218,7 @@ public class AnimePanel extends JPanel {
                         controller.set(reference,"numberOfEpisodesWatched",controller.get(reference,"numberOfEpisodesTotal"));
                         datePicker = new DatePicker(); // somewhat lazy way of getting the date in the format from the datepicker
                         datePicker.setDateToToday();
-                        controller.set(reference,"watchingEndDate",datePicker.getText());
+                        controller.set(reference,"watchingEndDate",datePicker.getDate().toString());
                         generateRightBottom();
                         generateLeftTop();
                     }
@@ -1258,8 +1277,10 @@ public class AnimePanel extends JPanel {
             mainGUI.generateNavigationPageSmall();
             toggleEnables(true);
             if (controller.get(reference,"hidden").equals("true")) controller.set(reference,"hidden","false");
-            else controller.set(reference,"hidden","true");    
+            else controller.set(reference,"hidden","true");
+            String textInTextArea = textArea.getText();    
             generateLeftBottom();
+            textArea.setText(textInTextArea);
             if (!swapable()){
                 leftButton.setEnabled(false);
                 rightButton.setEnabled(false);
@@ -1286,7 +1307,8 @@ public class AnimePanel extends JPanel {
         public void actionPerformed(ActionEvent V){
             if (controller.get(reference,"customColor").equals("true")) controller.set(reference,"customColor","false");
             else controller.set(reference,"customColor","true");    
-            refreshPage();
+            String textInTextArea = textArea.getText();    
+            refreshPage(textInTextArea);
         }
     }
 }

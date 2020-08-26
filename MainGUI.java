@@ -367,6 +367,23 @@ public class MainGUI extends JFrame {
         panelA.add(animePanel,BorderLayout.WEST);
     }
 
+    public void generateAnimePage(String reference, String textAreaText) { // if refreshing
+        controller.setState(4);
+        nullifyPanels();
+        generateNavigationPageSmall();
+        panelA.removeAll();
+        panelA.repaint();
+        panelA.revalidate();
+        panelA.setLayout(new BorderLayout());
+        panelA.setPreferredSize(leftDim);
+        panelA.setBackground(controller.getFieldColor("background1"));
+
+        if (reference.equals("New Anime")) reference = controller.createAnime();
+        generateNavPanel("Viewing: " +controller.get(reference, "animeName"));
+        animePanel = new AnimePanel(controller,this,reference,textAreaText);
+        panelA.add(animePanel,BorderLayout.WEST);
+    }
+
     public void generateSettingsPage() {
         controller.setState(5);
         nullifyPanels();

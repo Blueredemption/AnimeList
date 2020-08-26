@@ -135,9 +135,9 @@ public class FieldStorageDao {
         defaultButtonBorder = new Color(0, 0, 255);
 
         defaultMainScreenImage = "Images/UI/Background.png";
-        defaultFavorite1 = "Images/UI/Default.png";
-        defaultFavorite2 = "Images/UI/Default.png";
-        defaultFavorite3 = "Images/UI/Default.png";
+        defaultFavorite1 = "";
+        defaultFavorite2 = "";
+        defaultFavorite3 = "";
         defaultNotepadLeft = "";
         defaultNotepadRight = "";
     }

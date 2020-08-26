@@ -11,7 +11,7 @@ public class MiniColorPickerPanel extends JPanel {
     JSlider sliderR, sliderG, sliderB;
     JLabel title, labelR, labelG, labelB;
     JTextField tFieldR, tFieldG, tFieldB;
-    String reference;
+    String reference, textAreaText;
 
     AnimePanel abovePanel;
 
@@ -21,10 +21,11 @@ public class MiniColorPickerPanel extends JPanel {
 
     JButton cancelButton, commitButton;
 
-    public MiniColorPickerPanel(String reference, Controller controller, AnimePanel inPanel) { // constructor
+    public MiniColorPickerPanel(String textAreaText, String reference, Controller controller, AnimePanel inPanel) { // constructor
         this.controller = controller;
         this.reference = reference;
         this.abovePanel = inPanel;
+        this.textAreaText = textAreaText;
 
 
         setPreferredSize(new Dimension(300,300));
@@ -251,7 +252,7 @@ public class MiniColorPickerPanel extends JPanel {
         public void actionPerformed(ActionEvent e) {
             controller.setAnimeColor(reference, getPickedColor());
             controller.set(reference, "customColor", "false");
-            abovePanel.refreshPage();
+            abovePanel.refreshPage(textAreaText);
         }
     }
 }

@@ -1,3 +1,3 @@
-public class statisticsChart {
+public class StatisticsChart {
     
 }
