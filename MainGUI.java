@@ -9,9 +9,7 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
 public class MainGUI extends JFrame {
-
-    private static final long serialVersionUID = 1L; // this is here to fix a warning over MainGUI. Unsure what it is
-                                                     // for, reseach later.
+    private static final long serialVersionUID = 1L; 
 
     Controller controller;
     JLayeredPane pane;
@@ -41,7 +39,6 @@ public class MainGUI extends JFrame {
         setIconImage(new ImageIcon("Images/UI/Icon.png").getImage());
         setTitle("AnimeList v3");
         setMaximumSize(standardDim);
-        setLocationRelativeTo(null);
         setResizable(false);
         // setUndecorated(true);
         setDefaultCloseOperation(EXIT_ON_CLOSE);
@@ -49,7 +46,9 @@ public class MainGUI extends JFrame {
         generatePane();
         generatePanelB();
         generatePanelA();
+        
         pack();
+        setLocationRelativeTo(null);
     }
 
     public void generatePane() { // generates layered pane that holds the two main pains

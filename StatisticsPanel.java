@@ -8,7 +8,6 @@ import javax.swing.plaf.basic.BasicProgressBarUI;
 import java.awt.event.*;
 import java.awt.Dimension;
 import java.io.File;
-//import java.util.ArrayList;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -154,7 +153,7 @@ public class StatisticsPanel extends JPanel {
     }
 
     public void generateGeneralStatistics() {
-        aggregator = new StatisticsAggregator(controller.getAnimeDao());
+        aggregator = new StatisticsAggregator(controller.getAnimeDao(), controller);
         aggregator.generateGeneralStatistics();
     }
     
@@ -336,6 +335,8 @@ public class StatisticsPanel extends JPanel {
         graphPanel.setLayout(new FlowLayout(FlowLayout.LEFT,0,0));
         graphPanel.setOpaque(false);
         leftPanel.add(graphPanel);
+
+        graphPanel.add(aggregator.getGraph());
 
         /// 1b
 
@@ -1092,7 +1093,8 @@ public class StatisticsPanel extends JPanel {
         rightBottomPanel.revalidate();
         rightBottomPanel.repaint();
 
-        BevelBorder border = new BevelBorder(BevelBorder.LOWERED, controller.getFieldColor("background1"), controller.getFieldColor("background1").darker(), controller.getFieldColor("background1"), controller.getFieldColor("background1").brighter());
+        BevelBorder border = new BevelBorder(BevelBorder.LOWERED, controller.getFieldColor("background1"), controller.getFieldColor("background1").darker(), 
+                                                                  controller.getFieldColor("background1"), controller.getFieldColor("background1").brighter());
         Image imageOne = getImage(controller.get(controller.getFieldText("favorite1"),"imageLocation"), new Dimension(129,180));
         JLabel favoriteImageOne = new JLabel();
         if (imageOne != null) favoriteImageOne.setIcon(new ImageIcon(imageOne));

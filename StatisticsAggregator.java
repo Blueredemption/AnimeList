@@ -1,13 +1,17 @@
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.Date;
 
+import javax.swing.JPanel;
+
 public class StatisticsAggregator {
     ArrayList<String> filteredList;
     AnimeDao animeDao;
+    Controller controller;
 
     // calculation values
     int totalMinutes;
@@ -20,11 +24,13 @@ public class StatisticsAggregator {
     String minutes;
     Object[] languageByAnimeCount, languageByEpisodeCount;
     Object[] seasons, year, startedYear, mainGenre, subGenre, studio, rating;
+    JPanel graph;
 
 
-    public StatisticsAggregator(AnimeDao animeDao){ // constuctor
+    public StatisticsAggregator(AnimeDao animeDao, Controller controller){ // constuctor
         this.filteredList = animeDao.returnListOfFilteredReferences();
         this.animeDao = animeDao; 
+        this.controller = controller;
     }
 
     // a ton of getters (there are no setters for this, as all these values are permanent in instance)
@@ -65,6 +71,9 @@ public class StatisticsAggregator {
                 return null; // will never reach here
         }
     }
+    public JPanel getGraph(){
+        return graph;
+    }
 
     // methods that call methods to generate specific parts
     public void generateGeneralStatistics(){
@@ -88,7 +97,7 @@ public class StatisticsAggregator {
         rating = generateFieldBoxes("ageRating");
     }
     public void generateGraphRelated(){
-
+        graph = generateGraph();
     }
 
     // methods that are those specific parts
@@ -294,6 +303,66 @@ public class StatisticsAggregator {
         }
         DateFormat dateFormat = new SimpleDateFormat("yyyy");  
         return dateFormat.format(date); 
+    }
+    
+    // graph related methods
+    public JPanel generateGraph(){
+        ArrayList<Integer> releaseYearList = new ArrayList<Integer>();
+        ArrayList<Integer> releaseYearCounter = new ArrayList<Integer>();
+        ArrayList<Integer> startYearList = new ArrayList<Integer>();
+        ArrayList<Integer> startYearCounter = new ArrayList<Integer>();
+
+        int oldestReleaseYear = getOldestReleaseYear();
+        int oldestStartYear =getOldestStartYear();
+
+        for(int i = oldestReleaseYear; i <= Calendar.getInstance().get(Calendar.YEAR); i++){
+            releaseYearList.add(i);
+            releaseYearCounter.add(0);
+        }
+
+        for(int i = oldestStartYear; i <= Calendar.getInstance().get(Calendar.YEAR); i++){
+            startYearList.add(i);
+            startYearCounter.add(0);
+        }
+
+        ArrayList<String> references = animeDao.returnListOfFilteredReferences();
+
+        for (String reference : references) {
+            int index = releaseYearList.indexOf(Integer.parseInt(animeDao.getValue(reference,"yearReleased")));
+            if (index != -1){
+                releaseYearCounter.set(index,releaseYearCounter.get(index) + 1);
+            }
+
+            if (animeDao.getValue(reference, "watchingStartDate").equals("?")) continue;
+            index = startYearList.indexOf(Integer.parseInt(getYearAsString(reference,"watchingStartDate")));
+            if (index != -1){
+                startYearCounter.set(index,startYearCounter.get(index) + 1);
+            }
+        }
+
+
+        return new StatisticsChart(releaseYearList, releaseYearCounter, startYearList, startYearCounter, controller);
+    }
+
+    public int getOldestReleaseYear(){
+        int oldestReleaseYear = Calendar.getInstance().get(Calendar.YEAR);
+        ArrayList<String> references = animeDao.returnListOfFilteredReferences();
+        for (String reference : references) {
+            int year = Integer.parseInt(animeDao.getValue(reference,"yearReleased"));
+            if (year < oldestReleaseYear) oldestReleaseYear = year; 
+        }
+        return oldestReleaseYear;
+    }
+
+    public int getOldestStartYear(){
+        int oldestStartYear = Calendar.getInstance().get(Calendar.YEAR);
+        ArrayList<String> references = animeDao.returnListOfFilteredReferences();
+        for (String reference : references) {
+            if (animeDao.getValue(reference, "watchingStartDate").equals("?")) continue;
+            int year = Integer.parseInt(getYearAsString(reference,"watchingStartDate"));
+            if (year < oldestStartYear) oldestStartYear = year; 
+        }
+        return oldestStartYear;
     }
 
     // this is to make Collections.sort(list) of these objects work
