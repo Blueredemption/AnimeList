@@ -116,6 +116,9 @@ public class StatisticsPanel extends JPanel {
                 }
                 return true;
             }
+            protected void done() {
+                cancel(true);
+            }
         };
         worker1.execute();
     }
@@ -146,6 +149,7 @@ public class StatisticsPanel extends JPanel {
                     remove(loadingPanel);
                     generate();
                     mainGUI.setNavs(true);
+                    cancel(true);
                 }
             }
         };
@@ -781,15 +785,10 @@ public class StatisticsPanel extends JPanel {
         outsidePanel.add(scrollBar);
         leftPanel.add(outsidePanel);
 
-        /// Scrolling JLabel
+        /// Scrolling JPanel
 
-        JLabel scrollLabel = new JLabel("Scrolling Text Goes Here Scrolling Text Goes Here Scrolling Text Goes Here Scrolling Text Goes Here");
-        scrollLabel.setPreferredSize(new Dimension(489,41));
-        scrollLabel.setForeground(controller.getFieldColor("text"));
-        scrollLabel.setFont(new Font("Dialog", Font.BOLD, 15));
-        scrollLabel.setVerticalAlignment(JLabel.BOTTOM);
-        scrollLabel.setHorizontalAlignment(JLabel.LEFT);
-        leftPanel.add(scrollLabel);
+        ScrollingText scrollPanel = new ScrollingText(aggregator.getScrollText(),aggregator.getScrollText().length(),controller);
+        leftPanel.add(scrollPanel);
     }
 
     public void generateRightUpperPanels() {

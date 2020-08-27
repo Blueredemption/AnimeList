@@ -394,6 +394,8 @@ public class AnimePanel extends JPanel {
         textArea.setCaretColor(controller.getFieldColor("text"));
         textArea.setFont(new Font("Dialog", Font.BOLD, 14));
         textArea.setText(controller.get(reference,"notepadText"));
+        textArea.setSelectionStart(0); // these two make sure the panel starts at the top
+        textArea.setSelectionEnd(0);
         
         JScrollPane scrollPane = new JScrollPane(textArea,JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED,JScrollPane.HORIZONTAL_SCROLLBAR_NEVER); 
         scrollPane.setOpaque(false);

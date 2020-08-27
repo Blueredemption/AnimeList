@@ -269,6 +269,20 @@ public class Controller {
         return ChronoUnit.DAYS.between(start.toInstant(),end.toInstant()) +" Days";
     }
 
+    public long getSpanNumber(String reference){
+        Date start;
+        Date end;
+        try{
+            start = new SimpleDateFormat("yyyy-MM-dd").parse(get(reference,"watchingStartDate"));
+            end = new SimpleDateFormat("yyyy-MM-dd").parse(get(reference,"watchingEndDate"));
+            return ChronoUnit.DAYS.between(start.toInstant(),end.toInstant());
+        }
+        catch (Exception E) {
+            //System.out.println("parseing of date strings failed, assuming a field is empty.");
+            return -1;
+        }
+    }
+
     private int getTotalMinutes(){ // excludes hidden but not filtered anime
         ArrayList<String> referenceList = getReferenceList();
         int sum = 0;

@@ -8,6 +8,7 @@ import org.jfree.chart.util.ShapeUtils;
 import org.jfree.data.xy.IntervalXYDataset;
 import org.jfree.data.xy.XYSeries;
 import org.jfree.data.xy.XYSeriesCollection;
+import org.jfree.chart.ui.RectangleEdge;
 import org.jfree.chart.axis.NumberAxis;
 
 
@@ -21,6 +22,7 @@ import java.awt.BasicStroke;
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.FlowLayout;
+import java.awt.Font;
 
 
 public class StatisticsChart extends JPanel {
@@ -41,15 +43,15 @@ public class StatisticsChart extends JPanel {
         IntervalXYDataset dataset = createDataset();
         JFreeChart chart = createChart(dataset);
         ChartPanel chartPanel = new ChartPanel(chart);
-        chartPanel.setPreferredSize(new Dimension(237,145));
+        chartPanel.setPreferredSize(new Dimension(225,145));
         chartPanel.setOpaque(false);
         
         setLayout(new FlowLayout(FlowLayout.LEFT, 0, 0));
-        setPreferredSize(new Dimension(237,155));
+        setPreferredSize(new Dimension(225,155));
         setOpaque(false);
 
         JLabel spacer = new JLabel(); 
-        spacer.setPreferredSize(new Dimension(237,10));
+        spacer.setPreferredSize(new Dimension(225,10));
         add(spacer);
 
         add(chartPanel);
@@ -57,21 +59,21 @@ public class StatisticsChart extends JPanel {
 
     private IntervalXYDataset createDataset() {
         
-        var series1 = new XYSeries("Release Year");
+        XYSeries series1 = new XYSeries("Release Year");
         if (releaseYearList.size() == 1) releaseYearCounter.set(0,1);
         for (int i = 0; i < releaseYearList.size(); i++) {
             series1.add(releaseYearList.get(i),releaseYearCounter.get(i));
         }
         
         
-        var series2 = new XYSeries("Start Year");
+        XYSeries series2 = new XYSeries("Start Year");
         if (startYearList.size() == 1) startYearCounter.set(0,1);
         for (int i = 0; i < startYearList.size(); i++) {
             series2.add(startYearList.get(i),startYearCounter.get(i));
         }
        
         
-        var dataset = new XYSeriesCollection();
+        XYSeriesCollection dataset = new XYSeriesCollection();
         dataset.addSeries(series1);
         dataset.addSeries(series2);
 
@@ -84,9 +86,9 @@ public class StatisticsChart extends JPanel {
         
         XYPlot plot = chart.getXYPlot();
 
-        var renderer = new XYLineAndShapeRenderer();
+        XYLineAndShapeRenderer renderer = new XYLineAndShapeRenderer();
 
-        renderer.setSeriesPaint(0, Color.BLUE);
+        renderer.setSeriesPaint(0, new Color(0,0,255,200));
         renderer.setSeriesStroke(0, new BasicStroke(2.0f));
         renderer.setSeriesShape(0, ShapeUtils.createDiamond(0));
         renderer.setSeriesPaint(1, Color.RED);
@@ -110,6 +112,8 @@ public class StatisticsChart extends JPanel {
         chart.setBackgroundPaint(controller.getFieldColor("background1"));
         chart.getLegend().setBackgroundPaint(controller.getFieldColor("background1"));
         chart.getLegend().setItemPaint(controller.getFieldColor("text"));
+        chart.getLegend().setPosition(RectangleEdge.TOP);
+        chart.getLegend().setItemFont(new Font("Dialog", Font.BOLD, 15));
 
         return chart;
     }

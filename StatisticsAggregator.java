@@ -25,6 +25,7 @@ public class StatisticsAggregator {
     Object[] languageByAnimeCount, languageByEpisodeCount;
     Object[] seasons, year, startedYear, mainGenre, subGenre, studio, rating;
     JPanel graph;
+    String scrollText;
 
 
     public StatisticsAggregator(AnimeDao animeDao, Controller controller){ // constuctor
@@ -74,6 +75,9 @@ public class StatisticsAggregator {
     public JPanel getGraph(){
         return graph;
     }
+    public String getScrollText(){
+        return scrollText;
+    }
 
     // methods that call methods to generate specific parts
     public void generateGeneralStatistics(){
@@ -95,6 +99,7 @@ public class StatisticsAggregator {
         subGenre = generateFieldBoxes("subGenre");
         studio = generateFieldBoxes("animationStudio");
         rating = generateFieldBoxes("ageRating");
+        scrollText = generateScrollText();
     }
     public void generateGraphRelated(){
         graph = generateGraph();
@@ -339,8 +344,6 @@ public class StatisticsAggregator {
                 startYearCounter.set(index,startYearCounter.get(index) + 1);
             }
         }
-
-
         return new StatisticsChart(releaseYearList, releaseYearCounter, startYearList, startYearCounter, controller);
     }
 
@@ -363,6 +366,154 @@ public class StatisticsAggregator {
             if (year < oldestStartYear) oldestStartYear = year; 
         }
         return oldestStartYear;
+    }
+
+    // scrolltext related methods
+    public String generateScrollText(){
+        String scrollString = "";
+
+        scrollString = scrollString +"\u2002\u2002\u2002\u2002\u2002\u2002\u2002\u2002\u2002\u2002\u2002\u2002" +generateLongestAnime();
+        scrollString = scrollString +"\u2002\u2002\u2002\u2002\u2002\u2002\u2002\u2002\u2002\u2002\u2002\u2002" +generateShortestAnime();
+        scrollString = scrollString +"\u2002\u2002\u2002\u2002\u2002\u2002\u2002\u2002\u2002\u2002\u2002\u2002" +generateNewestAnime();
+        scrollString = scrollString +"\u2002\u2002\u2002\u2002\u2002\u2002\u2002\u2002\u2002\u2002\u2002\u2002" +generateOldestAnime();
+        scrollString = scrollString +"\u2002\u2002\u2002\u2002\u2002\u2002\u2002\u2002\u2002\u2002\u2002\u2002" +generateFirstAnime();
+        scrollString = scrollString +"\u2002\u2002\u2002\u2002\u2002\u2002\u2002\u2002\u2002\u2002\u2002\u2002" +generateLastAnime();
+        scrollString = scrollString +"\u2002\u2002\u2002\u2002\u2002\u2002\u2002\u2002\u2002\u2002\u2002\u2002" +generateLongestSpan();
+        scrollString = scrollString +"\u2002\u2002\u2002\u2002\u2002\u2002\u2002\u2002\u2002\u2002\u2002\u2002" +generateShortestSpan();
+
+        return scrollString;
+    }
+
+    public String generateLongestAnime(){
+        ArrayList<String> references = animeDao.returnListOfFilteredReferences();
+        String currentReference = "";
+        int currentLength = 0; 
+
+        for (String reference : references) {
+            int tempLength = Integer.parseInt(animeDao.getValue(reference,"numberOfEpisodesTotal"));
+            if (tempLength > currentLength){
+                currentReference = reference;
+                currentLength = tempLength;
+            }
+        }
+        return "Longest Anime Watched: " +animeDao.getValue(currentReference,"animeName") +" (" +currentLength +" Episodes)";
+    }
+
+    public String generateShortestAnime(){
+        ArrayList<String> references = animeDao.returnListOfFilteredReferences();
+        String currentReference = "";
+        int currentLength = 999999999; 
+
+        for (String reference : references) {
+            int tempLength = Integer.parseInt(animeDao.getValue(reference,"numberOfEpisodesTotal"));
+            if (tempLength < currentLength){
+                currentReference = reference;
+                currentLength = tempLength;
+            }
+        }
+        return "Shortest Anime Watched: " +animeDao.getValue(currentReference,"animeName") +" (" +currentLength +" Episodes)";
+    }
+
+    public String generateNewestAnime(){
+        int preSort = animeDao.getSort();
+        int preOrder = animeDao.getOrder();
+        animeDao.setSort(4); // setting the sort to sort by year released
+        animeDao.setOrder(1); 
+
+        ArrayList<String> references = animeDao.returnListOfFilteredReferences();
+
+        String reference;
+        if (references.size() > 0) reference = references.get(0);
+        else reference = "";
+
+        animeDao.setSort(preSort); // return sort to original state since calls are over, as no "changes" are to be made in data collection
+        animeDao.setOrder(preOrder); // ^
+
+        return "Newest Anime Watched: "  +animeDao.getValue(reference,"animeName") +" (" +animeDao.getValue(reference,"seasonReleased") +" " +animeDao.getValue(reference,"yearReleased") +")";
+    }
+
+    public String generateOldestAnime(){
+        int preSort = animeDao.getSort();
+        int preOrder = animeDao.getOrder();
+        animeDao.setSort(4); // setting the sort to sort by year released
+        animeDao.setOrder(0); 
+
+        ArrayList<String> references = animeDao.returnListOfFilteredReferences();
+        
+        String reference;
+        if (references.size() > 0) reference = references.get(0);
+        else reference = "";
+
+        animeDao.setSort(preSort); // return sort to original state since calls are over, as no "changes" are to be made in data collection
+        animeDao.setOrder(preOrder); // ^
+
+        return "Oldest Anime Watched: "  +animeDao.getValue(reference,"animeName") +" (" +animeDao.getValue(reference,"seasonReleased") +" " +animeDao.getValue(reference,"yearReleased") +")";
+    }
+
+    public String generateFirstAnime(){
+        int preSort = animeDao.getSort();
+        int preOrder = animeDao.getOrder();
+        animeDao.setSort(0); // setting the sort to sort by year released
+        animeDao.setOrder(1); 
+
+        ArrayList<String> references = animeDao.returnListOfFilteredReferences();
+        
+        String reference;
+        if (references.size() > 0) reference = references.get(0);
+        else reference = "";
+
+        animeDao.setSort(preSort); // return sort to original state since calls are over, as no "changes" are to be made in data collection
+        animeDao.setOrder(preOrder); // ^
+
+        return "First Anime Watched: "  +animeDao.getValue(reference,"animeName") +" (" +controller.getDateAsString(reference,"watchingStartDate") +")";
+    }
+
+    public String generateLastAnime(){
+        int preSort = animeDao.getSort();
+        int preOrder = animeDao.getOrder();
+        animeDao.setSort(0); // setting the sort to sort by year released
+        animeDao.setOrder(0); 
+
+        ArrayList<String> references = animeDao.returnListOfFilteredReferences();
+        
+        String reference;
+        if (references.size() > 0) reference = references.get(0);
+        else reference = "";
+
+        animeDao.setSort(preSort); // return sort to original state since calls are over, as no "changes" are to be made in data collection
+        animeDao.setOrder(preOrder); // ^
+
+        return "Most Recent Anime Watched: "  +animeDao.getValue(reference,"animeName") +" (" +controller.getDateAsString(reference,"watchingStartDate") +")";
+    }
+
+    public String generateLongestSpan(){
+        ArrayList<String> references = animeDao.returnListOfFilteredReferences();
+        String currentReference = "";
+        long currentLength = 0; 
+
+        for (String reference : references) {
+            long tempLength = controller.getSpanNumber(reference);
+            if (tempLength > currentLength){
+                currentReference = reference;
+                currentLength = tempLength;
+            }
+        }
+        return "Longest Time Taken to Finish: " +animeDao.getValue(currentReference,"animeName") +" (" +controller.getSpan(currentReference)+")";
+    }
+
+    public String generateShortestSpan(){
+        ArrayList<String> references = animeDao.returnListOfFilteredReferences();
+        String currentReference = "";
+        long currentLength = 999999999; 
+
+        for (String reference : references) {
+            long tempLength = controller.getSpanNumber(reference);
+            if ((tempLength < currentLength)&&(tempLength != -1)){
+                currentReference = reference;
+                currentLength = tempLength;
+            }
+        }
+        return "Shortest Time Taken to Finish: " +animeDao.getValue(currentReference,"animeName") +" (" +controller.getSpan(currentReference)+")";
     }
 
     // this is to make Collections.sort(list) of these objects work

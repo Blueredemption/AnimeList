@@ -60,6 +60,8 @@ public class NotesPanel extends JPanel{
         leftArea.setCaretColor(controller.getFieldColor("text"));
         leftArea.setFont(new Font("Dialog", Font.BOLD, 14));
         leftArea.setText(controller.getFieldText("notepadLeft"));
+        leftArea.setSelectionStart(0); // these two make sure the panel starts at the top
+        leftArea.setSelectionEnd(0);
         
         JScrollPane scrollPane = new JScrollPane(leftArea,JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED,JScrollPane.HORIZONTAL_SCROLLBAR_NEVER); 
         scrollPane.setOpaque(false);
@@ -100,6 +102,8 @@ public class NotesPanel extends JPanel{
         rightArea.setCaretColor(controller.getFieldColor("text"));
         rightArea.setFont(new Font("Dialog", Font.BOLD, 14));
         rightArea.setText(controller.getFieldText("notepadRight"));
+        rightArea.setSelectionStart(0); // these two make sure the panel starts at the top
+        rightArea.setSelectionEnd(0);
         
         rightScrollPane = new JScrollPane(rightArea,JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED,JScrollPane.HORIZONTAL_SCROLLBAR_NEVER); 
         rightScrollPane.setOpaque(false);

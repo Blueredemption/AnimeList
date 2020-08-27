@@ -289,10 +289,10 @@ public class AnimeObject implements Comparable<Object>{
 
     public Integer getSeasonNumber(){
         switch(seasonReleased){
-            case "Spring": return 1;
-            case "Summer": return 2;
-            case "Fall": return 3;
-            case "Winter": return 4;
+            case "Spring": return 2;
+            case "Summer": return 3;
+            case "Fall": return 4;
+            case "Winter": return 1;
             default: return 5;
         }
     }
@@ -301,7 +301,10 @@ public class AnimeObject implements Comparable<Object>{
         switch(sort){
             case 0: // startDate
                 if ((getDateObject(watchingStartDate)!=null)&&(getDateObject(((AnimeObject)o).getWatchingStartDate())!=null)) {
-                    return -getDateObject(watchingStartDate).compareTo(getDateObject(((AnimeObject)o).getWatchingStartDate()));
+                    if (getDateObject(watchingStartDate).equals(getDateObject(((AnimeObject)o).getWatchingStartDate()))) 
+                        return -((Long)Long.parseLong(referenceNumber)).compareTo((Long)Long.parseLong(((AnimeObject)o).getReferenceNumber()));
+                    else 
+                        return -getDateObject(watchingStartDate).compareTo(getDateObject(((AnimeObject)o).getWatchingStartDate()));
                 }
                 else if  ((getDateObject(watchingStartDate)==null)&&(getDateObject(((AnimeObject)o).getWatchingStartDate())==null)) {
                     return -((Long)Long.parseLong(referenceNumber)).compareTo((Long)Long.parseLong(((AnimeObject)o).getReferenceNumber()));
@@ -314,8 +317,8 @@ public class AnimeObject implements Comparable<Object>{
                 }
             case 1: return animeName.toUpperCase().compareTo(((AnimeObject)o).getAnimeName().toUpperCase()); // name
             case 2: return ((Integer)Integer.parseInt(numberOfEpisodesTotal)).compareTo((Integer)Integer.parseInt(((AnimeObject)o).getNumberOfEpisodesTotal())); // episodes
-            case 3: return (getSeasonNumber()*10000 +((Integer)Integer.parseInt(yearReleased)).compareTo(((AnimeObject)o).getSeasonNumber()*10000 +(Integer.parseInt(((AnimeObject)o).getYearReleased())))); // year released
-            case 4: return ((Integer)(Integer.parseInt(yearReleased)*100+getSeasonNumber())).compareTo((Integer)(Integer.parseInt(((AnimeObject)o).getYearReleased())*100+((AnimeObject)o).getSeasonNumber())); // season
+            case 3: return (getSeasonNumber()*10000 +((Integer)Integer.parseInt(yearReleased)).compareTo(((AnimeObject)o).getSeasonNumber()*10000 +(Integer.parseInt(((AnimeObject)o).getYearReleased())))); // season released
+            case 4: return ((Integer)(Integer.parseInt(yearReleased)*100+getSeasonNumber())).compareTo((Integer)(Integer.parseInt(((AnimeObject)o).getYearReleased())*100+((AnimeObject)o).getSeasonNumber())); // year released
             case 5: return getProgress().compareTo(((AnimeObject)o).getProgress()); // progress
             case 6: return ((Integer)color.getRGB()).compareTo((Integer)((AnimeObject)o).getColor().getRGB()); // color
             case 7: return ((Integer)Integer.parseInt(numberOfEpisodesWatched)).compareTo((Integer)Integer.parseInt(((AnimeObject)o).getNumberOfEpisodesWatched()));// episodes watched
