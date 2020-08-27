@@ -26,11 +26,11 @@ public class MainGUI extends JFrame {
     NotesPanel notesPanel;
 
     Dimension standardDim = new Dimension(1024, 768);
-    Dimension leftDim = new Dimension(978, 768);
-    Dimension rightDimSmall = new Dimension(30, 768);
-    Dimension rightDimLarge = new Dimension(200, 768);
+    Dimension leftDim = new Dimension(978, 728);
+    Dimension rightDimSmall = new Dimension(30, 700);
+    Dimension rightDimLarge = new Dimension(200, 700);
     Dimension rightDimLargeTop = new Dimension(170, 120);
-    Dimension rightDimLargeBottom = new Dimension(170, 354);
+    Dimension rightDimLargeBottom = new Dimension(170, 120);
 
     public MainGUI() { // constructor
         controller = new Controller();
@@ -40,7 +40,7 @@ public class MainGUI extends JFrame {
     public void LaunchSettings() { // generates the basic window for the program
         setIconImage(new ImageIcon("Images/UI/Icon.png").getImage());
         setTitle("AnimeList v3");
-        setSize(standardDim);
+        setMaximumSize(standardDim);
         setLocationRelativeTo(null);
         setResizable(false);
         // setUndecorated(true);
@@ -49,11 +49,11 @@ public class MainGUI extends JFrame {
         generatePane();
         generatePanelB();
         generatePanelA();
+        pack();
     }
 
     public void generatePane() { // generates layered pane that holds the two main pains
         pane = new JLayeredPane();
-        pane.setPreferredSize(standardDim);
         pane.setLayout(new BorderLayout());
         pane.setBackground(controller.getFieldColor("background1"));
         pane.setOpaque(true);
@@ -291,9 +291,9 @@ public class MainGUI extends JFrame {
         spacer.setPreferredSize(new Dimension(1,3));
         panelA.add(spacer);
 
-        Image image = getImage(controller.getFieldText("mainScreenImage"), new Dimension((int)leftDim.getWidth()-6,(int)leftDim.getHeight()-72));
+        Image image = getImage(controller.getFieldText("mainScreenImage"), new Dimension((int)leftDim.getWidth()-6,(int)leftDim.getHeight()-31));
         JLabel imageLabel = new JLabel();
-        imageLabel.setPreferredSize(new Dimension((int)leftDim.getWidth()-6,(int)leftDim.getHeight()-72));
+        imageLabel.setPreferredSize(new Dimension((int)leftDim.getWidth()-6,(int)leftDim.getHeight()-31));
         if (image != null) imageLabel.setIcon(new ImageIcon(image));
         imageLabel.setBorder(new BevelBorder(BevelBorder.LOWERED, controller.getFieldColor("background1"), 
                                                                   controller.getFieldColor("background1").darker(), 
@@ -401,6 +401,7 @@ public class MainGUI extends JFrame {
 
         SettingsPanel settingsPanel = new SettingsPanel(this, controller);
         panelA.add(settingsPanel,BorderLayout.WEST);
+
     }
 
     // length cutting methods

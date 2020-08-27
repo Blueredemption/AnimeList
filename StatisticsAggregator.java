@@ -1,4 +1,9 @@
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
+import java.util.Date;
 
 public class StatisticsAggregator {
     ArrayList<String> filteredList;
@@ -13,8 +18,9 @@ public class StatisticsAggregator {
     String days;
     String hours;
     String minutes;
-    Object[] languageByAnimeCount;
-    Object[] languageByEpisodeCount;
+    Object[] languageByAnimeCount, languageByEpisodeCount;
+    Object[] seasons, year, startedYear, mainGenre, subGenre, studio, rating;
+
 
     public StatisticsAggregator(AnimeDao animeDao){ // constuctor
         this.filteredList = animeDao.returnListOfFilteredReferences();
@@ -43,6 +49,22 @@ public class StatisticsAggregator {
     public Object[] getLanguageByEpisodeCount(){
         return languageByEpisodeCount;
     }
+    public Object[] getBasedOnKey(String key){
+        
+        switch(key){
+            case "seasonReleased": return seasons;
+            case "yearReleased": return year;
+            case "watchingStartDate": return startedYear;
+            case "mainGenre": return mainGenre;
+            case "subGenre": return subGenre;
+            case "animationStudio": return studio;
+            case "ageRating": return rating;
+
+            default:
+                System.out.println("Invalid key in getBasedOnKey in StatisticsAggregator");
+                return null; // will never reach here
+        }
+    }
 
     // methods that call methods to generate specific parts
     public void generateGeneralStatistics(){
@@ -57,6 +79,13 @@ public class StatisticsAggregator {
     public void generateFilteredStatistics(){
         languageByAnimeCount = generateLanguageByAnimeCount();
         languageByEpisodeCount = generateLanguageByEpisodeCount();
+        seasons = generateFieldBoxes("seasonReleased");
+        year = generateFieldBoxes("yearReleased");
+        startedYear = generateFieldBoxes("watchingStartDate");
+        mainGenre = generateFieldBoxes("mainGenre");
+        subGenre = generateFieldBoxes("subGenre");
+        studio = generateFieldBoxes("animationStudio");
+        rating = generateFieldBoxes("ageRating");
     }
     public void generateGraphRelated(){
 
@@ -128,10 +157,22 @@ public class StatisticsAggregator {
         return returnArray;
     }
 
+    public Object[] generateFieldBoxes(String key){ // generic verson of the two methods above, much less hard code for use by variable size JComboBox lists
+        ArrayList<SortableCountString> titles = generateTitlesList(key); // the length of this is the number of JComboBoxes in the UI, in the given section
+        Object[] returnArray = new Object[titles.size()];
+        for (int i = 0; i < titles.size(); i++){
+            Object[] innerArray = new Object[3]; // 0-> references String array, 1 -> entry title String array, 2 -> title String
 
+            innerArray[0] = getFilteredReferences(titles.get(i).getString(),key);
 
+            innerArray[1] = getNameArray((String[])innerArray[0]);
 
+            innerArray[2] = titles.get(i).getString() +": (" +((String[])innerArray[0]).length +" Anime)";
 
+            returnArray[i] = innerArray;
+        }
+        return returnArray;
+    }
 
     // calculation and general aggregation methods methods
     public int generateTotalMinutes(){
@@ -170,6 +211,20 @@ public class StatisticsAggregator {
         }
     }
 
+    public String[] getFilteredReferences(String varient, String key /* attribute */){ // varient is to subbed as key is to language
+        ArrayList<String> aggregateList = new ArrayList<String>();
+        ArrayList<String> newFilteredList = animeDao.returnListOfFilteredReferences();
+        for (String reference : newFilteredList) {
+            if (key.equals("watchingStartDate")){
+                if (getYearAsString(reference,key).equals(varient)) aggregateList.add(reference);
+            }
+            else{
+                if (animeDao.getValue(reference,key).equals(varient)) aggregateList.add(reference);
+            }    
+        }
+        return aggregateList.toArray(new String[0]);
+    }
+
     public String[] getNameArray(String[] referenceArray){
         ArrayList<String> aggregateList = new ArrayList<String>();
         for (String reference : referenceArray) {
@@ -188,12 +243,65 @@ public class StatisticsAggregator {
         return aggregateList.toArray(new String[0]);
     }
 
-    public int countEpisodesWatched(String[] list){ // this counts the episodes watched for the given array string
+    public int countEpisodesWatched(String[] list){ // this counts the episodes watched for the given reference array
         int sumOfEpisodesWatched = 0;
         for (String reference : list) {
             int episodesWatched = Integer.parseInt(animeDao.getValue(reference, "numberOfEpisodesWatched"));
             sumOfEpisodesWatched += episodesWatched;
         }
         return sumOfEpisodesWatched;
+    }
+
+    public ArrayList<SortableCountString> generateTitlesList(String key){
+        ArrayList<SortableCountString> SCSs = new ArrayList<SortableCountString>();
+        ArrayList<String> references = animeDao.returnListOfFilteredReferences();
+        for (String reference : references) {
+            if (key.equals("watchingStartDate")){ // since watchingStartDate isn't the same as year started it has a special iteration
+                if (SCSs.indexOf((new SortableCountString(getYearAsString(reference,key))))==-1){ // key is not in there, add it
+                    SCSs.add(new SortableCountString(getYearAsString(reference,key)));
+                }
+                else{ // key is in there, increase counter corresponding to that key
+                    int index = SCSs.indexOf((new SortableCountString(getYearAsString(reference,key))));
+                    SortableCountString value = SCSs.get(index);
+                    value.increase();
+                }
+            }
+            else{
+                if (SCSs.indexOf((new SortableCountString(animeDao.getValue(reference,key))))==-1){ // key is not in there, add it
+                    SCSs.add(new SortableCountString(animeDao.getValue(reference,key)));
+                }
+                else{ // key is in there, increase counter corresponding to that key
+                    int index = SCSs.indexOf((new SortableCountString(animeDao.getValue(reference,key))));
+                    SortableCountString value = SCSs.get(index);
+                    value.increase();
+                }
+            }
+        } 
+        // now that we have generated the list we need it sorted
+        Collections.sort(SCSs, new scsCollectionsComparator());
+        return SCSs;
+    }
+
+    public String getYearAsString(String reference, String key){
+        Date date;
+        try{
+            date = new SimpleDateFormat("yyyy-MM-dd").parse(animeDao.getValue(reference,key));
+        }
+        catch (Exception E) {
+            date = new Date();
+            //System.out.println("parseing of date string failed, assuming the field is empty.");
+            return "?";
+        }
+        DateFormat dateFormat = new SimpleDateFormat("yyyy");  
+        return dateFormat.format(date); 
+    }
+
+    // this is to make Collections.sort(list) of these objects work
+    public class scsCollectionsComparator implements Comparator<SortableCountString> {
+
+        @Override
+        public int compare(SortableCountString o1, SortableCountString o2) {
+            return o1.compareTo(o2);
+        }
     }
 }

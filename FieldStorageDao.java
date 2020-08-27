@@ -154,14 +154,14 @@ public class FieldStorageDao {
     }
 
     public void loadPreset2(){ // light
-        setButtons(new Color(255, 255, 255, 255));
-        setBackground1(new Color(255, 255, 255, 255));
-        setBackground2(new Color(213, 255, 255, 255));
-        setBackground3(new Color(255, 255, 255, 255));
-        setList(new Color(233, 255, 255, 255));
-        setNavigation(new Color(213, 255, 255, 145));
-        setText(new Color(0,0,0,255));
-        setButtonBorder(new Color(27, 228, 247, 255));
+        setButtons(new Color(255, 255, 255));
+        setBackground1(new Color(210, 230, 240));
+        setBackground2(new Color(213, 255, 255));
+        setBackground3(new Color(255, 255, 255));
+        setList(new Color(218, 240, 240));
+        setNavigation(new Color(178, 220, 220, 120));
+        setText(new Color(0,0,0));
+        setButtonBorder(new Color(100, 150, 200));
     }
     
     public void pull(){ // checks to see if the json for each member exists, if it does load it in, otherwise load in and write to drive the default (could make faster, but less dynamic)

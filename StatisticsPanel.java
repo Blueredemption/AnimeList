@@ -332,41 +332,102 @@ public class StatisticsPanel extends JPanel {
     public void generateLeftPanel() {
         /// 1a
         JPanel graphPanel = new JPanel();
-        graphPanel.setPreferredSize(new Dimension(237,170));
-        graphPanel.setLayout(new FlowLayout(FlowLayout.CENTER,0,0));
+        graphPanel.setPreferredSize(new Dimension(237,155));
+        graphPanel.setLayout(new FlowLayout(FlowLayout.LEFT,0,0));
         graphPanel.setOpaque(false);
         leftPanel.add(graphPanel);
 
         /// 1b
 
         JPanel seasonPanel = new JPanel();
-        seasonPanel.setPreferredSize(new Dimension(237,170));
-        seasonPanel.setLayout(new FlowLayout(FlowLayout.CENTER,0,0));
+        seasonPanel.setPreferredSize(new Dimension(237,155));
+        seasonPanel.setLayout(new FlowLayout(FlowLayout.LEFT,0,5));
         seasonPanel.setOpaque(false);
         leftPanel.add(seasonPanel);
 
         JLabel titleLabel = new JLabel("By Season");
-        titleLabel.setPreferredSize(new Dimension(227,30));
+        titleLabel.setPreferredSize(new Dimension(200,30));
         titleLabel.setForeground(controller.getFieldColor("text"));
         titleLabel.setFont(new Font("Dialog", Font.BOLD, 16));
         titleLabel.setVerticalAlignment(JLabel.CENTER);
         titleLabel.setHorizontalAlignment(JLabel.CENTER);
         seasonPanel.add(titleLabel);
 
+        String key = "seasonReleased";
+        Object[] boxData = aggregator.getBasedOnKey(key);
+        for (int i = 0; i < boxData.length; i++){ // loops through seasons
+            JComboBox<String> dropdown = new JComboBox<String>((String[])((Object[])boxData[i])[1]); // list of anime in given season 
+            dropdown.setRenderer(new CustomComboBoxRenderer(controller));
+            dropdown.setEditor(new CustomComboBoxEditor(controller));
+            dropdown.setUI(new CustomComboBoxUI(controller));
+            dropdown.setPreferredSize(new Dimension(200,25));
+            dropdown.setFont(new Font("Dialog", Font.BOLD, 12));
+            dropdown.setForeground(controller.getFieldColor("text"));
+            dropdown.setBackground(controller.getFieldColor("background3"));
+            dropdown.setBorder(BorderFactory.createLineBorder(controller.getFieldColor("background2")));
+            dropdown.setEditable(true);
+            dropdown.setSelectedItem((String)((Object[])boxData[i])[2]); // given season and the number of anime in dropdown
+            dropdown.setName(key +" " +i); // the first part corresponds to the key, and the second is the relevent list for that key (used by actionListener to find anime clicked)
+            dropdown.setEditable(false);
+            dropdown.setFocusable(false);
+            dropdown.addActionListener(new selectAnimeActionListener()); 
+            seasonPanel.add(dropdown);
+        }
+        if (boxData.length == 0){ // if the array is empty
+            JLabel emptyLabel = new JLabel("Nothing to Display :(");
+            emptyLabel.setPreferredSize(new Dimension(200,45));
+            emptyLabel.setForeground(controller.getFieldColor("text"));
+            emptyLabel.setFont(new Font("Dialog", Font.BOLD, 10));
+            emptyLabel.setVerticalAlignment(JLabel.CENTER);
+            emptyLabel.setHorizontalAlignment(JLabel.CENTER);
+            seasonPanel.add(emptyLabel);
+        }
+
+
         /// 1
 
         JPanel outsidePanel = new JPanel();
         outsidePanel.setPreferredSize(new Dimension(237,150));
-        outsidePanel.setLayout(new FlowLayout(FlowLayout.CENTER,0,0));
+        outsidePanel.setLayout(new FlowLayout(FlowLayout.LEFT,0,0));
         outsidePanel.setOpaque(false);
 
         JPanel insidePanel = new JPanel();
-        insidePanel.setLayout(new FlowLayout(FlowLayout.CENTER,0,0));
+        insidePanel.setLayout(new FlowLayout(FlowLayout.LEFT,0,5));
         insidePanel.setBackground(controller.getFieldColor("background1"));
-        addComponents(insidePanel, "By Release Year");
+
+        key = "yearReleased";
+        boxData = aggregator.getBasedOnKey(key);
+        insidePanel.setPreferredSize(new Dimension(205,boxData.length*30));
+        for (int i = 0; i < boxData.length; i++){ // loops through seasons
+            JComboBox<String> dropdown = new JComboBox<String>((String[])((Object[])boxData[i])[1]); // list of anime in given season 
+            dropdown.setRenderer(new CustomComboBoxRenderer(controller));
+            dropdown.setEditor(new CustomComboBoxEditor(controller));
+            dropdown.setUI(new CustomComboBoxUI(controller));
+            dropdown.setPreferredSize(new Dimension(200,25));
+            dropdown.setFont(new Font("Dialog", Font.BOLD, 12));
+            dropdown.setForeground(controller.getFieldColor("text"));
+            dropdown.setBackground(controller.getFieldColor("background3"));
+            dropdown.setBorder(BorderFactory.createLineBorder(controller.getFieldColor("background2")));
+            dropdown.setEditable(true);
+            dropdown.setSelectedItem((String)((Object[])boxData[i])[2]); // given season and the number of anime in dropdown
+            dropdown.setName(key +" " +i); // the first part corresponds to the key, and the second is the relevent list for that key (used by actionListener to find anime clicked)
+            dropdown.setEditable(false);
+            dropdown.setFocusable(false);
+            dropdown.addActionListener(new selectAnimeActionListener()); 
+            insidePanel.add(dropdown);
+        }
+        if (boxData.length == 0){ // if the array is empty
+            JLabel emptyLabel = new JLabel("Nothing to Display :(");
+            emptyLabel.setPreferredSize(new Dimension(200,50));
+            emptyLabel.setForeground(controller.getFieldColor("text"));
+            emptyLabel.setFont(new Font("Dialog", Font.BOLD, 10));
+            emptyLabel.setVerticalAlignment(JLabel.CENTER);
+            emptyLabel.setHorizontalAlignment(JLabel.CENTER);
+            insidePanel.add(emptyLabel);
+        }
 
         titleLabel = new JLabel("By Release Year");
-        titleLabel.setPreferredSize(new Dimension(227,30));
+        titleLabel.setPreferredSize(new Dimension(200,30));
         titleLabel.setForeground(controller.getFieldColor("text"));
         titleLabel.setFont(new Font("Dialog", Font.BOLD, 16));
         titleLabel.setVerticalAlignment(JLabel.CENTER);
@@ -375,14 +436,13 @@ public class StatisticsPanel extends JPanel {
         JScrollPane scrollPane = new JScrollPane(insidePanel,JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED,JScrollPane.HORIZONTAL_SCROLLBAR_NEVER); 
         scrollPane.setOpaque(false);
         scrollPane.setBorder(javax.swing.BorderFactory.createEmptyBorder());
-
         scrollPane.setPreferredSize(new Dimension (205,120));
-        scrollPane.getVerticalScrollBar().setUnitIncrement(20);
+        scrollPane.getVerticalScrollBar().setUnitIncrement(5);
 
         JScrollBar scrollBar = scrollPane.getVerticalScrollBar();
         scrollPane.remove(scrollBar); 
         scrollBar.setPreferredSize(new Dimension(10,120));
-        scrollBar.setUI(new CustomScrollBarUI(controller,controller.getFieldColor("buttons"),controller.getFieldColor("background1").brighter()));
+        scrollBar.setUI(new CustomScrollBarUI(controller,controller.getFieldColor("buttons"),controller.getFieldColor("background1")));
         scrollBar.setBorder(javax.swing.BorderFactory.createEmptyBorder());
         
         outsidePanel.add(titleLabel);
@@ -394,16 +454,46 @@ public class StatisticsPanel extends JPanel {
 
         outsidePanel = new JPanel();
         outsidePanel.setPreferredSize(new Dimension(237,150));
-        outsidePanel.setLayout(new FlowLayout(FlowLayout.CENTER,0,0));
+        outsidePanel.setLayout(new FlowLayout(FlowLayout.LEFT,0,0));
         outsidePanel.setOpaque(false);
 
         insidePanel = new JPanel();
-        insidePanel.setLayout(new FlowLayout(FlowLayout.CENTER,0,0));
+        insidePanel.setLayout(new FlowLayout(FlowLayout.LEFT,0,5));
         insidePanel.setBackground(controller.getFieldColor("background1"));
-        addComponents(insidePanel, "By Start Year");
+
+        key = "watchingStartDate";
+        boxData = aggregator.getBasedOnKey(key);
+        insidePanel.setPreferredSize(new Dimension(205,boxData.length*30));
+        for (int i = 0; i < boxData.length; i++){ // loops through seasons
+            JComboBox<String> dropdown = new JComboBox<String>((String[])((Object[])boxData[i])[1]); // list of anime in given season 
+            dropdown.setRenderer(new CustomComboBoxRenderer(controller));
+            dropdown.setEditor(new CustomComboBoxEditor(controller));
+            dropdown.setUI(new CustomComboBoxUI(controller));
+            dropdown.setPreferredSize(new Dimension(200,25));
+            dropdown.setFont(new Font("Dialog", Font.BOLD, 12));
+            dropdown.setForeground(controller.getFieldColor("text"));
+            dropdown.setBackground(controller.getFieldColor("background3"));
+            dropdown.setBorder(BorderFactory.createLineBorder(controller.getFieldColor("background2")));
+            dropdown.setEditable(true);
+            dropdown.setSelectedItem((String)((Object[])boxData[i])[2]); // given season and the number of anime in dropdown
+            dropdown.setName(key +" " +i); // the first part corresponds to the key, and the second is the relevent list for that key (used by actionListener to find anime clicked)
+            dropdown.setEditable(false);
+            dropdown.setFocusable(false);
+            dropdown.addActionListener(new selectAnimeActionListener()); 
+            insidePanel.add(dropdown);
+        }
+        if (boxData.length == 0){ // if the array is empty
+            JLabel emptyLabel = new JLabel("Nothing to Display :(");
+            emptyLabel.setPreferredSize(new Dimension(200,50));
+            emptyLabel.setForeground(controller.getFieldColor("text"));
+            emptyLabel.setFont(new Font("Dialog", Font.BOLD, 10));
+            emptyLabel.setVerticalAlignment(JLabel.CENTER);
+            emptyLabel.setHorizontalAlignment(JLabel.CENTER);
+            insidePanel.add(emptyLabel);
+        }
 
         titleLabel = new JLabel("By Start Year");
-        titleLabel.setPreferredSize(new Dimension(227,30));
+        titleLabel.setPreferredSize(new Dimension(200,30));
         titleLabel.setForeground(controller.getFieldColor("text"));
         titleLabel.setFont(new Font("Dialog", Font.BOLD, 16));
         titleLabel.setVerticalAlignment(JLabel.CENTER);
@@ -412,14 +502,13 @@ public class StatisticsPanel extends JPanel {
         scrollPane = new JScrollPane(insidePanel,JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED,JScrollPane.HORIZONTAL_SCROLLBAR_NEVER); 
         scrollPane.setOpaque(false);
         scrollPane.setBorder(javax.swing.BorderFactory.createEmptyBorder());
-
         scrollPane.setPreferredSize(new Dimension (205,120));
-        scrollPane.getVerticalScrollBar().setUnitIncrement(20);
+        scrollPane.getVerticalScrollBar().setUnitIncrement(5);
 
         scrollBar = scrollPane.getVerticalScrollBar();
         scrollPane.remove(scrollBar); 
         scrollBar.setPreferredSize(new Dimension(10,120));
-        scrollBar.setUI(new CustomScrollBarUI(controller,controller.getFieldColor("buttons"),controller.getFieldColor("background1").brighter()));
+        scrollBar.setUI(new CustomScrollBarUI(controller,controller.getFieldColor("buttons"),controller.getFieldColor("background1")));
         scrollBar.setBorder(javax.swing.BorderFactory.createEmptyBorder());
         
         outsidePanel.add(titleLabel);
@@ -431,16 +520,46 @@ public class StatisticsPanel extends JPanel {
 
         outsidePanel = new JPanel();
         outsidePanel.setPreferredSize(new Dimension(237,150));
-        outsidePanel.setLayout(new FlowLayout(FlowLayout.CENTER,0,0));
+        outsidePanel.setLayout(new FlowLayout(FlowLayout.LEFT,0,0));
         outsidePanel.setOpaque(false);
 
         insidePanel = new JPanel();
-        insidePanel.setLayout(new FlowLayout(FlowLayout.CENTER,0,0));
+        insidePanel.setLayout(new FlowLayout(FlowLayout.LEFT,0,5));
         insidePanel.setBackground(controller.getFieldColor("background1"));
-        addComponents(insidePanel, "By Main Genre");
+
+        key = "mainGenre";
+        boxData = aggregator.getBasedOnKey(key);
+        insidePanel.setPreferredSize(new Dimension(205,boxData.length*30));
+        for (int i = 0; i < boxData.length; i++){ // loops through seasons
+            JComboBox<String> dropdown = new JComboBox<String>((String[])((Object[])boxData[i])[1]); // list of anime in given season 
+            dropdown.setRenderer(new CustomComboBoxRenderer(controller));
+            dropdown.setEditor(new CustomComboBoxEditor(controller));
+            dropdown.setUI(new CustomComboBoxUI(controller));
+            dropdown.setPreferredSize(new Dimension(200,25));
+            dropdown.setFont(new Font("Dialog", Font.BOLD, 12));
+            dropdown.setForeground(controller.getFieldColor("text"));
+            dropdown.setBackground(controller.getFieldColor("background3"));
+            dropdown.setBorder(BorderFactory.createLineBorder(controller.getFieldColor("background2")));
+            dropdown.setEditable(true);
+            dropdown.setSelectedItem((String)((Object[])boxData[i])[2]); // given season and the number of anime in dropdown
+            dropdown.setName(key +" " +i); // the first part corresponds to the key, and the second is the relevent list for that key (used by actionListener to find anime clicked)
+            dropdown.setEditable(false);
+            dropdown.setFocusable(false);
+            dropdown.addActionListener(new selectAnimeActionListener()); 
+            insidePanel.add(dropdown);
+        }
+        if (boxData.length == 0){ // if the array is empty
+            JLabel emptyLabel = new JLabel("Nothing to Display :(");
+            emptyLabel.setPreferredSize(new Dimension(200,50));
+            emptyLabel.setForeground(controller.getFieldColor("text"));
+            emptyLabel.setFont(new Font("Dialog", Font.BOLD, 10));
+            emptyLabel.setVerticalAlignment(JLabel.CENTER);
+            emptyLabel.setHorizontalAlignment(JLabel.CENTER);
+            insidePanel.add(emptyLabel);
+        }
 
         titleLabel = new JLabel("By Main Genre");
-        titleLabel.setPreferredSize(new Dimension(227,30));
+        titleLabel.setPreferredSize(new Dimension(200,30));
         titleLabel.setForeground(controller.getFieldColor("text"));
         titleLabel.setFont(new Font("Dialog", Font.BOLD, 16));
         titleLabel.setVerticalAlignment(JLabel.CENTER);
@@ -449,14 +568,13 @@ public class StatisticsPanel extends JPanel {
         scrollPane = new JScrollPane(insidePanel,JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED,JScrollPane.HORIZONTAL_SCROLLBAR_NEVER); 
         scrollPane.setOpaque(false);
         scrollPane.setBorder(javax.swing.BorderFactory.createEmptyBorder());
-
         scrollPane.setPreferredSize(new Dimension (205,120));
-        scrollPane.getVerticalScrollBar().setUnitIncrement(20);
+        scrollPane.getVerticalScrollBar().setUnitIncrement(5);
 
         scrollBar = scrollPane.getVerticalScrollBar();
         scrollPane.remove(scrollBar); 
         scrollBar.setPreferredSize(new Dimension(10,120));
-        scrollBar.setUI(new CustomScrollBarUI(controller,controller.getFieldColor("buttons"),controller.getFieldColor("background1").brighter()));
+        scrollBar.setUI(new CustomScrollBarUI(controller,controller.getFieldColor("buttons"),controller.getFieldColor("background1")));
         scrollBar.setBorder(javax.swing.BorderFactory.createEmptyBorder());
         
         outsidePanel.add(titleLabel);
@@ -468,16 +586,46 @@ public class StatisticsPanel extends JPanel {
 
         outsidePanel = new JPanel();
         outsidePanel.setPreferredSize(new Dimension(237,150));
-        outsidePanel.setLayout(new FlowLayout(FlowLayout.CENTER,0,0));
+        outsidePanel.setLayout(new FlowLayout(FlowLayout.LEFT,0,0));
         outsidePanel.setOpaque(false);
 
         insidePanel = new JPanel();
-        insidePanel.setLayout(new FlowLayout(FlowLayout.CENTER,0,0));
+        insidePanel.setLayout(new FlowLayout(FlowLayout.LEFT,0,5));
         insidePanel.setBackground(controller.getFieldColor("background1"));
-        addComponents(insidePanel, "By Sub Genre");
+
+        key = "subGenre";
+        boxData = aggregator.getBasedOnKey(key);
+        insidePanel.setPreferredSize(new Dimension(205,boxData.length*30));
+        for (int i = 0; i < boxData.length; i++){ // loops through seasons
+            JComboBox<String> dropdown = new JComboBox<String>((String[])((Object[])boxData[i])[1]); // list of anime in given season 
+            dropdown.setRenderer(new CustomComboBoxRenderer(controller));
+            dropdown.setEditor(new CustomComboBoxEditor(controller));
+            dropdown.setUI(new CustomComboBoxUI(controller));
+            dropdown.setPreferredSize(new Dimension(200,25));
+            dropdown.setFont(new Font("Dialog", Font.BOLD, 12));
+            dropdown.setForeground(controller.getFieldColor("text"));
+            dropdown.setBackground(controller.getFieldColor("background3"));
+            dropdown.setBorder(BorderFactory.createLineBorder(controller.getFieldColor("background2")));
+            dropdown.setEditable(true);
+            dropdown.setSelectedItem((String)((Object[])boxData[i])[2]); // given season and the number of anime in dropdown
+            dropdown.setName(key +" " +i); // the first part corresponds to the key, and the second is the relevent list for that key (used by actionListener to find anime clicked)
+            dropdown.setEditable(false);
+            dropdown.setFocusable(false);
+            dropdown.addActionListener(new selectAnimeActionListener()); 
+            insidePanel.add(dropdown);
+        }
+        if (boxData.length == 0){ // if the array is empty
+            JLabel emptyLabel = new JLabel("Nothing to Display :(");
+            emptyLabel.setPreferredSize(new Dimension(200,50));
+            emptyLabel.setForeground(controller.getFieldColor("text"));
+            emptyLabel.setFont(new Font("Dialog", Font.BOLD, 10));
+            emptyLabel.setVerticalAlignment(JLabel.CENTER);
+            emptyLabel.setHorizontalAlignment(JLabel.CENTER);
+            insidePanel.add(emptyLabel);
+        }
 
         titleLabel = new JLabel("By Sub Genre");
-        titleLabel.setPreferredSize(new Dimension(227,30));
+        titleLabel.setPreferredSize(new Dimension(200,30));
         titleLabel.setForeground(controller.getFieldColor("text"));
         titleLabel.setFont(new Font("Dialog", Font.BOLD, 16));
         titleLabel.setVerticalAlignment(JLabel.CENTER);
@@ -486,14 +634,13 @@ public class StatisticsPanel extends JPanel {
         scrollPane = new JScrollPane(insidePanel,JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED,JScrollPane.HORIZONTAL_SCROLLBAR_NEVER); 
         scrollPane.setOpaque(false);
         scrollPane.setBorder(javax.swing.BorderFactory.createEmptyBorder());
-
         scrollPane.setPreferredSize(new Dimension (205,120));
-        scrollPane.getVerticalScrollBar().setUnitIncrement(20);
+        scrollPane.getVerticalScrollBar().setUnitIncrement(5);
 
         scrollBar = scrollPane.getVerticalScrollBar();
         scrollPane.remove(scrollBar); 
         scrollBar.setPreferredSize(new Dimension(10,120));
-        scrollBar.setUI(new CustomScrollBarUI(controller,controller.getFieldColor("buttons"),controller.getFieldColor("background1").brighter()));
+        scrollBar.setUI(new CustomScrollBarUI(controller,controller.getFieldColor("buttons"),controller.getFieldColor("background1")));
         scrollBar.setBorder(javax.swing.BorderFactory.createEmptyBorder());
         
         outsidePanel.add(titleLabel);
@@ -505,16 +652,46 @@ public class StatisticsPanel extends JPanel {
 
         outsidePanel = new JPanel();
         outsidePanel.setPreferredSize(new Dimension(237,150));
-        outsidePanel.setLayout(new FlowLayout(FlowLayout.CENTER,0,0));
+        outsidePanel.setLayout(new FlowLayout(FlowLayout.LEFT,0,0));
         outsidePanel.setOpaque(false);
 
         insidePanel = new JPanel();
-        insidePanel.setLayout(new FlowLayout(FlowLayout.CENTER,0,0));
+        insidePanel.setLayout(new FlowLayout(FlowLayout.LEFT,0,5));
         insidePanel.setBackground(controller.getFieldColor("background1"));
-        addComponents(insidePanel, "By Studio");
+
+        key = "animationStudio";
+        boxData = aggregator.getBasedOnKey(key);
+        insidePanel.setPreferredSize(new Dimension(205,boxData.length*30));
+        for (int i = 0; i < boxData.length; i++){ // loops through seasons
+            JComboBox<String> dropdown = new JComboBox<String>((String[])((Object[])boxData[i])[1]); // list of anime in given season 
+            dropdown.setRenderer(new CustomComboBoxRenderer(controller));
+            dropdown.setEditor(new CustomComboBoxEditor(controller));
+            dropdown.setUI(new CustomComboBoxUI(controller));
+            dropdown.setPreferredSize(new Dimension(200,25));
+            dropdown.setFont(new Font("Dialog", Font.BOLD, 12));
+            dropdown.setForeground(controller.getFieldColor("text"));
+            dropdown.setBackground(controller.getFieldColor("background3"));
+            dropdown.setBorder(BorderFactory.createLineBorder(controller.getFieldColor("background2")));
+            dropdown.setEditable(true);
+            dropdown.setSelectedItem((String)((Object[])boxData[i])[2]); // given season and the number of anime in dropdown
+            dropdown.setName(key +" " +i); // the first part corresponds to the key, and the second is the relevent list for that key (used by actionListener to find anime clicked)
+            dropdown.setEditable(false);
+            dropdown.setFocusable(false);
+            dropdown.addActionListener(new selectAnimeActionListener()); 
+            insidePanel.add(dropdown);
+        }
+        if (boxData.length == 0){ // if the array is empty
+            JLabel emptyLabel = new JLabel("Nothing to Display :(");
+            emptyLabel.setPreferredSize(new Dimension(200,50));
+            emptyLabel.setForeground(controller.getFieldColor("text"));
+            emptyLabel.setFont(new Font("Dialog", Font.BOLD, 10));
+            emptyLabel.setVerticalAlignment(JLabel.CENTER);
+            emptyLabel.setHorizontalAlignment(JLabel.CENTER);
+            insidePanel.add(emptyLabel);
+        }
 
         titleLabel = new JLabel("By Studio");
-        titleLabel.setPreferredSize(new Dimension(227,30));
+        titleLabel.setPreferredSize(new Dimension(200,30));
         titleLabel.setForeground(controller.getFieldColor("text"));
         titleLabel.setFont(new Font("Dialog", Font.BOLD, 16));
         titleLabel.setVerticalAlignment(JLabel.CENTER);
@@ -523,14 +700,13 @@ public class StatisticsPanel extends JPanel {
         scrollPane = new JScrollPane(insidePanel,JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED,JScrollPane.HORIZONTAL_SCROLLBAR_NEVER); 
         scrollPane.setOpaque(false);
         scrollPane.setBorder(javax.swing.BorderFactory.createEmptyBorder());
-
         scrollPane.setPreferredSize(new Dimension (205,120));
-        scrollPane.getVerticalScrollBar().setUnitIncrement(20);
+        scrollPane.getVerticalScrollBar().setUnitIncrement(5);
 
         scrollBar = scrollPane.getVerticalScrollBar();
         scrollPane.remove(scrollBar); 
         scrollBar.setPreferredSize(new Dimension(10,120));
-        scrollBar.setUI(new CustomScrollBarUI(controller,controller.getFieldColor("buttons"),controller.getFieldColor("background1").brighter()));
+        scrollBar.setUI(new CustomScrollBarUI(controller,controller.getFieldColor("buttons"),controller.getFieldColor("background1")));
         scrollBar.setBorder(javax.swing.BorderFactory.createEmptyBorder());
         
         outsidePanel.add(titleLabel);
@@ -542,16 +718,46 @@ public class StatisticsPanel extends JPanel {
 
         outsidePanel = new JPanel();
         outsidePanel.setPreferredSize(new Dimension(237,150));
-        outsidePanel.setLayout(new FlowLayout(FlowLayout.CENTER,0,0));
+        outsidePanel.setLayout(new FlowLayout(FlowLayout.LEFT,0,0));
         outsidePanel.setOpaque(false);
 
         insidePanel = new JPanel();
-        insidePanel.setLayout(new FlowLayout(FlowLayout.CENTER,0,0));
+        insidePanel.setLayout(new FlowLayout(FlowLayout.LEFT,0,5));
         insidePanel.setBackground(controller.getFieldColor("background1"));
-        addComponents(insidePanel, "By Content Rating");
+
+        key = "ageRating";
+        boxData = aggregator.getBasedOnKey(key);
+        insidePanel.setPreferredSize(new Dimension(205,boxData.length*30));
+        for (int i = 0; i < boxData.length; i++){ // loops through seasons
+            JComboBox<String> dropdown = new JComboBox<String>((String[])((Object[])boxData[i])[1]); // list of anime in given season 
+            dropdown.setRenderer(new CustomComboBoxRenderer(controller));
+            dropdown.setEditor(new CustomComboBoxEditor(controller));
+            dropdown.setUI(new CustomComboBoxUI(controller));
+            dropdown.setPreferredSize(new Dimension(200,25));
+            dropdown.setFont(new Font("Dialog", Font.BOLD, 12));
+            dropdown.setForeground(controller.getFieldColor("text"));
+            dropdown.setBackground(controller.getFieldColor("background3"));
+            dropdown.setBorder(BorderFactory.createLineBorder(controller.getFieldColor("background2")));
+            dropdown.setEditable(true);
+            dropdown.setSelectedItem((String)((Object[])boxData[i])[2]); // given season and the number of anime in dropdown
+            dropdown.setName(key +" " +i); // the first part corresponds to the key, and the second is the relevent list for that key (used by actionListener to find anime clicked)
+            dropdown.setEditable(false);
+            dropdown.setFocusable(false);
+            dropdown.addActionListener(new selectAnimeActionListener()); 
+            insidePanel.add(dropdown);
+        }
+        if (boxData.length == 0){ // if the array is empty
+            JLabel emptyLabel = new JLabel("Nothing to Display :(");
+            emptyLabel.setPreferredSize(new Dimension(200,50));
+            emptyLabel.setForeground(controller.getFieldColor("text"));
+            emptyLabel.setFont(new Font("Dialog", Font.BOLD, 10));
+            emptyLabel.setVerticalAlignment(JLabel.CENTER);
+            emptyLabel.setHorizontalAlignment(JLabel.CENTER);
+            insidePanel.add(emptyLabel);
+        }
 
         titleLabel = new JLabel("By Content Rating");
-        titleLabel.setPreferredSize(new Dimension(227,30));
+        titleLabel.setPreferredSize(new Dimension(200,30));
         titleLabel.setForeground(controller.getFieldColor("text"));
         titleLabel.setFont(new Font("Dialog", Font.BOLD, 16));
         titleLabel.setVerticalAlignment(JLabel.CENTER);
@@ -560,14 +766,13 @@ public class StatisticsPanel extends JPanel {
         scrollPane = new JScrollPane(insidePanel,JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED,JScrollPane.HORIZONTAL_SCROLLBAR_NEVER); 
         scrollPane.setOpaque(false);
         scrollPane.setBorder(javax.swing.BorderFactory.createEmptyBorder());
-
         scrollPane.setPreferredSize(new Dimension (205,120));
-        scrollPane.getVerticalScrollBar().setUnitIncrement(20);
+        scrollPane.getVerticalScrollBar().setUnitIncrement(5);
 
         scrollBar = scrollPane.getVerticalScrollBar();
         scrollPane.remove(scrollBar); 
         scrollBar.setPreferredSize(new Dimension(10,120));
-        scrollBar.setUI(new CustomScrollBarUI(controller,controller.getFieldColor("buttons"),controller.getFieldColor("background1").brighter()));
+        scrollBar.setUI(new CustomScrollBarUI(controller,controller.getFieldColor("buttons"),controller.getFieldColor("background1")));
         scrollBar.setBorder(javax.swing.BorderFactory.createEmptyBorder());
         
         outsidePanel.add(titleLabel);
@@ -577,11 +782,11 @@ public class StatisticsPanel extends JPanel {
 
         /// Scrolling JLabel
 
-        JLabel scrollLabel = new JLabel("Scrolling Text Goes Here");
-        scrollLabel.setPreferredSize(new Dimension(489,30));
+        JLabel scrollLabel = new JLabel("Scrolling Text Goes Here Scrolling Text Goes Here Scrolling Text Goes Here Scrolling Text Goes Here");
+        scrollLabel.setPreferredSize(new Dimension(489,41));
         scrollLabel.setForeground(controller.getFieldColor("text"));
         scrollLabel.setFont(new Font("Dialog", Font.BOLD, 15));
-        scrollLabel.setVerticalAlignment(JLabel.CENTER);
+        scrollLabel.setVerticalAlignment(JLabel.BOTTOM);
         scrollLabel.setHorizontalAlignment(JLabel.LEFT);
         leftPanel.add(scrollLabel);
     }
@@ -682,13 +887,8 @@ public class StatisticsPanel extends JPanel {
         //rightLeftPanel
 
         sLabel = new JLabel(); // spacer
-        sLabel.setPreferredSize(new Dimension(200,3));
+        sLabel.setPreferredSize(new Dimension(200,8));
         rightLeftPanel.add(sLabel);
-
-
-        // String[] array = (String[])((Object[])aggregator.getLanguageByAnimeCount()[0])[1]; 
-
-
 
         JComboBox<String> dropdown = new JComboBox<String>((String[])((Object[])aggregator.getLanguageByAnimeCount()[0])[1]); // list of anime subbed
         dropdown.setRenderer(new CustomComboBoxRenderer(controller));
@@ -742,7 +942,7 @@ public class StatisticsPanel extends JPanel {
         rightLeftPanel.add(dropdown);
 
         sLabel = new JLabel(); // spacer
-        sLabel.setPreferredSize(new Dimension(200,25));
+        sLabel.setPreferredSize(new Dimension(200,20));
         rightLeftPanel.add(sLabel);
 
         dropdown = new JComboBox<String>((String[])((Object[])aggregator.getLanguageByEpisodeCount()[0])[1]); // list of episodes subbed
@@ -926,10 +1126,6 @@ public class StatisticsPanel extends JPanel {
         structurePanel.add(rightPanel,BorderLayout.EAST);
     }
 
-    public void addComponents(JPanel componentPanel, String caseString){ // this method is what adds the JComboBoxes to the scrollpanels panel (and sets its size)
-        componentPanel.setPreferredSize(new Dimension(205,1000));
-    }
-
     public void generate() {
         repaint();
         revalidate();
@@ -1076,7 +1272,12 @@ public class StatisticsPanel extends JPanel {
                 }
             }
             else{
-                // for n based calls
+                String[] split = comboBoxName.split(" ", 2);
+                String key = split[0];
+                int boxNumber = Integer.parseInt(split[1]);
+
+                Object[] listArray = aggregator.getBasedOnKey(key);
+                mainGUI.generateAnimePage(((String[])((Object[])listArray[boxNumber])[0])[index]);
             }
         }
     }

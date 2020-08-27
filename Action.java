@@ -12,6 +12,7 @@ public class Action
       {
         checkDirectories();
         new MainGUI().setVisible(true);
+        
       }
     });     
   }

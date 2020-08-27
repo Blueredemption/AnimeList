@@ -826,7 +826,7 @@ public class AnimePanel extends JPanel {
         switch(source){
             case "averageEpisodeLength":
                 stringList = new ArrayList<String>();
-                for(int i = 4; i < 100; i++){
+                for(int i = 0; i < 100; i++){
                     stringList.add((i+1) +"");
                 }
                 sectionLabel.setText("Set Episode Length:");
@@ -1029,8 +1029,8 @@ public class AnimePanel extends JPanel {
 
     public void setLeftRightButtons(){
         JPanel buttonPanel = new JPanel();
-        buttonPanel.setPreferredSize(new Dimension(315,26));
-        buttonPanel.setLayout(new FlowLayout(FlowLayout.LEFT,0,1));
+        buttonPanel.setPreferredSize(new Dimension(315,28));
+        buttonPanel.setLayout(new FlowLayout(FlowLayout.LEFT,0,2));
         buttonPanel.setOpaque(false);
         rightBottomPanel.add(buttonPanel,BorderLayout.NORTH);
 
