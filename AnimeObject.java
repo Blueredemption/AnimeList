@@ -39,7 +39,7 @@ public class AnimeObject implements Comparable<Object>{
         languageWatchedIn = "?";
         ageRating = "?";
         yearReleased = "1900";
-        seasonReleased = "Spring";
+        seasonReleased = "Winter";
         watchingStartDate = "?";
         watchingEndDate = "?";
         averageEpisodeLength = "20";

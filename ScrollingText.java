@@ -4,7 +4,7 @@ import java.awt.event.*;
 
 public class ScrollingText extends JPanel implements ActionListener{
     private static final long serialVersionUID = 1L;
-    int RATE = 15;
+    int RATE = 14;
     Timer timer = new Timer(500 / RATE, this);
     JLabel label = new JLabel();
     String string;
