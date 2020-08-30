@@ -35,9 +35,9 @@ public class AnimeDao {
         seasons = new ArrayList<String>(Arrays.asList("Winter","Spring","Summer","Fall"));
         languages = new ArrayList<String>(Arrays.asList("Subbed","Dubbed", "Other"));
         contentRatings = new ArrayList<String>(Arrays.asList("G","PG","PG-13","R-17+","R+"));
-        genres = new ArrayList<String>(Arrays.asList("Action","Adventure","Comedy","Dementia","Demons","Drama","Ecchi","Fantasy",
+        genres = new ArrayList<String>(Arrays.asList("Action","Adventure","Comedy","Dementia","Demons","Drama","Ecchi","Fantasy","Game",
                                                      "Historical","Horror","Harem","Isekai","Josei","Magic","Martial Arts","Mecha","Military","Music",
-                                                     "Mystery","Parody","Police","Psychological","Romance","Samurai","School","Sci-Fi",
+                                                     "Mystery","Parody","Police","Psychological","Racing","Romance","Samurai","School","Sci-Fi",
                                                      "Seinen","Shoujo","Shoujo Ai","Shounen","Shounen Ai","Slice of Life","Space","Sports",
                                                      "Super Power","Supernatural","Thriller","Vampire","Yaoi","Yuri","Hentai","Other"));
     }

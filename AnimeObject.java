@@ -317,7 +317,7 @@ public class AnimeObject implements Comparable<Object>{
                 }
             case 1: return animeName.toUpperCase().compareTo(((AnimeObject)o).getAnimeName().toUpperCase()); // name
             case 2: return ((Integer)Integer.parseInt(numberOfEpisodesTotal)).compareTo((Integer)Integer.parseInt(((AnimeObject)o).getNumberOfEpisodesTotal())); // episodes
-            case 3: return (getSeasonNumber()*10000 +((Integer)Integer.parseInt(yearReleased)).compareTo(((AnimeObject)o).getSeasonNumber()*10000 +(Integer.parseInt(((AnimeObject)o).getYearReleased())))); // season released
+            case 3: return ((Integer)(getSeasonNumber()*10000 +((Integer)Integer.parseInt(yearReleased)))).compareTo(((AnimeObject)o).getSeasonNumber()*10000 +(Integer.parseInt(((AnimeObject)o).getYearReleased()))); // season released
             case 4: return ((Integer)(Integer.parseInt(yearReleased)*100+getSeasonNumber())).compareTo((Integer)(Integer.parseInt(((AnimeObject)o).getYearReleased())*100+((AnimeObject)o).getSeasonNumber())); // year released
             case 5: return getProgress().compareTo(((AnimeObject)o).getProgress()); // progress
             case 6: return ((Integer)color.getRGB()).compareTo((Integer)((AnimeObject)o).getColor().getRGB()); // color

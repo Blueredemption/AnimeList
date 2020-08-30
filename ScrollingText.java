@@ -10,6 +10,7 @@ public class ScrollingText extends JPanel implements ActionListener{
     String string;
     int stringLength;
     int index;
+    boolean start = true;
     
     public ScrollingText(String string, int stringLength, Controller controller){ // constructor
         setLayout(new FlowLayout(FlowLayout.LEFT,0,0));
@@ -20,6 +21,7 @@ public class ScrollingText extends JPanel implements ActionListener{
         for(int i = 0; i < stringLength; i++){
             sb.append('\u2002');
         }
+
         this.string = sb +string +sb;
         this.stringLength = stringLength;
         
@@ -37,7 +39,11 @@ public class ScrollingText extends JPanel implements ActionListener{
   @Override
     public void actionPerformed(ActionEvent e){
         index++;
-        if (index > string.length() - stringLength) index = 0;
+        if (start){
+            index = stringLength-60;
+            start = false;
+        } 
+        if (index > string.length() - stringLength) index = stringLength-60;
         label.setText(string.substring(index, index + stringLength));
     }
 }

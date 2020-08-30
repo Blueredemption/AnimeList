@@ -390,7 +390,7 @@ public class StatisticsAggregator {
         int currentLength = 0; 
 
         for (String reference : references) {
-            int tempLength = Integer.parseInt(animeDao.getValue(reference,"numberOfEpisodesTotal"));
+            int tempLength = Integer.parseInt(animeDao.getValue(reference,"numberOfEpisodesWatched"));
             if (tempLength > currentLength){
                 currentReference = reference;
                 currentLength = tempLength;
