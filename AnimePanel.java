@@ -1109,16 +1109,17 @@ public class AnimePanel extends JPanel {
             toggleEnables(true);
             JFileChooser fc = new JFileChooser();
             fc.setCurrentDirectory(new File ("Images/Anime"));
-            fc.showOpenDialog(null);
-            File file = fc.getSelectedFile();
-            try{
-                Image image = ImageIO.read(new File(file.getAbsolutePath()));
-                image = image.getScaledInstance(274,195,Image.SCALE_DEFAULT);
-                controller.set(reference,"imageLocation", file.getAbsolutePath());
-                generateRightTop();
-            }
-            catch(Exception e){ // if an exception occurs it will happen at the first line of the statement, thus:
-                System.out.println("Invalid file type, change ignored");
+            if (fc.showOpenDialog(null) == JFileChooser.APPROVE_OPTION){
+                File file = fc.getSelectedFile();
+                try{
+                    Image image = ImageIO.read(new File(file.getAbsolutePath()));
+                    image = image.getScaledInstance(274,195,Image.SCALE_DEFAULT);
+                    controller.set(reference,"imageLocation", file.getAbsolutePath());
+                    generateRightTop();
+                }
+                catch(Exception e){ // if an exception occurs it will happen at the first line of the statement, thus:
+                    System.out.println("Invalid file type, change ignored");
+                }
             }
         }
     }

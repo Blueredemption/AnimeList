@@ -284,7 +284,7 @@ public class MainGUI extends JFrame {
         panelA.setPreferredSize(leftDim);
         panelA.setBackground(controller.getFieldColor("background1"));
 
-        generateNavPanel("Welcome to Your AnimeList!");
+        generateNavPanel("Welcome to AnimeList v3 1.0.2");
         
         JLabel spacer = new JLabel(); // creating some gapping without flowlayout hgap.
         spacer.setPreferredSize(new Dimension(1,3));

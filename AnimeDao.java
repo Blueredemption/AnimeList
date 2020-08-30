@@ -32,7 +32,7 @@ public class AnimeDao {
     }
 
     public void generateLists(){
-        seasons = new ArrayList<String>(Arrays.asList("Spring","Summer","Fall","Winter"));
+        seasons = new ArrayList<String>(Arrays.asList("Winter","Spring","Summer","Fall"));
         languages = new ArrayList<String>(Arrays.asList("Subbed","Dubbed", "Other"));
         contentRatings = new ArrayList<String>(Arrays.asList("G","PG","PG-13","R-17+","R+"));
         genres = new ArrayList<String>(Arrays.asList("Action","Adventure","Comedy","Dementia","Demons","Drama","Ecchi","Fantasy",

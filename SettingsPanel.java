@@ -211,7 +211,6 @@ public class SettingsPanel extends JPanel{
             panelA3.repaint();
             panelA3.revalidate();
         }
-
         return new ColorPickerPanel(identifierString, controller);
     }
 
@@ -300,21 +299,21 @@ public class SettingsPanel extends JPanel{
         public void actionPerformed(ActionEvent V){
             JFileChooser fc = new JFileChooser();
             fc.setCurrentDirectory(new File ("Images/Anime"));
-            fc.showOpenDialog(null);
-            File file = fc.getSelectedFile();
-            try{
-                Image image = ImageIO.read(new File(file.getAbsolutePath()));
-                image = image.getScaledInstance(274,195,Image.SCALE_DEFAULT);
-                ImageIcon icon = new ImageIcon(image);
-                controller.setFieldText("mainScreenImage", file.getAbsolutePath());
-                pathNameField.setText(file.getAbsolutePath());
-                miniMainImage.setIcon(icon);
-                warningLabel.setVisible(false);
+            if (fc.showOpenDialog(null) == JFileChooser.APPROVE_OPTION){
+                File file = fc.getSelectedFile();
+                try{
+                    Image image = ImageIO.read(new File(file.getAbsolutePath()));
+                    image = image.getScaledInstance(274,195,Image.SCALE_DEFAULT);
+                    ImageIcon icon = new ImageIcon(image);
+                    controller.setFieldText("mainScreenImage", file.getAbsolutePath());
+                    pathNameField.setText(file.getAbsolutePath());
+                    miniMainImage.setIcon(icon);
+                    warningLabel.setVisible(false);
+                }
+                catch(Exception e){ // if an exception occurs it will happen at the first line of the statement, thus:
+                    warningLabel.setVisible(true);
+                }
             }
-            catch(Exception e){ // if an exception occurs it will happen at the first line of the statement, thus:
-                warningLabel.setVisible(true);
-            }
-            
         }
     }
 }
