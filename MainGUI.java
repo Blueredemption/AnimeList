@@ -10,6 +10,7 @@ import java.awt.event.ActionListener;
 
 public class MainGUI extends JFrame {
     private static final long serialVersionUID = 1L; 
+    String release = "1.0.4";
 
     Controller controller;
     JLayeredPane pane;
@@ -284,7 +285,7 @@ public class MainGUI extends JFrame {
         panelA.setPreferredSize(leftDim);
         panelA.setBackground(controller.getFieldColor("background1"));
 
-        generateNavPanel("Welcome to AnimeList v3 1.0.3");
+        generateNavPanel("Welcome to AnimeList v3 " +release);
         
         JLabel spacer = new JLabel(); // creating some gapping without flowlayout hgap.
         spacer.setPreferredSize(new Dimension(1,3));

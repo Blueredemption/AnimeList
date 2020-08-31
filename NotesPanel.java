@@ -49,7 +49,7 @@ public class NotesPanel extends JPanel{
         leftPanel.setBackground(controller.getFieldColor("background1"));
         add(leftPanel, BorderLayout.WEST);
 
-        int n = 3000;
+        int n = 9000;
 
         leftArea = new JTextArea();
         leftArea.setPreferredSize(new Dimension(748,n));
@@ -91,7 +91,7 @@ public class NotesPanel extends JPanel{
         rightPanel.setBackground(controller.getFieldColor("background1"));
         add(rightPanel, BorderLayout.EAST);
 
-        int n = 3000;
+        int n = 9000;
 
         rightArea = new JTextArea();
         rightArea.setPreferredSize(new Dimension(230,n));

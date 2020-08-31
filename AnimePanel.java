@@ -379,7 +379,7 @@ public class AnimePanel extends JPanel {
         leftBottomPanel.setBackground(controller.getAnimeColor(reference));
         bottomPanel.add(leftBottomPanel,BorderLayout.WEST);
 
-        int n = 1000;
+        int n = 2000;
 
         JLabel spacer = new JLabel(); // spacer
         spacer.setPreferredSize(new Dimension(4,10));

@@ -446,7 +446,7 @@ public class StatisticsPanel extends JPanel {
 
         JScrollBar scrollBar = scrollPane.getVerticalScrollBar();
         scrollPane.remove(scrollBar); 
-        scrollBar.setPreferredSize(new Dimension(10,120));
+        scrollBar.setPreferredSize(new Dimension(10,110));
         scrollBar.setUI(new CustomScrollBarUI(controller,controller.getFieldColor("buttons"),controller.getFieldColor("background1")));
         scrollBar.setBorder(javax.swing.BorderFactory.createEmptyBorder());
         
@@ -512,7 +512,7 @@ public class StatisticsPanel extends JPanel {
 
         scrollBar = scrollPane.getVerticalScrollBar();
         scrollPane.remove(scrollBar); 
-        scrollBar.setPreferredSize(new Dimension(10,120));
+        scrollBar.setPreferredSize(new Dimension(10,110));
         scrollBar.setUI(new CustomScrollBarUI(controller,controller.getFieldColor("buttons"),controller.getFieldColor("background1")));
         scrollBar.setBorder(javax.swing.BorderFactory.createEmptyBorder());
         
@@ -578,7 +578,7 @@ public class StatisticsPanel extends JPanel {
 
         scrollBar = scrollPane.getVerticalScrollBar();
         scrollPane.remove(scrollBar); 
-        scrollBar.setPreferredSize(new Dimension(10,120));
+        scrollBar.setPreferredSize(new Dimension(10,110));
         scrollBar.setUI(new CustomScrollBarUI(controller,controller.getFieldColor("buttons"),controller.getFieldColor("background1")));
         scrollBar.setBorder(javax.swing.BorderFactory.createEmptyBorder());
         
@@ -644,7 +644,7 @@ public class StatisticsPanel extends JPanel {
 
         scrollBar = scrollPane.getVerticalScrollBar();
         scrollPane.remove(scrollBar); 
-        scrollBar.setPreferredSize(new Dimension(10,120));
+        scrollBar.setPreferredSize(new Dimension(10,110));
         scrollBar.setUI(new CustomScrollBarUI(controller,controller.getFieldColor("buttons"),controller.getFieldColor("background1")));
         scrollBar.setBorder(javax.swing.BorderFactory.createEmptyBorder());
         
@@ -710,7 +710,7 @@ public class StatisticsPanel extends JPanel {
 
         scrollBar = scrollPane.getVerticalScrollBar();
         scrollPane.remove(scrollBar); 
-        scrollBar.setPreferredSize(new Dimension(10,120));
+        scrollBar.setPreferredSize(new Dimension(10,110));
         scrollBar.setUI(new CustomScrollBarUI(controller,controller.getFieldColor("buttons"),controller.getFieldColor("background1")));
         scrollBar.setBorder(javax.swing.BorderFactory.createEmptyBorder());
         
@@ -776,7 +776,7 @@ public class StatisticsPanel extends JPanel {
 
         scrollBar = scrollPane.getVerticalScrollBar();
         scrollPane.remove(scrollBar); 
-        scrollBar.setPreferredSize(new Dimension(10,120));
+        scrollBar.setPreferredSize(new Dimension(10,110));
         scrollBar.setUI(new CustomScrollBarUI(controller,controller.getFieldColor("buttons"),controller.getFieldColor("background1")));
         scrollBar.setBorder(javax.swing.BorderFactory.createEmptyBorder());
         
