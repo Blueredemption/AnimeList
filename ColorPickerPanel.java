@@ -1,10 +1,20 @@
 // generates and handles the colorpicker in the SettingsPanel
-
-import javax.swing.*; // make these imports more specific later
+import javax.swing.JLayeredPane;
+import javax.swing.JPanel;
+import javax.swing.JSlider;
+import javax.swing.JButton;
+import javax.swing.JComboBox;
+import javax.swing.JLabel;
+import javax.swing.JTextField;
+import javax.swing.BorderFactory;
 import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
 
-import java.awt.*;
+import java.awt.Dimension;
+import java.awt.BorderLayout;
+import java.awt.FlowLayout;
+import java.awt.Font;
+import java.awt.Color;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 

@@ -1,10 +1,12 @@
 // outlet that the GUI uses to retrieve stored fields. The barrier between graphics and logic.
-
-import java.util.*;
 import java.awt.Color;
+
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.time.temporal.ChronoUnit;
+
+import java.util.ArrayList;
+import java.util.Date;
 
 public class Controller {
     AnimeDao animeDao;

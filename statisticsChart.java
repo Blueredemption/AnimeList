@@ -11,19 +11,18 @@ import org.jfree.data.xy.XYSeriesCollection;
 import org.jfree.chart.ui.RectangleEdge;
 import org.jfree.chart.axis.NumberAxis;
 
-
 import java.text.DecimalFormat;
 
 import java.util.ArrayList;
 
 import javax.swing.JPanel;
 import javax.swing.JLabel;
+
 import java.awt.BasicStroke;
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.FlowLayout;
 import java.awt.Font;
-
 
 public class StatisticsChart extends JPanel {
     private static final long serialVersionUID = 1L; 

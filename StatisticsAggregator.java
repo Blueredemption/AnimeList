@@ -1,5 +1,6 @@
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
+
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Collections;
@@ -371,15 +372,15 @@ public class StatisticsAggregator {
     // scrolltext related methods
     public String generateScrollText(){
         String scrollString = "";
-
-        scrollString = scrollString +"\u2002\u2002\u2002\u2002\u2002\u2002\u2002\u2002\u2002\u2002\u2002\u2002" +generateLongestAnime();
-        scrollString = scrollString +"\u2002\u2002\u2002\u2002\u2002\u2002\u2002\u2002\u2002\u2002\u2002\u2002" +generateShortestAnime();
-        scrollString = scrollString +"\u2002\u2002\u2002\u2002\u2002\u2002\u2002\u2002\u2002\u2002\u2002\u2002" +generateNewestAnime();
-        scrollString = scrollString +"\u2002\u2002\u2002\u2002\u2002\u2002\u2002\u2002\u2002\u2002\u2002\u2002" +generateOldestAnime();
-        scrollString = scrollString +"\u2002\u2002\u2002\u2002\u2002\u2002\u2002\u2002\u2002\u2002\u2002\u2002" +generateFirstAnime();
-        scrollString = scrollString +"\u2002\u2002\u2002\u2002\u2002\u2002\u2002\u2002\u2002\u2002\u2002\u2002" +generateLastAnime();
-        scrollString = scrollString +"\u2002\u2002\u2002\u2002\u2002\u2002\u2002\u2002\u2002\u2002\u2002\u2002" +generateLongestSpan();
-        scrollString = scrollString +"\u2002\u2002\u2002\u2002\u2002\u2002\u2002\u2002\u2002\u2002\u2002\u2002" +generateShortestSpan();
+        String string = "\u2002\u2002\u2002\u2002\u2002\u2002\u2002\u2002\u2002\u2002\u2002\u2002";
+        scrollString = scrollString +string +generateLongestAnime();
+        scrollString = scrollString +string +generateShortestAnime();
+        scrollString = scrollString +string +generateNewestAnime();
+        scrollString = scrollString +string +generateOldestAnime();
+        scrollString = scrollString +string +generateFirstAnime();
+        scrollString = scrollString +string +generateLastAnime();
+        scrollString = scrollString +string +generateLongestSpan();
+        scrollString = scrollString +string +generateShortestSpan();
 
         return scrollString;
     }

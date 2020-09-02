@@ -1,10 +1,18 @@
-import java.util.*;
-import java.io.*;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Calendar;
+import java.util.Collections;
+import java.util.Date;
+import java.util.Scanner;
+
 import java.text.SimpleDateFormat;
 
-import org.json.simple.*;
-import org.json.simple.parser.*;
+import org.json.simple.JSONObject;
+import org.json.simple.parser.JSONParser;
+
 import java.awt.Color;
+
+import java.io.File;
 
 public class AnimeDao {
     ArrayList<AnimeObject> list;

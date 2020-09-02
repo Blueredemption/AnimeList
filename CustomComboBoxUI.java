@@ -1,10 +1,13 @@
 // this class handles the design (and functionality) of the scroll pane inside of the dropdown dropdown
-
+import javax.swing.BorderFactory;
+import javax.swing.JButton;
 import javax.swing.JScrollPane;
 import javax.swing.plaf.basic.BasicComboBoxUI;
 import javax.swing.plaf.basic.BasicComboPopup;
-import javax.swing.*; // replace these
-import java.awt.*;
+
+import java.awt.Color;
+import java.awt.Font;
+import java.awt.Dimension;
 
 public class CustomComboBoxUI extends BasicComboBoxUI{
     private Controller controller;

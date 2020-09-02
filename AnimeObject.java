@@ -1,12 +1,16 @@
 // The purpose of this class is to act as the "Anime Object" that is stored as a json file on the user's hard drive. 
 // Every time a change is made to one of these objects, a change is made inside the hard drive file by the setter method.
+import java.util.Date;
+
+import java.text.SimpleDateFormat;
 
 import org.json.simple.*;
-import java.io.*;
-import java.util.Date;
-import java.text.SimpleDateFormat;
+
 import java.awt.Color;
 
+import java.io.FileWriter;
+import java.io.IOException;
+import java.io.PrintWriter;
 
 public class AnimeObject implements Comparable<Object>{ 
     // declared members

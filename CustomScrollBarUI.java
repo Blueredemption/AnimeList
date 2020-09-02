@@ -1,7 +1,7 @@
 // custom look for JscrollBars
-
 import javax.swing.JButton;
 import javax.swing.plaf.basic.BasicScrollBarUI;
+
 import java.awt.Dimension;
 import java.awt.Color;
 

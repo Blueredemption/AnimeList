@@ -1,6 +1,12 @@
-import javax.swing.*;
-import java.awt.*;
-import java.awt.event.*;
+import javax.swing.JPanel;
+import javax.swing.JLabel;
+import javax.swing.Timer;
+
+import java.awt.Dimension;
+import java.awt.FlowLayout;
+import java.awt.Font;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 
 public class ScrollingText extends JPanel implements ActionListener{
     private static final long serialVersionUID = 1L;

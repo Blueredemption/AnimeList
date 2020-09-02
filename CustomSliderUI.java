@@ -1,7 +1,7 @@
 // custom look for JSliders
-
 import javax.swing.JSlider;
 import javax.swing.plaf.basic.BasicSliderUI;
+
 import java.awt.Color;
 
 public class CustomSliderUI extends BasicSliderUI {

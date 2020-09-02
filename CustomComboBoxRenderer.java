@@ -1,5 +1,4 @@
 // this class handles the design (and functionality) of the dropdown dropdown (modified copy of source)
-
 import java.awt.Color;
 import java.awt.Component;
 

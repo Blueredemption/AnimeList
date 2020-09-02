@@ -1,9 +1,23 @@
-import java.awt.*; // change these later
+import java.awt.Dimension;
+import java.awt.BorderLayout;
+import java.awt.FlowLayout;
+import java.awt.Font;
+import java.awt.Color;
+import java.awt.Image;
+
 import javax.imageio.ImageIO;
-import javax.swing.*;
+import javax.swing.JPanel;
+import javax.swing.JButton;
+import javax.swing.JLabel;
+import javax.swing.JTextField;
+import javax.swing.JFrame;
+import javax.swing.JFileChooser;
+import javax.swing.ImageIcon;
+import javax.swing.BorderFactory;
 import javax.swing.border.BevelBorder;
 
-import java.awt.event.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.io.File;
 import java.io.IOException;
 
@@ -299,19 +313,34 @@ public class SettingsPanel extends JPanel{
         public void actionPerformed(ActionEvent V){
             JFileChooser fc = new JFileChooser();
             fc.setCurrentDirectory(new File ("Images/Anime"));
+            fc.getCurrentDirectory();
             if (fc.showOpenDialog(null) == JFileChooser.APPROVE_OPTION){
                 File file = fc.getSelectedFile();
                 try{
-                    Image image = ImageIO.read(new File(file.getAbsolutePath()));
-                    image = image.getScaledInstance(274,195,Image.SCALE_DEFAULT);
-                    ImageIcon icon = new ImageIcon(image);
-                    controller.setFieldText("mainScreenImage", file.getAbsolutePath());
-                    pathNameField.setText(file.getAbsolutePath());
-                    miniMainImage.setIcon(icon);
-                    warningLabel.setVisible(false);
+                    String fullPath = file.getAbsolutePath();
+                    String relativeTo = System.getProperty("user.dir");
+                    if (fullPath.contains(relativeTo)){
+                        String relativePath = fullPath.substring(relativeTo.length() +1); //+1 to remove the / at the front, which bugs the search.
+                        Image image = ImageIO.read(new File(relativePath));
+                        image = image.getScaledInstance(274,195,Image.SCALE_DEFAULT);
+                        ImageIcon icon = new ImageIcon(image);
+
+                        controller.setFieldText("mainScreenImage", relativePath);
+                        pathNameField.setText(relativePath);
+                        miniMainImage.setIcon(icon);
+                    }
+                    else{
+                        Image image = ImageIO.read(new File(file.getAbsolutePath()));
+                        image = image.getScaledInstance(274,195,Image.SCALE_DEFAULT);
+                        ImageIcon icon = new ImageIcon(image);
+
+                        controller.setFieldText("mainScreenImage", file.getAbsolutePath());
+                        pathNameField.setText(file.getAbsolutePath());
+                        miniMainImage.setIcon(icon);
+                    }
                 }
-                catch(Exception e){ // if an exception occurs it will happen at the first line of the statement, thus:
-                    warningLabel.setVisible(true);
+                catch(Exception e){ // if an exception occurs it will happen at "Image image = ImageIO.read(new File(relativePath));", thus:
+                    System.out.println("Invalid file type, change ignored");
                 }
             }
         }

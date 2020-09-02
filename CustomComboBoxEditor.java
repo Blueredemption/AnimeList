@@ -1,5 +1,4 @@
 // this class handles the design (and functionality) of the dropdown box
-
 import java.awt.Color;
 import java.awt.Component;
 import java.awt.FlowLayout;

@@ -1,16 +1,30 @@
 import javax.imageio.ImageIO;
-import javax.swing.*;
+import javax.swing.JLayeredPane;
+import javax.swing.JPanel;
+import javax.swing.JButton;
+import javax.swing.JLabel;
+import javax.swing.JTextField;
+import javax.swing.JFrame;
+import javax.swing.ImageIcon;
+import javax.swing.BorderFactory;
 import javax.swing.border.BevelBorder;
 
-import java.awt.*;
-import java.io.File;
-import java.io.IOException;
+import java.awt.Dimension;
+import java.awt.BorderLayout;
+import java.awt.FlowLayout;
+import java.awt.Graphics;
+import java.awt.Font;
+import java.awt.Color;
+import java.awt.Image;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
+import java.io.File;
+import java.io.IOException;
+
 public class MainGUI extends JFrame {
     private static final long serialVersionUID = 1L; 
-    String release = "1.0.4";
+    String release = "1.0.5";
 
     Controller controller;
     JLayeredPane pane;
@@ -484,6 +498,9 @@ public class MainGUI extends JFrame {
                 else if (notesPanel != null){
                     notesPanel.toggleEnables(false);
                 }
+                else if (statisticsPanel != null){
+                    statisticsPanel.toggleEnables(false);
+                }
                 swapNavPanelFocus(false);
                 generateNavigationPageLarge();
             }
@@ -497,6 +514,9 @@ public class MainGUI extends JFrame {
                 } 
                 else if (notesPanel != null){
                     notesPanel.toggleEnables(true);
+                }
+                else if (statisticsPanel != null){
+                    statisticsPanel.toggleEnables(true);
                 }
                 swapNavPanelFocus(true);
                 generateNavigationPageSmall();

@@ -1,13 +1,32 @@
-import java.awt.*; // change these later
+import java.awt.Dimension;
+import java.awt.BorderLayout;
+import java.awt.FlowLayout;
+import java.awt.Font;
+import java.awt.Color;
+import java.awt.Image;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+
 import java.io.File;
 import java.io.IOException;
 
 import javax.imageio.ImageIO;
-import javax.swing.*;
+import javax.swing.JPanel;
+import javax.swing.JProgressBar;
+import javax.swing.JScrollBar;
+import javax.swing.JScrollPane;
+import javax.swing.JTextArea;
+import javax.swing.JButton;
+import javax.swing.JComboBox;
+import javax.swing.JComponent;
+import javax.swing.JFileChooser;
+import javax.swing.JLabel;
+import javax.swing.JTextField;
+import javax.swing.ImageIcon;
+import javax.swing.BorderFactory;
 import javax.swing.border.BevelBorder;
 import javax.swing.plaf.basic.BasicProgressBarUI;
 
-import java.awt.event.*;
 import java.util.ArrayList;
 import java.util.Calendar;
 
@@ -1111,13 +1130,27 @@ public class AnimePanel extends JPanel {
             fc.setCurrentDirectory(new File ("Images/Anime"));
             if (fc.showOpenDialog(null) == JFileChooser.APPROVE_OPTION){
                 File file = fc.getSelectedFile();
-                try{
-                    Image image = ImageIO.read(new File(file.getAbsolutePath()));
-                    image = image.getScaledInstance(274,195,Image.SCALE_DEFAULT);
-                    controller.set(reference,"imageLocation", file.getAbsolutePath());
+                try{;
+                    String fullPath = file.getAbsolutePath();
+                    String relativeTo = System.getProperty("user.dir");
+                    if (fullPath.contains(relativeTo)){
+                        String relativePath = fullPath.substring(relativeTo.length() +1); //+1 to remove the / at the front, which bugs the search.
+                        Image image = ImageIO.read(new File(relativePath));
+                        image = image.getScaledInstance(274,195,Image.SCALE_DEFAULT);
+
+                        controller.set(reference,"imageLocation", relativePath);
+                        
+                    }
+                    else{
+                        Image image = ImageIO.read(new File(file.getAbsolutePath()));
+                        image = image.getScaledInstance(274,195,Image.SCALE_DEFAULT);
+
+                        ImageIO.read(new File(file.getAbsolutePath()));
+                        controller.set(reference,"imageLocation", file.getAbsolutePath());
+                    }
                     generateRightTop();
                 }
-                catch(Exception e){ // if an exception occurs it will happen at the first line of the statement, thus:
+                catch(Exception e){ // if an exception occurs it will happen at the "Image image = ImageIO.read(new File...", thus:
                     System.out.println("Invalid file type, change ignored");
                 }
             }

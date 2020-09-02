@@ -1,9 +1,14 @@
 // this class handles all the storage and retrieval of colors and other non anime object related items
+import java.util.Scanner;
 
-import java.util.*;
-import java.io.*;
-import org.json.simple.*;
-import org.json.simple.parser.*;
+import java.io.File;
+import java.io.FileWriter;
+import java.io.IOException;
+import java.io.PrintWriter;
+
+import org.json.simple.JSONObject;
+import org.json.simple.parser.JSONParser;
+
 import java.awt.Color;
 
 public class FieldStorageDao {
