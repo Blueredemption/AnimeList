@@ -1109,24 +1109,36 @@ public class StatisticsPanel extends JPanel {
         BevelBorder border = new BevelBorder(BevelBorder.LOWERED, controller.getFieldColor("background1"), controller.getFieldColor("background1").darker(), 
                                                                   controller.getFieldColor("background1"), controller.getFieldColor("background1").brighter());
         Image imageOne = getImage(controller.get(controller.getFieldText("favorite1"),"imageLocation"), new Dimension(129,180));
-        JLabel favoriteImageOne = new JLabel();
+        JButton favoriteImageOne = new JButton();
         if (imageOne != null) favoriteImageOne.setIcon(new ImageIcon(imageOne));
-        favoriteImageOne.setPreferredSize(new Dimension(125,180));
+        favoriteImageOne.setPreferredSize(new Dimension(129,180));
+        favoriteImageOne.setName("favorite1");
         favoriteImageOne.setBorder(border);
+        favoriteImageOne.setFocusPainted(false);
+        favoriteImageOne.setBackground(controller.getFieldColor("background2"));
+        favoriteImageOne.addActionListener(new favoriteButtonActionListener());
         rightBottomPanel.add(favoriteImageOne);
 
         Image imageTwo = getImage(controller.get(controller.getFieldText("favorite2"),"imageLocation"), new Dimension(129,180));
-        JLabel favoriteImageTwo = new JLabel();
+        JButton favoriteImageTwo = new JButton();
         if (imageTwo != null) favoriteImageTwo.setIcon(new ImageIcon(imageTwo));
-        favoriteImageTwo.setPreferredSize(new Dimension(125,180));
+        favoriteImageTwo.setPreferredSize(new Dimension(129,180));
+        favoriteImageTwo.setName("favorite2");
         favoriteImageTwo.setBorder(border);
+        favoriteImageTwo.setFocusPainted(false);
+        favoriteImageTwo.setBackground(controller.getFieldColor("background2"));
+        favoriteImageTwo.addActionListener(new favoriteButtonActionListener());
         rightBottomPanel.add(favoriteImageTwo);
 
         Image imageThree = getImage(controller.get(controller.getFieldText("favorite3"),"imageLocation"), new Dimension(129,180));
-        JLabel favoriteImageThree = new JLabel();
+        JButton favoriteImageThree = new JButton();
         if (imageThree != null) favoriteImageThree.setIcon(new ImageIcon(imageThree));
-        favoriteImageThree.setPreferredSize(new Dimension(125,180));
+        favoriteImageThree.setPreferredSize(new Dimension(129,180));
+        favoriteImageThree.setName("favorite3");
         favoriteImageThree.setBorder(border);
+        favoriteImageThree.setFocusPainted(false);
+        favoriteImageThree.setBackground(controller.getFieldColor("background2"));
+        favoriteImageThree.addActionListener(new favoriteButtonActionListener());
         rightBottomPanel.add(favoriteImageThree);
     }
 
@@ -1226,6 +1238,28 @@ public class StatisticsPanel extends JPanel {
             String comboBoxName = source.getName();
             controller.setFieldText(comboBoxName, controller.getReferenceList().get(index));
             generateRightBottomPanel();
+        }
+    }
+
+    private class favoriteButtonActionListener implements ActionListener {
+        @Override
+        public void actionPerformed(ActionEvent V){
+            JButton button = (JButton)V.getSource(); 
+            switch(button.getName()){
+                case "favorite1": 
+                    if (controller.getReferenceList().indexOf(controller.getFieldText("favorite1")) != -1)
+                        mainGUI.generateAnimePage(controller.getFieldText("favorite1"));
+                    break;
+                case "favorite2": 
+                    if (controller.getReferenceList().indexOf(controller.getFieldText("favorite2")) != -1)
+                        mainGUI.generateAnimePage(controller.getFieldText("favorite2"));
+                    break;
+                case "favorite3": 
+                    if (controller.getReferenceList().indexOf(controller.getFieldText("favorite3")) != -1)
+                        mainGUI.generateAnimePage(controller.getFieldText("favorite3"));
+                    break;
+                default: System.out.println("Default case met, error in favoriteButtonActionListener");
+            }
         }
     }
 

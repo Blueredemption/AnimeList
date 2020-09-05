@@ -24,7 +24,7 @@ import java.io.IOException;
 
 public class MainGUI extends JFrame {
     private static final long serialVersionUID = 1L; 
-    String release = "1.0.5";
+    String release = "1.0.6";
 
     Controller controller;
     JLayeredPane pane;

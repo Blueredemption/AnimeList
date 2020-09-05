@@ -466,7 +466,7 @@ public class StatisticsAggregator {
         animeDao.setSort(preSort); // return sort to original state since calls are over, as no "changes" are to be made in data collection
         animeDao.setOrder(preOrder); // ^
 
-        return "First Anime Watched: "  +animeDao.getValue(reference,"animeName") +" (" +controller.getDateAsString(reference,"watchingStartDate") +")";
+        return "First Anime Watched and/or Added: "  +animeDao.getValue(reference,"animeName") +" (" +controller.getDateAsString(reference,"watchingStartDate") +")";
     }
 
     public String generateLastAnime(){
