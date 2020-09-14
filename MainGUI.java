@@ -9,6 +9,7 @@ import javax.swing.ImageIcon;
 import javax.swing.BorderFactory;
 import javax.swing.border.BevelBorder;
 
+import java.awt.event.MouseAdapter;
 import java.awt.Dimension;
 import java.awt.BorderLayout;
 import java.awt.FlowLayout;
@@ -23,8 +24,8 @@ import java.io.File;
 import java.io.IOException;
 
 public class MainGUI extends JFrame {
-    private static final long serialVersionUID = 1L; 
-    String release = "1.0.6";
+    private static final long serialVersionUID = 1L;
+    String release = "1.0.7";
 
     Controller controller;
     JLayeredPane pane;
@@ -61,7 +62,7 @@ public class MainGUI extends JFrame {
         generatePane();
         generatePanelB();
         generatePanelA();
-        
+
         pack();
         setLocationRelativeTo(null);
     }
@@ -90,10 +91,11 @@ public class MainGUI extends JFrame {
 
         subNavPanel1 = new JPanel() {
             private static final long serialVersionUID = 1L;
+
             protected void paintComponent(Graphics g) {
                 super.paintComponent(g);
                 g.setColor(controller.getFieldColor("buttonBorder"));
-                g.drawLine(3,12, 808, 12);
+                g.drawLine(3, 12, 808, 12);
             }
         };
         subNavPanel1.setPreferredSize(new Dimension(808, 25));
@@ -103,10 +105,11 @@ public class MainGUI extends JFrame {
 
         subNavPanel2 = new JPanel() {
             private static final long serialVersionUID = 1L;
+
             protected void paintComponent(Graphics g) {
                 super.paintComponent(g);
                 g.setColor(controller.getFieldColor("buttonBorder"));
-                g.drawLine(0,12, 167, 12);
+                g.drawLine(0, 12, 167, 12);
             }
         };
         subNavPanel2.setPreferredSize(new Dimension(170, 25));
@@ -117,11 +120,12 @@ public class MainGUI extends JFrame {
         fillLabel.setPreferredSize(new Dimension(180, 25));
         subNavPanel1.add(fillLabel);
 
-        navLabel = new JLabel(" " +label +" ");
+        navLabel = new JLabel(" " + label + " ");
         navLabel.setForeground(controller.getFieldColor("text"));
         navLabel.setFont(new Font("Dialog", Font.BOLD, 14));
         navLabel.setVerticalAlignment(JLabel.TOP);
-        navLabel.setBackground(getCombinedColor(controller.getFieldColor("navigation"),controller.getFieldColor("background1")));
+        navLabel.setBackground(
+                getCombinedColor(controller.getFieldColor("navigation"), controller.getFieldColor("background1")));
         navLabel.setOpaque(true);
         subNavPanel1.add(navLabel);
     }
@@ -203,8 +207,9 @@ public class MainGUI extends JFrame {
         nav2.setText("|||");
         setButtonDefaults(nav2);
         panelB.add(nav2);
-        
-        if (subNavPanel2 != null) swapNavPanelFocus(true);
+
+        if (subNavPanel2 != null)
+            swapNavPanelFocus(true);
     }
 
     public void generateNavigationPageLarge() {
@@ -299,20 +304,21 @@ public class MainGUI extends JFrame {
         panelA.setPreferredSize(leftDim);
         panelA.setBackground(controller.getFieldColor("background1"));
 
-        generateNavPanel("Welcome to AnimeList v3 " +release);
-        
+        generateNavPanel("Welcome to AnimeList v3 " + release);
+
         JLabel spacer = new JLabel(); // creating some gapping without flowlayout hgap.
-        spacer.setPreferredSize(new Dimension(1,3));
+        spacer.setPreferredSize(new Dimension(1, 3));
         panelA.add(spacer);
 
-        Image image = getImage(controller.getFieldText("mainScreenImage"), new Dimension((int)leftDim.getWidth()-6,(int)leftDim.getHeight()-31));
+        Image image = getImage(controller.getFieldText("mainScreenImage"),
+                new Dimension((int) leftDim.getWidth() - 6, (int) leftDim.getHeight() - 31));
         JLabel imageLabel = new JLabel();
-        imageLabel.setPreferredSize(new Dimension((int)leftDim.getWidth()-6,(int)leftDim.getHeight()-31));
-        if (image != null) imageLabel.setIcon(new ImageIcon(image));
-        imageLabel.setBorder(new BevelBorder(BevelBorder.LOWERED, controller.getFieldColor("background1"), 
-                                                                  controller.getFieldColor("background1").darker(), 
-                                                                  controller.getFieldColor("background1"), 
-                                                                  controller.getFieldColor("background1").brighter()));
+        imageLabel.setPreferredSize(new Dimension((int) leftDim.getWidth() - 6, (int) leftDim.getHeight() - 31));
+        if (image != null)
+            imageLabel.setIcon(new ImageIcon(image));
+        imageLabel.setBorder(new BevelBorder(BevelBorder.LOWERED, controller.getFieldColor("background1"),
+                controller.getFieldColor("background1").darker(), controller.getFieldColor("background1"),
+                controller.getFieldColor("background1").brighter()));
         panelA.add(imageLabel, BorderLayout.CENTER);
     }
 
@@ -329,7 +335,7 @@ public class MainGUI extends JFrame {
 
         generateNavPanel("Viewing: Anime List");
         listPanel = new ListPanel(this, controller);
-        panelA.add(listPanel,BorderLayout.WEST);
+        panelA.add(listPanel, BorderLayout.WEST);
     }
 
     public void generateStatisticsPage() {
@@ -345,7 +351,7 @@ public class MainGUI extends JFrame {
 
         generateNavPanel("Viewing: Statistics");
         statisticsPanel = new StatisticsPanel(controller, this);
-        panelA.add(statisticsPanel,BorderLayout.WEST);
+        panelA.add(statisticsPanel, BorderLayout.WEST);
     }
 
     public void generateNotesPage() {
@@ -361,7 +367,7 @@ public class MainGUI extends JFrame {
 
         generateNavPanel("Viewing: Notes");
         notesPanel = new NotesPanel(controller, this);
-        panelA.add(notesPanel,BorderLayout.WEST);
+        panelA.add(notesPanel, BorderLayout.WEST);
     }
 
     public void generateAnimePage(String reference) {
@@ -375,10 +381,11 @@ public class MainGUI extends JFrame {
         panelA.setPreferredSize(leftDim);
         panelA.setBackground(controller.getFieldColor("background1"));
 
-        if (reference.equals("New Anime")) reference = controller.createAnime();
-        generateNavPanel("Viewing: " +controller.get(reference, "animeName"));
-        animePanel = new AnimePanel(controller,this,reference);
-        panelA.add(animePanel,BorderLayout.WEST);
+        if (reference.equals("New Anime"))
+            reference = controller.createAnime();
+        generateNavPanel("Viewing: " + controller.get(reference, "animeName"));
+        animePanel = new AnimePanel(controller, this, reference);
+        panelA.add(animePanel, BorderLayout.WEST);
     }
 
     public void generateAnimePage(String reference, String textAreaText) { // if refreshing
@@ -392,10 +399,11 @@ public class MainGUI extends JFrame {
         panelA.setPreferredSize(leftDim);
         panelA.setBackground(controller.getFieldColor("background1"));
 
-        if (reference.equals("New Anime")) reference = controller.createAnime();
-        generateNavPanel("Viewing: " +controller.get(reference, "animeName"));
-        animePanel = new AnimePanel(controller,this,reference,textAreaText);
-        panelA.add(animePanel,BorderLayout.WEST);
+        if (reference.equals("New Anime"))
+            reference = controller.createAnime();
+        generateNavPanel("Viewing: " + controller.get(reference, "animeName"));
+        animePanel = new AnimePanel(controller, this, reference, textAreaText);
+        panelA.add(animePanel, BorderLayout.WEST);
     }
 
     public void generateSettingsPage() {
@@ -414,30 +422,33 @@ public class MainGUI extends JFrame {
         generateNavPanel("Viewing: Settings");
 
         SettingsPanel settingsPanel = new SettingsPanel(this, controller);
-        panelA.add(settingsPanel,BorderLayout.WEST);
+        panelA.add(settingsPanel, BorderLayout.WEST);
 
     }
 
     // length cutting methods
-    public Color getCombinedColor(Color front, Color back){ // adds two colors together component wise
-        float r = ((float)front.getRed()/255)*((float)front.getAlpha()/255) + ((float)back.getRed()/255)*((float)back.getAlpha()/255)*(1-((float)front.getAlpha()/255));
-        float g = ((float)front.getGreen()/255)*((float)front.getAlpha()/255) + ((float)back.getGreen()/255)*((float)back.getAlpha()/255)*(1-((float)front.getAlpha()/255));
-        float b = ((float)front.getBlue()/255)*((float)front.getAlpha()/255) + ((float)back.getBlue()/255)*((float)back.getAlpha()/255)*(1-((float)front.getAlpha()/255));
-        return new Color(r,g,b);
+    public Color getCombinedColor(Color front, Color back) { // adds two colors together component wise
+        float r = ((float) front.getRed() / 255) * ((float) front.getAlpha() / 255) + ((float) back.getRed() / 255)
+                * ((float) back.getAlpha() / 255) * (1 - ((float) front.getAlpha() / 255));
+        float g = ((float) front.getGreen() / 255) * ((float) front.getAlpha() / 255) + ((float) back.getGreen() / 255)
+                * ((float) back.getAlpha() / 255) * (1 - ((float) front.getAlpha() / 255));
+        float b = ((float) front.getBlue() / 255) * ((float) front.getAlpha() / 255) + ((float) back.getBlue() / 255)
+                * ((float) back.getAlpha() / 255) * (1 - ((float) front.getAlpha() / 255));
+        return new Color(r, g, b);
     }
 
     public void setButtonDefaults(JButton button) {
         button.setBackground(controller.getFieldColor("buttons"));
         button.setForeground(controller.getFieldColor("text"));
         button.setBorder(BorderFactory.createLineBorder(controller.getFieldColor("buttonBorder")));
+        button.addMouseListener(new buttonHover());
         button.setFocusPainted(false);
     }
 
     public void swapNavPanelFocus(boolean big) {
         if (!big) {
             subNavPanel2.setBackground(new Color(0, 0, 0, 0));
-        } 
-        else {
+        } else {
             subNavPanel2.setBackground(controller.getFieldColor("navigation"));
         }
     }
@@ -447,26 +458,26 @@ public class MainGUI extends JFrame {
             Image thisImage = ImageIO.read(new File(location));
             thisImage = thisImage.getScaledInstance((int) dim.getWidth(), (int) dim.getHeight(), Image.SCALE_DEFAULT);
             return thisImage;
-        }
-        catch (IOException e) { // if image read fails return null
+        } catch (IOException e) { // if image read fails return null
             Image thisImage = null;
             return thisImage;
         }
-    } 
-    
-    public void nullifyPanels() { // to save memory when these pages are not in use this method is called. 
-        listPanel = null; 
-        animePanel = null;
-        statisticsPanel = null;
-        notesPanel =  null;
     }
 
-    public void setNavsDisabled(){  // to prevent overlay issues with color editor in SettingsPanel
+    public void nullifyPanels() { // to save memory when these pages are not in use this method is called.
+        listPanel = null;
+        animePanel = null;
+        statisticsPanel = null;
+        notesPanel = null;
+    }
+
+    public void setNavsDisabled() { // to prevent overlay issues with color editor in SettingsPanel
         nav1.setEnabled(false);
         nav2.setEnabled(false);
     }
 
-    public void setNavs(boolean bool){ // to prevent people from navigating off settings page while threads are still compiling data.
+    public void setNavs(boolean bool) { // to prevent people from navigating off settings page while threads are still
+                                        // compiling data.
         nav1.setEnabled(bool);
         nav2.setEnabled(bool);
         home.setEnabled(bool);
@@ -477,8 +488,8 @@ public class MainGUI extends JFrame {
         settings.setEnabled(bool);
     }
 
-    public void setNavigationText(String text){ // for animePanel to set the text after a name change
-        navLabel.setText(" " +text +" ");
+    public void setNavigationText(String text) { // for animePanel to set the text after a name change
+        navLabel.setText(" " + text + " ");
         navPanel.repaint();
         navPanel.revalidate();
     }
@@ -486,88 +497,102 @@ public class MainGUI extends JFrame {
     // ACTION LISTENERS
     private class flipNavigation implements ActionListener {
         @Override
-        public void actionPerformed(ActionEvent V){   
-            if (panelB.getPreferredSize().equals(rightDimSmall)){
-                if (listPanel != null){
+        public void actionPerformed(ActionEvent V) {
+            if (panelB.getPreferredSize().equals(rightDimSmall)) {
+                if (listPanel != null) {
                     listPanel.disableScrollBar();
                     listPanel.disableButtons();
-                } 
-                else if (animePanel != null){
+                } else if (animePanel != null) {
                     animePanel.toggleEnables(false);
-                } 
-                else if (notesPanel != null){
+                } else if (notesPanel != null) {
                     notesPanel.toggleEnables(false);
-                }
-                else if (statisticsPanel != null){
+                } else if (statisticsPanel != null) {
                     statisticsPanel.toggleEnables(false);
                 }
                 swapNavPanelFocus(false);
                 generateNavigationPageLarge();
-            }
-            else{
-                if (listPanel != null){
+            } else {
+                if (listPanel != null) {
                     listPanel.enableScrollBar();
                     listPanel.enableButtons();
-                } 
-                else if (animePanel != null){
+                } else if (animePanel != null) {
                     animePanel.toggleEnables(true);
-                } 
-                else if (notesPanel != null){
+                } else if (notesPanel != null) {
                     notesPanel.toggleEnables(true);
-                }
-                else if (statisticsPanel != null){
+                } else if (statisticsPanel != null) {
                     statisticsPanel.toggleEnables(true);
                 }
                 swapNavPanelFocus(true);
                 generateNavigationPageSmall();
-            } 
+            }
         }
     }
 
     private class homeButtonListener implements ActionListener {
         @Override
-        public void actionPerformed(ActionEvent V){
-            if(controller.getState() != 0) generateHomePage();
+        public void actionPerformed(ActionEvent V) {
+            if (controller.getState() != 0)
+                generateHomePage();
         }
     }
 
     private class listButtonListener implements ActionListener {
         @Override
-        public void actionPerformed(ActionEvent V){
-            if(controller.getState() != 1){
+        public void actionPerformed(ActionEvent V) {
+            if (controller.getState() != 1) {
                 generateListPage();
                 listPanel.setSearchFocus();
-            } 
-            else listPanel.setSearchFocus();
+            } else
+                listPanel.setSearchFocus();
         }
     }
 
     private class statisticsButtonListener implements ActionListener {
         @Override
-        public void actionPerformed(ActionEvent V){
-            if(controller.getState() != 2) generateStatisticsPage();
+        public void actionPerformed(ActionEvent V) {
+            if (controller.getState() != 2)
+                generateStatisticsPage();
         }
     }
 
     private class notesButtonListener implements ActionListener {
         @Override
-        public void actionPerformed(ActionEvent V){
-            if(controller.getState() != 3) generateNotesPage();
+        public void actionPerformed(ActionEvent V) {
+            if (controller.getState() != 3)
+                generateNotesPage();
         }
     }
 
     private class animeButtonListener implements ActionListener {
         @Override
-        public void actionPerformed(ActionEvent V){
-            // if(controller.getState() != 4) Unessesary because every time this is clicked the code is meant to generate a new anime
+        public void actionPerformed(ActionEvent V) {
+            // if(controller.getState() != 4) Unessesary because every time this is clicked
+            // the code is meant to generate a new anime
             generateAnimePage("New Anime");
         }
     }
 
     private class settingsButtonListener implements ActionListener {
         @Override
-        public void actionPerformed(ActionEvent V){
-            if(controller.getState() != 5) generateSettingsPage();
+        public void actionPerformed(ActionEvent V) {
+            if (controller.getState() != 5)
+                generateSettingsPage();
+        }
+    }
+
+    private class buttonHover extends MouseAdapter {
+        @Override
+        public void mouseEntered(java.awt.event.MouseEvent V) {
+            JButton button = (JButton) V.getSource();
+            if (button.isEnabled()){
+                button.setBackground(controller.getFieldColor("buttons").brighter());
+            }
+        }
+
+        @Override
+        public void mouseExited(java.awt.event.MouseEvent V) {
+            JButton button = (JButton) V.getSource();
+            button.setBackground(controller.getFieldColor("buttons"));
         }
     }
 }

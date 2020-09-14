@@ -17,6 +17,7 @@ import java.awt.Font;
 import java.awt.Color;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.MouseAdapter;
 
 public class ColorPickerPanel extends JPanel {
     private static final long serialVersionUID = 1L;
@@ -341,6 +342,7 @@ public class ColorPickerPanel extends JPanel {
         showButton.setPreferredSize(new Dimension(80,26));
         showButton.setBackground(buttons);
         showButton.setForeground(text);
+        showButton.addMouseListener(new buttonHover());
         showButton.setBorder(BorderFactory.createLineBorder(buttonBorders));
         showButton.setFocusPainted(false);
         showRegularPanel.add(showButton);
@@ -444,5 +446,21 @@ public class ColorPickerPanel extends JPanel {
             }
 
         }
-  }
+    }
+
+    private class buttonHover extends MouseAdapter {
+        @Override
+        public void mouseEntered(java.awt.event.MouseEvent V) {
+            JButton button = (JButton) V.getSource();
+            if (button.isEnabled()){
+                button.setBackground(controller.getFieldColor("buttons").brighter());
+            }
+        }
+
+        @Override
+        public void mouseExited(java.awt.event.MouseEvent V) {
+            JButton button = (JButton) V.getSource();
+            button.setBackground(controller.getFieldColor("buttons"));
+        }
+    }
 }

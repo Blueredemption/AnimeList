@@ -18,6 +18,7 @@ import javax.swing.border.BevelBorder;
 
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.MouseAdapter;
 import java.io.File;
 import java.io.IOException;
 
@@ -105,7 +106,7 @@ public class SettingsPanel extends JPanel{
         panelA1.add(lightPreset);
 
         fillLabel = new JLabel(); // spacer
-        fillLabel.setPreferredSize(new Dimension(20, 10));
+        fillLabel.setPreferredSize(new Dimension(5, 10));
         panelA1.add(fillLabel);
 
         JButton darkPreset = new JButton();
@@ -179,7 +180,7 @@ public class SettingsPanel extends JPanel{
 
         JPanel panelA4 = new JPanel();
         panelA4.setPreferredSize(new Dimension(620,255));
-        panelA4.setLayout(new FlowLayout(FlowLayout.CENTER,30,5));
+        panelA4.setLayout(new FlowLayout(FlowLayout.CENTER,15,5));
         panelA4.setBackground(new Color(0,0,0,0)); 
         panelA3.add(panelA4, BorderLayout.SOUTH);
 
@@ -216,6 +217,7 @@ public class SettingsPanel extends JPanel{
         button.setBackground(controller.getFieldColor("buttons"));
         button.setForeground(controller.getFieldColor("text"));
         button.setBorder(BorderFactory.createLineBorder(controller.getFieldColor("buttonBorder")));
+        button.addMouseListener(new buttonHover());
         button.setFocusPainted(false);
     }
 
@@ -343,6 +345,22 @@ public class SettingsPanel extends JPanel{
                     System.out.println("Invalid file type, change ignored");
                 }
             }
+        }
+    }
+
+    private class buttonHover extends MouseAdapter {
+        @Override
+        public void mouseEntered(java.awt.event.MouseEvent V) {
+            JButton button = (JButton) V.getSource();
+            if (button.isEnabled()){
+                button.setBackground(controller.getFieldColor("buttons").brighter());
+            }
+        }
+
+        @Override
+        public void mouseExited(java.awt.event.MouseEvent V) {
+            JButton button = (JButton) V.getSource();
+            button.setBackground(controller.getFieldColor("buttons"));
         }
     }
 }

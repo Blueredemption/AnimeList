@@ -13,6 +13,7 @@ import java.awt.Font;
 import java.awt.Color;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.MouseAdapter;
 
 public class MiniColorPickerPanel extends JPanel {
     private static final long serialVersionUID = 1L;
@@ -136,6 +137,7 @@ public class MiniColorPickerPanel extends JPanel {
         cancelButton.addActionListener(new cancelButtonActionListener());
         cancelButton.setBackground(controller.getFieldColor("buttons"));
         cancelButton.setForeground(controller.getFieldColor("text"));
+        cancelButton.addMouseListener(new buttonHover());
         cancelButton.setBorder(BorderFactory.createLineBorder(controller.getFieldColor("buttonBorder")));
         cancelButton.setFocusPainted(false);
         add(cancelButton);
@@ -145,6 +147,7 @@ public class MiniColorPickerPanel extends JPanel {
         commitButton.addActionListener(new commitButtonActionListener());
         commitButton.setBackground(controller.getFieldColor("buttons"));
         commitButton.setForeground(controller.getFieldColor("text"));
+        commitButton.addMouseListener(new buttonHover());
         commitButton.setBorder(BorderFactory.createLineBorder(controller.getFieldColor("buttonBorder")));
         commitButton.setFocusPainted(false);
         add(commitButton);
@@ -260,6 +263,22 @@ public class MiniColorPickerPanel extends JPanel {
             controller.setAnimeColor(reference, getPickedColor());
             controller.set(reference, "customColor", "false");
             abovePanel.refreshPage(textAreaText);
+        }
+    }
+
+    private class buttonHover extends MouseAdapter {
+        @Override
+        public void mouseEntered(java.awt.event.MouseEvent V) {
+            JButton button = (JButton) V.getSource();
+            if (button.isEnabled()){
+                button.setBackground(controller.getFieldColor("buttons").brighter());
+            }
+        }
+
+        @Override
+        public void mouseExited(java.awt.event.MouseEvent V) {
+            JButton button = (JButton) V.getSource();
+            button.setBackground(controller.getFieldColor("buttons"));
         }
     }
 }

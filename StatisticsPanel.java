@@ -6,6 +6,7 @@ import java.awt.Color;
 import java.awt.Image;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.MouseAdapter;
 
 import javax.imageio.ImageIO;
 import javax.swing.JPanel;
@@ -228,6 +229,7 @@ public class StatisticsPanel extends JPanel {
         resetButton.setForeground(controller.getFieldColor("text"));
         resetButton.setBorder(BorderFactory.createLineBorder(controller.getFieldColor("buttonBorder")));
         resetButton.setFocusPainted(false);
+        resetButton.addMouseListener(new buttonHover());
         topPanel.add(resetButton);
 
         JButton applyButton = new JButton("Apply");
@@ -236,6 +238,7 @@ public class StatisticsPanel extends JPanel {
         applyButton.setBackground(controller.getFieldColor("buttons"));
         applyButton.setForeground(controller.getFieldColor("text"));
         applyButton.setBorder(BorderFactory.createLineBorder(controller.getFieldColor("buttonBorder")));
+        applyButton.addMouseListener(new buttonHover());
         applyButton.setFocusPainted(false);
         applyButton.setEnabled(controller.checkForFilterChange());
         topPanel.add(applyButton);
@@ -342,6 +345,7 @@ public class StatisticsPanel extends JPanel {
         hiddenBox.setForeground(controller.getFieldColor("text"));
         hiddenBox.setBorder(BorderFactory.createLineBorder(controller.getFieldColor("buttonBorder")));
         hiddenBox.setFocusPainted(false);
+        hiddenBox.addMouseListener(new buttonHover());
         hiddenBox.addActionListener(new hiddenButtonActionListener());
         topPanel.add(hiddenBox);
     }
@@ -1332,6 +1336,22 @@ public class StatisticsPanel extends JPanel {
                 Object[] listArray = aggregator.getBasedOnKey(key);
                 mainGUI.generateAnimePage(((String[])((Object[])listArray[boxNumber])[0])[index]);
             }
+        }
+    }
+
+    private class buttonHover extends MouseAdapter {
+        @Override
+        public void mouseEntered(java.awt.event.MouseEvent V) {
+            JButton button = (JButton) V.getSource();
+            if (button.isEnabled()){
+                button.setBackground(controller.getFieldColor("buttons").brighter());
+            }
+        }
+
+        @Override
+        public void mouseExited(java.awt.event.MouseEvent V) {
+            JButton button = (JButton) V.getSource();
+            button.setBackground(controller.getFieldColor("buttons"));
         }
     }
 }

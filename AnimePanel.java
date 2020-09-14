@@ -6,6 +6,7 @@ import java.awt.Color;
 import java.awt.Image;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.MouseAdapter;
 
 import java.io.File;
 import java.io.IOException;
@@ -1032,6 +1033,7 @@ public class AnimePanel extends JPanel {
     public void setButtonDefaults(JButton button) {
         button.setBackground(controller.getFieldColor("buttons"));
         button.setForeground(controller.getFieldColor("text"));
+        button.addMouseListener(new buttonHover());
         button.setBorder(BorderFactory.createLineBorder(controller.getFieldColor("buttonBorder")));
         button.setFocusPainted(false);
     }
@@ -1345,6 +1347,22 @@ public class AnimePanel extends JPanel {
             else controller.set(reference,"customColor","true");    
             String textInTextArea = textArea.getText();    
             refreshPage(textInTextArea);
+        }
+    }
+
+    private class buttonHover extends MouseAdapter {
+        @Override
+        public void mouseEntered(java.awt.event.MouseEvent V) {
+            JButton button = (JButton) V.getSource();
+            if (button.isEnabled()){
+                button.setBackground(controller.getFieldColor("buttons").brighter());
+            }
+        }
+
+        @Override
+        public void mouseExited(java.awt.event.MouseEvent V) {
+            JButton button = (JButton) V.getSource();
+            button.setBackground(controller.getFieldColor("buttons"));
         }
     }
 }

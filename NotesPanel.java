@@ -6,6 +6,7 @@ import javax.swing.JTextArea;
 import javax.swing.JScrollPane;
 import javax.swing.JScrollBar;
 
+import java.awt.event.MouseAdapter;
 import java.awt.Dimension;
 import java.awt.BorderLayout;
 import java.awt.FlowLayout;
@@ -48,6 +49,7 @@ public class NotesPanel extends JPanel{
         saveButton.setForeground(controller.getFieldColor("text"));
         saveButton.setBorder(BorderFactory.createLineBorder(controller.getFieldColor("buttonBorder")));
         saveButton.addActionListener(new saveButtonActionListener());
+        saveButton.addMouseListener(new buttonHover());
         saveButton.setFocusPainted(false);
         topPanel.add(saveButton);
     }
@@ -156,6 +158,22 @@ public class NotesPanel extends JPanel{
         public void actionPerformed(ActionEvent V){
             controller.setFieldText("notepadLeft",leftArea.getText());
             controller.setFieldText("notepadRight",rightArea.getText());
+        }
+    }
+
+    private class buttonHover extends MouseAdapter {
+        @Override
+        public void mouseEntered(java.awt.event.MouseEvent V) {
+            JButton button = (JButton) V.getSource();
+            if (button.isEnabled()){
+                button.setBackground(controller.getFieldColor("buttons").brighter());
+            }
+        }
+
+        @Override
+        public void mouseExited(java.awt.event.MouseEvent V) {
+            JButton button = (JButton) V.getSource();
+            button.setBackground(controller.getFieldColor("buttons"));
         }
     }
 }

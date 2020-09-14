@@ -5,6 +5,7 @@ import java.awt.Font;
 import java.awt.Color;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.MouseAdapter;
 
 import javax.swing.JPanel;
 import javax.swing.JProgressBar;
@@ -480,6 +481,7 @@ public class ListPanel extends JPanel {
         button.setBackground(controller.getFieldColor("buttons"));
         button.setForeground(controller.getFieldColor("text"));
         button.setBorder(BorderFactory.createLineBorder(controller.getFieldColor("buttonBorder")));
+        button.addMouseListener(new buttonHover());
         button.setFocusPainted(false);
     }
 
@@ -629,6 +631,23 @@ public class ListPanel extends JPanel {
         @Override
         public void actionPerformed(ActionEvent V){
             ((MainGUI)superior).generateAnimePage(((JButton)V.getSource()).getName());
+        }
+    }
+
+    private class buttonHover extends MouseAdapter {
+        @Override
+        public void mouseEntered(java.awt.event.MouseEvent V) {
+            JButton button = (JButton) V.getSource();
+            if (button.isEnabled()){
+                button.setBackground(controller.getFieldColor("buttons").brighter());
+            }
+
+        }
+
+        @Override
+        public void mouseExited(java.awt.event.MouseEvent V) {
+            JButton button = (JButton) V.getSource();
+            button.setBackground(controller.getFieldColor("buttons"));
         }
     }
 }
