@@ -145,12 +145,15 @@ public class NotesPanel extends JPanel{
             rightScrollPane.setWheelScrollingEnabled(bool);
             if (bool){
                 rightPanel.add(rightScrollBar,BorderLayout.EAST);
+                rightArea.setEditable(bool);
+                rightArea.getCaret().install(rightArea);
             }
             else {
                 rightPanel.remove(rightScrollBar);
+                rightArea.setEditable(bool);
+                rightArea.getCaret().deinstall(rightArea);
             }
         }
-        
     }
 
     private class saveButtonActionListener implements ActionListener {

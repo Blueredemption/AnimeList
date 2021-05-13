@@ -1100,7 +1100,12 @@ public class AnimePanel extends JPanel {
         if (rightButton != null) rightButton.setEnabled(bool&&swapable());
         if (datePicker != null) datePicker.setVisible(bool);
         if (dropBox != null) dropBox.setVisible(bool);
-        if (textInput != null) textInput.setEnabled(bool);
+        if (textInput != null) {
+            textInput.setEnabled(bool);
+            textInput.setEditable(bool);
+            if (bool) textInput.getCaret().install(textInput);
+            else textInput.getCaret().deinstall(textInput);
+        }
         if (nButton1 != null) nButton1.setEnabled(bool);
         if (nButton2 != null) nButton2.setEnabled(bool); 
         if (nButton3 != null) nButton3.setEnabled(bool);

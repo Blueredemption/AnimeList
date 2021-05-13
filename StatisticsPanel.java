@@ -45,7 +45,7 @@ public class StatisticsPanel extends JPanel {
 
     // navigation break related
     JComboBox<String> navBreakBox; 
-    JButton hiddenBox;
+    JButton hiddenBox, favoriteImageThree;
 
     // statistics related
     StatisticsAggregator aggregator;
@@ -1135,7 +1135,7 @@ public class StatisticsPanel extends JPanel {
         rightBottomPanel.add(favoriteImageTwo);
 
         Image imageThree = getImage(controller.get(controller.getFieldText("favorite3"),"imageLocation"), new Dimension(129,180));
-        JButton favoriteImageThree = new JButton();
+        favoriteImageThree = new JButton(); // global to prevent navigation from breaking when open
         if (imageThree != null) favoriteImageThree.setIcon(new ImageIcon(imageThree));
         favoriteImageThree.setPreferredSize(new Dimension(129,180));
         favoriteImageThree.setName("favorite3");
@@ -1179,6 +1179,7 @@ public class StatisticsPanel extends JPanel {
 
     public void toggleEnables(boolean bool){
         hiddenBox.setEnabled(bool);
+        favoriteImageThree.setEnabled(bool);
     }
 
     // Action Listeners
